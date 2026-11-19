@@ -297,3 +297,9 @@ ul:has(> li.laccico-nav-logo) [data-testid='category-button'] {
     padding-right: max(20px, calc((100% - 1600px) / 2 + 15px)) !important;
   }
 }
+
+/* Klebende Spalte (MultiGrid sticky, z. B. Bildbox der Artikelansicht, N 19.11.2026): darf nicht ueber die ganze Zeilenhoehe
+   gestreckt werden, sonst bleibt sie nicht stehen */
+.\@md\:sticky {
+  align-self: start;
+}

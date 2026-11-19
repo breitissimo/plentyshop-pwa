@@ -55,7 +55,7 @@ export default function createLaccicoProduct(): Block[] {
       name: 'MultiGrid',
       type: 'structure',
       meta: meta(),
-      configuration: { columnWidths: [5, 7], sticky: [1], layout: { marginTop: '0', marginBottom: '0' } },
+      configuration: { columnWidths: [5, 7], sticky: [0], layout: { marginTop: '0', marginBottom: '0' } },
       layout: { gap: 'XL', narrowContainer: true },
       content: [
         {
@@ -78,7 +78,7 @@ export default function createLaccicoProduct(): Block[] {
               tags: false,
               availability: true,
               starRating: true,
-              orderProperties: true,
+              orderProperties: false, // N 19.11.: Bestelleigenschaften (Wunschlänge, Metallspitzen) nicht zeigen, wie Ceres
               variationProperties: false,
               previewText: true,
               attributes: true,
@@ -122,41 +122,58 @@ export default function createLaccicoProduct(): Block[] {
           slot_index: 1,
           content: { haendlerKlasse: 7 },
         },
+        // Wie Ceres: Details, Style Guide, Bewertungen, Produktsicherheit rechts neben der klebenden Bildbox (N 19.11.)
+        {
+          name: 'ItemText',
+          type: 'content',
+          meta: meta(),
+          parent_slot: 1,
+          slot_index: 2,
+          content: {
+            text: { title: t.details },
+            layout: { displayAsCollapsable: true, initiallyCollapsed: false, ...ohneAbstand },
+          },
+        },
+        {
+          name: 'TechnicalData',
+          type: 'content',
+          meta: meta(),
+          parent_slot: 1,
+          slot_index: 3,
+          content: {
+            text: { title: t.stil },
+            layout: { displayAsCollapsable: true, initiallyCollapsed: true, ...ohneAbstand },
+          },
+        },
+        {
+          name: 'CustomerReview',
+          type: 'content',
+          meta: meta(),
+          parent_slot: 1,
+          slot_index: 4,
+          content: { text: { title: t.bewertungen }, layout: { collapsible: true, initiallyCollapsed: true } },
+        },
+        {
+          name: 'TextCard',
+          type: 'content',
+          meta: meta(),
+          parent_slot: 1,
+          slot_index: 5,
+          content: {
+            text: { htmlDescription: t.echtheit, textAlignment: 'left', color: '#6b6b6b' },
+            button: { label: '', link: '', variant: 'primary' },
+            layout: { backgroundColor: '', ...ohneAbstand },
+          },
+        },
+        {
+          name: 'ProductLegalInformation',
+          type: 'content',
+          meta: meta(),
+          parent_slot: 1,
+          slot_index: 6,
+          content: { text: { title: t.sicherheit, linkText: t.sicherheitLink, ...ohneAbstand, paddingLeft: 15 } },
+        },
       ],
-    },
-    {
-      name: 'ItemText',
-      type: 'content',
-      meta: meta(),
-      content: { text: { title: t.details }, layout: { displayAsCollapsable: true, initiallyCollapsed: false, ...ohneAbstand } },
-    },
-    {
-      name: 'TechnicalData',
-      type: 'content',
-      meta: meta(),
-      content: { text: { title: t.stil }, layout: { displayAsCollapsable: true, initiallyCollapsed: true, ...ohneAbstand } },
-    },
-    {
-      name: 'CustomerReview',
-      type: 'content',
-      meta: meta(),
-      content: { text: { title: t.bewertungen }, layout: { collapsible: true, initiallyCollapsed: true } },
-    },
-    {
-      name: 'TextCard',
-      type: 'content',
-      meta: meta(),
-      content: {
-        text: { htmlDescription: t.echtheit, textAlignment: 'left', color: '#6b6b6b' },
-        button: { label: '', link: '', variant: 'primary' },
-        layout: { backgroundColor: '', ...ohneAbstand },
-      },
-    },
-    {
-      name: 'ProductLegalInformation',
-      type: 'content',
-      meta: meta(),
-      content: { text: { title: t.sicherheit, linkText: t.sicherheitLink, ...ohneAbstand, paddingLeft: 15 } },
     },
     {
       name: 'ProductRecommendedProducts',
