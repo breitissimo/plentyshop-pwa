@@ -232,10 +232,12 @@ ul:has(> li.laccico-nav-logo) {
   align-items: center;
 }
 ul:has(> li.laccico-nav-logo) [data-testid='category-button'] {
-  padding-left: 0.6rem;
-  padding-right: 0.6rem;
+  padding-left: 14px;
+  padding-right: 14px;
   margin-right: 0;
-  font-size: 0.875rem;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 /* Unter 1024 px gibt es keine Menuezeile: Leiste weiss mit Logo und dunklen Symbolen (wie Ceres am Handy) */
@@ -259,5 +261,16 @@ ul:has(> li.laccico-nav-logo) [data-testid='category-button'] {
 @media (min-width: 1024px) {
   [data-testid='navbar-top-desktop'] > div:has(#blockified-logo) {
     display: none !important;
+  }
+}
+
+/* Dunkle Leiste ab 1024 px so schmal wie Ceres (32 px) */
+@media (min-width: 1024px) {
+  [data-testid='navbar-top-desktop'] button,
+  [data-testid='navbar-top-desktop'] nav > * {
+    height: 32px !important;
+    min-height: 32px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
   }
 }

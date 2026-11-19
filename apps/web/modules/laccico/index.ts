@@ -26,8 +26,8 @@ export default defineNuxtModule({
       secondaryColor: '#5e3b42',
       headerBackgroundColor: '#4e6066',
       iconColor: '#ffffff',
-      // Logo wie Ceres (Live-Set, 19.11.2026): 827 x 204 px, dort ca. 170 px breit angezeigt (Breite in laccico.css)
-      headerLogo: 'https://cdn02.plentyone.com/qadol2fdwt1n/frontend/Logo/2026-SHOP.png',
+      // Logo wie Ceres Set 28 (N 19.11.2026: richtige Fassung mit Signet im O; Set 29/30 haben versehentlich die alte 2026-SHOP.png): 827 x 204 px, dort ca. 170 px breit angezeigt (Breite in laccico.css)
+      headerLogo: 'https://cdn02.plentyone.com/qadol2fdwt1n/frontend/Logo/2026-2-SHOP.png',
       favicon: 'https://cdn02.plentyone.com/qadol2fdwt1n/frontend/Logo/Favicon/LACCICO_Favicon_Korund_16.png',
       metaTitle: 'LACCICO',
       ogTitle: 'LACCICO',
