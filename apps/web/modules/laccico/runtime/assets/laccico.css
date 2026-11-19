@@ -60,7 +60,125 @@ body {
   text-decoration: underline;
 }
 
-/* Klappboxen (FAQ): aktiver Eintrag Altrosa wie in Ceres */
-details[open] > summary {
-  color: var(--laccico-bordeaux);
+/* ---------- Ceres/Bootstrap-Klassen, die in den übernommenen Seitentexten stehen (nur in Textkarten) ---------- */
+.rte-prose .d-block { display: block !important; }
+.rte-prose .d-flex { display: flex !important; }
+.rte-prose .justify-content-between { justify-content: space-between !important; }
+.rte-prose .align-items-center { align-items: center !important; }
+.rte-prose .align-middle { vertical-align: middle !important; }
+.rte-prose .text-left { text-align: left !important; }
+.rte-prose .align-center, .rte-prose .text-center { text-align: center !important; }
+.rte-prose .text-nowrap { white-space: nowrap !important; }
+.rte-prose .font-weight-bold { font-weight: 700 !important; }
+.rte-prose .font-weight-normal { font-weight: 400 !important; }
+.rte-prose .small { font-size: 0.85em; }
+.rte-prose .text-muted { color: #6c757d !important; }
+.rte-prose .text-dark { color: #121212 !important; }
+.rte-prose .bg-light { background: #f8f9fa !important; }
+.rte-prose .border { border: 1px solid #dee2e6 !important; }
+.rte-prose .rounded { border-radius: 0.25rem !important; }
+.rte-prose .mb-0 { margin-bottom: 0 !important; }
+.rte-prose .mb-2 { margin-bottom: 0.5rem !important; }
+.rte-prose .mb-3 { margin-bottom: 1rem !important; }
+.rte-prose .mt-4 { margin-top: 1.5rem !important; }
+.rte-prose .mt-5 { margin-top: 3rem !important; }
+.rte-prose .my-4 { margin-top: 1.5rem !important; margin-bottom: 1.5rem !important; }
+.rte-prose .mr-1 { margin-right: 0.25rem !important; }
+.rte-prose .p-2 { padding: 0.5rem !important; }
+.rte-prose .px-2 { padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
+.rte-prose .px-3 { padding-left: 1rem !important; padding-right: 1rem !important; }
+.rte-prose .py-1 { padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; }
+.rte-prose .py-3 { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+.rte-prose .badge { display: inline-block; padding: 0.25em 0.5em; font-size: 0.75em; font-weight: 700; border-radius: 0.25rem; }
+.rte-prose .badge-secondary { background: var(--laccico-creme); color: #121212; }
+.rte-prose .badge-primary, .rte-prose .badge-dark { background: var(--laccico-korundblau); color: #fff; }
+.rte-prose .fa { display: none; } /* Font-Awesome-Symbole gibt es in der PWA nicht */
+/* „Seitlich wischbar“ nur auf dem Handy, wie in Ceres (d-md-none = ab 768 px aus) */
+@media (min-width: 768px) {
+  .rte-prose .d-md-none { display: none !important; }
+}
+.rte-prose .h3 { font-size: 1.5rem; font-weight: 600; }
+
+/* ---------- Tabellen (FAQ-, Längen- und Farbtabellen) ---------- */
+.rte-prose .table-responsive,
+.rte-prose .laccico-scroll-wrapper,
+.rte-prose .laccico-scroll-table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.rte-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+.rte-prose th,
+.rte-prose .thead-dark th {
+  background: var(--laccico-korundblau);
+  color: #fff;
+  border-color: var(--laccico-korundblau);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.75rem 1rem;
+}
+.rte-prose td {
+  border: 1px solid #dee2e6;
+  padding: 0.75rem 1rem;
+  vertical-align: top;
+}
+.rte-prose .table-hover tbody tr:hover { background: #f4f2ee; }
+.rte-prose td a { color: var(--laccico-schwarz); font-weight: 600; }
+.rte-prose a { text-decoration: underline; }
+
+/* ---------- Klappboxen (FAQ) wie Ceres: fette Frage, aktive Frage Altrosa ---------- */
+main details > summary {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.35;
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
+}
+main details > summary:hover { background: #f1f1f1; }
+main details[open] > summary,
+main details > summary.laccico-faq-aktiv {
+  background: var(--laccico-altrosa);
+  color: #000;
+  font-weight: 700;
+}
+
+/* ---------- FAQ-Fenster (ab 992 px), Maße wie Ceres ---------- */
+#laccico-faq-fenster {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 99999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+#laccico-faq-inhalt {
+  background: #fff;
+  border: 1px solid var(--laccico-korundblau);
+  border-radius: 6px;
+  width: 880px;
+  max-width: 95vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 28px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+#laccico-faq-fenster .laccico-faq-zu {
+  position: absolute;
+  top: calc(7.5vh + 8px);
+  right: calc(50% - min(440px, 47.5vw) + 12px);
+  font-size: 1.6rem;
+  line-height: 1;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  z-index: 1;
 }

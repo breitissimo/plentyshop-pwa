@@ -1,4 +1,4 @@
-import { addImportsDir, addServerHandler, createResolver, defineNuxtModule } from 'nuxt/kit';
+import { addImportsDir, addPlugin, addServerHandler, createResolver, defineNuxtModule } from 'nuxt/kit';
 
 /**
  * LACCICO: Aussehen und Seiteninhalte des LACCICO-Shops.
@@ -47,5 +47,7 @@ export default defineNuxtModule({
     });
 
     addImportsDir(resolver.resolve('./runtime/utils'));
+
+    addPlugin({ src: resolver.resolve('./runtime/plugins/faq-fenster.client'), mode: 'client' });
   },
 });
