@@ -49,6 +49,8 @@
           :max-visible-pages="maxVisiblePages"
           current-page-name="feedbackPage"
         />
+        <!-- eslint-disable-next-line vue/no-v-html -- fester Text aus der LACCICO-Vorlage -->
+        <div v-if="props.content.text.hinweis" class="laccico-bewertung-hinweis" v-html="props.content.text.hinweis" />
       </UiAccordionItem>
     </div>
 

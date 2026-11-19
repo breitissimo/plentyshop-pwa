@@ -155,17 +155,17 @@ body {
   border-radius: 4px;
 }
 
-/* ---------- Klappboxen (FAQ) wie Ceres: fette Frage, aktive Frage Altrosa ---------- */
-main details > summary {
+/* ---------- Klappboxen (FAQ) wie Ceres: fette Frage, aktive Frage Altrosa (nur FAQ-Listen, nicht Artikel-Akkordeons) ---------- */
+main [data-testid='details-list'] details > summary {
   font-size: 0.95rem;
   font-weight: 600;
   line-height: 1.35;
   border-radius: 4px;
   transition: background-color 0.15s ease;
 }
-main details > summary:hover { background: #f1f1f1; }
-main details[open] > summary,
-main details > summary.laccico-faq-aktiv {
+main [data-testid='details-list'] details > summary:hover { background: #f1f1f1; }
+main [data-testid='details-list'] details[open] > summary,
+main [data-testid='details-list'] details > summary.laccico-faq-aktiv {
   background: var(--laccico-altrosa);
   color: #000;
   font-weight: 700;
@@ -318,4 +318,34 @@ ul:has(> li.laccico-nav-logo) [data-testid='category-button'] {
     z-index: 30;
     background: #ffffff;
   }
+}
+
+/* Artikelansicht (N 19.11.2026): Details, Style Guide, Bewertungen gleich aussehend, offen wie zu, keine Farbflaechen */
+main [data-testid='item-text'] > summary,
+main [data-testid='technical-data'] > summary,
+main [data-testid='reviews-accordion'] summary {
+  background: transparent !important;
+  border-radius: 0 !important;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 0.75rem 0 !important;
+  color: #121212;
+}
+main [data-testid='item-text'] > summary h2,
+main [data-testid='technical-data'] > summary h2,
+main [data-testid='reviews-accordion'] summary h2,
+main [data-testid='item-text'] > summary,
+main [data-testid='technical-data'] > summary {
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+}
+main [data-testid='item-text'] > summary:hover,
+main [data-testid='technical-data'] > summary:hover,
+main [data-testid='reviews-accordion'] summary:hover {
+  background: #f8f9fa !important;
+}
+.laccico-bewertung-hinweis {
+  color: #6b6b6b;
+  font-size: 0.875rem;
+  padding-top: 1rem;
 }

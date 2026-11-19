@@ -12,6 +12,8 @@ export type CustomerReviewProps = {
 export type CustomerReviewContent = {
   text: {
     title: string;
+    /** LACCICO: Hinweis (HTML) unten im aufgeklappten Bereich, z. B. zur Echtheit der Bewertungen */
+    hinweis?: string;
   };
   layout: {
     collapsible: boolean;
