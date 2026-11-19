@@ -53,7 +53,10 @@ export default defineNuxtPlugin(() => {
   document.addEventListener(
     'click',
     (e) => {
-      const frage = (e.target as HTMLElement | null)?.closest('main details > summary') as HTMLElement | null;
+      // Nur FAQ-Klappboxen (Block DetailsList); Artikel-Akkordeons (Details, Style Guide, Bewertungen) bleiben normal (Fehler 19.11.)
+      const frage = (e.target as HTMLElement | null)?.closest(
+        'main [data-testid="details-list"] details > summary',
+      ) as HTMLElement | null;
       if (!frage || window.innerWidth < BREITE || frage.closest('header, [data-testid*="filter"]')) {
         return;
       }
