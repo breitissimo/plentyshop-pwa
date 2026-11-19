@@ -131,6 +131,30 @@ body {
 .rte-prose td a { color: var(--laccico-schwarz); font-weight: 600; }
 .rte-prose a { text-decoration: underline; }
 
+/* ---------- Kopfleiste der Artikellisten wie Ceres („R2-SL … » Alle ansehen“) ---------- */
+.rte-prose .laccico-listenkopf {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--laccico-creme);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0 0.75rem;
+}
+.rte-prose .laccico-listenkopf h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.rte-prose .laccico-listenkopf a {
+  background: var(--laccico-korundblau);
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.4rem 0.9rem;
+  border-radius: 4px;
+}
+
 /* ---------- Klappboxen (FAQ) wie Ceres: fette Frage, aktive Frage Altrosa ---------- */
 main details > summary {
   font-size: 0.95rem;
