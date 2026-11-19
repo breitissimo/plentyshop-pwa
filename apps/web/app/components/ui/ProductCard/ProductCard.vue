@@ -111,7 +111,7 @@
             {{ manufacturer.externalName }}
           </div>
         </template>
-        <template v-if="key === 'rating' && configuration?.fields?.rating">
+        <template v-if="key === 'rating' && configuration?.fields?.rating && laccicoSterneZeigen(product)">
           <div class="flex items-center pt-1 gap-1 mb-2">
             <SfRating size="xs" :half-increment="true" :value="rating ?? 0" :max="5" />
             <SfCounter size="xs">{{ ratingCount }}</SfCounter>
@@ -127,21 +127,24 @@
         </template>
         <template v-if="key === 'price' && configuration?.fields?.price">
           <LowestPrice :product="product" />
-          <div v-if="showBasePrice" class="mb-2">
+          <div v-if="showBasePrice && unitContent !== 1" class="mb-2">
             <BasePriceInLine :base-price="basePrice" :unit-content="unitContent" :unit-name="unitName" />
           </div>
           <div class="flex flex-col-reverse items-start @md:flex-row @md:items-center mt-auto">
             <span class="block pb-2 font-bold typography-text-sm" data-testid="product-card-vertical-price">
-              <span v-if="showFromText" class="mr-1">{{ t('account.ordersAndReturns.orderDetails.priceFrom') }}</span>
-              <span>{{ format(price) }}</span>
+              <!-- LACCICO: Preis für 1 Paar wie Ceres (laccicoKartenPreis), kein „ab“ -->
+              <span>{{ format(laccicoPreis.preis) }}</span>
               <span>{{ t('common.labels.asterisk') }}</span>
             </span>
             <span
-              v-if="crossedPrice && differentPrices(price, crossedPrice) && crossedPrice > price"
+              v-if="laccicoPreis.durchgestrichen"
               class="typography-text-sm text-neutral-500 line-through @md:ml-3 @md:pb-2"
             >
-              {{ format(crossedPrice) }}
+              {{ format(laccicoPreis.durchgestrichen) }}
             </span>
+          </div>
+          <div v-if="unitContent === 1 && unitName" class="typography-text-sm pb-2 laccico-einheit">
+            {{ unitContent }} {{ unitName }}
           </div>
         </template>
         <template v-if="key === 'addToCart' && configuration?.fields?.addToCart">
@@ -221,7 +224,6 @@ const { addModernImageExtension } = useModernImage();
 const { format } = usePriceFormatter();
 const { openQuickCheckout } = useQuickCheckout();
 const { addToCart } = useCart();
-const { price, crossedPrice } = useProductPrice(product.value);
 const { send } = useNotification();
 const loading = ref(false);
 const config = useRuntimeConfig();
@@ -243,7 +245,7 @@ const canAddFromCategory = computed(
     productGetters.canBeAddedToCartFromCategoryPage(product.value) ||
     productGetters.hasOrderPropertiesRequiredAndPreselected(product.value),
 );
-const showFromText = computed(() => productGetters.showFromText(product.value));
+const laccicoPreis = computed(() => laccicoKartenPreis(product.value));
 
 const cover = computed(() => productGetters.getCoverImage(product.value));
 const secondCover = computed(() => productGetters.getSecondCoverImage(product.value));
@@ -408,9 +410,5 @@ const addWithLoader = async (productId: number, quickCheckout = true) => {
     loading.value = false;
   }
 };
-const differentPrices = (price: number, crossedPrice: number) => {
-  return crossedPrice ? Math.round(price * 100) / 100 !== Math.round(crossedPrice * 100) / 100 : false;
-};
-
 const NuxtLink = resolveComponent('NuxtLink');
 </script>

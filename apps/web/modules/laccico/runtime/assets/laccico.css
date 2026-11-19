@@ -274,3 +274,14 @@ ul:has(> li.laccico-nav-logo) [data-testid='category-button'] {
     padding-bottom: 0 !important;
   }
 }
+
+/* Sortierleiste ueber den Artikeln wie Ceres: Sortierung und Anzahl je Seite nebeneinander */
+[data-testid='category-sort-filter'] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+}
+[data-testid='category-sort-filter'] > * {
+  flex: 0 1 240px;
+}
