@@ -206,3 +206,58 @@ main details > summary.laccico-faq-aktiv {
   cursor: pointer;
   z-index: 1;
 }
+
+/* Logo wie Ceres: schlank, ca. 170 px breit (Ceres 170 x 42 px), Seitenverhaeltnis bleibt */
+#logo {
+  width: 170px !important;
+  max-width: 170px !important;
+  height: auto !important;
+  max-height: none !important;
+}
+
+/* Kopf wie Ceres (N 19.11.2026): schmale dunkle Leiste, Symbole rechts; Logo + Menue in einer weissen Zeile */
+[data-testid='navbar-top-desktop'] {
+  justify-content: flex-end;
+}
+[data-testid='navbar-top-desktop'] > div,
+[data-testid='navbar-top-desktop'] > nav {
+  flex: 0 0 auto !important;
+}
+li.laccico-nav-logo + li ~ li,
+li.laccico-nav-logo ~ li {
+  flex-shrink: 0;
+}
+ul:has(> li.laccico-nav-logo) {
+  flex-wrap: nowrap !important;
+  align-items: center;
+}
+ul:has(> li.laccico-nav-logo) [data-testid='category-button'] {
+  padding-left: 0.6rem;
+  padding-right: 0.6rem;
+  margin-right: 0;
+  font-size: 0.875rem;
+}
+
+/* Unter 1024 px gibt es keine Menuezeile: Leiste weiss mit Logo und dunklen Symbolen (wie Ceres am Handy) */
+@media (max-width: 1023.98px) {
+  [data-testid='navbar-top-mobile'],
+  [data-testid='navbar-top-desktop'] {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  [data-testid='navbar-top-mobile'] button,
+  [data-testid='navbar-top-desktop'] button,
+  [data-testid='navbar-top-desktop'] a {
+    color: #4e6066 !important;
+  }
+  [data-testid='navbar-top-desktop'] > div:has(#blockified-logo) {
+    margin-right: auto;
+    margin-left: 8px;
+  }
+}
+/* Ab 1024 px steht das Logo in der Menuezeile, nicht in der dunklen Leiste */
+@media (min-width: 1024px) {
+  [data-testid='navbar-top-desktop'] > div:has(#blockified-logo) {
+    display: none !important;
+  }
+}

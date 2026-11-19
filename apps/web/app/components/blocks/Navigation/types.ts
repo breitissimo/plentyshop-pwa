@@ -17,10 +17,16 @@ export type ColorSettings = {
   hoverBackgroundColor?: string;
 };
 
+/** LACCICO: Logo links in der Menüzeile (wie Ceres). */
+export type NavigationLogoSettings = {
+  show?: boolean;
+};
+
 export type NavigationContent = {
   layout: SpacingSettings;
   text: TextSettings;
   color: ColorSettings;
+  logo?: NavigationLogoSettings;
 };
 
 export type NavigationProps = {

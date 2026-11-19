@@ -2,6 +2,17 @@
   <div ref="referenceRef" :style="navigationRootStyle" class="relative w-full">
     <nav v-if="viewport.isGreaterOrEquals('lg')" ref="floatingRef" @mouseleave="onMouseLeave">
       <ul :class="navigationContainerClasses" :style="navigationContainerStyle" @focusout="onNavBlur">
+        <!-- LACCICO: Logo links in der Menüzeile, Menü rechts daneben (wie Ceres) -->
+        <li v-if="props.content?.logo?.show" class="flex items-center mr-auto laccico-nav-logo">
+          <NuxtLink
+            :to="localePath(paths.home)"
+            :aria-label="t('common.actions.goToHomepage')"
+            class="focus-visible:outline focus-visible:outline-offset focus-visible:rounded-sm"
+          >
+            <UiLogo />
+          </NuxtLink>
+        </li>
+
         <li v-if="categoryTree.length === 0" class="h-10" />
 
         <li v-for="(menuNode, index) in categoryTree" v-else :key="index" @mouseenter="onCategoryMouseEnter(menuNode)">
