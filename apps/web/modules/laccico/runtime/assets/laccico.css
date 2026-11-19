@@ -285,3 +285,15 @@ ul:has(> li.laccico-nav-logo) [data-testid='category-button'] {
 [data-testid='category-sort-filter'] > * {
   flex: 0 1 240px;
 }
+
+/* Kopf wie Ceres: Leisten farbig ueber die volle Breite, Inhalt hoechstens 1600 px breit und mittig (wie der Seiteninhalt) */
+@media (min-width: 1024px) {
+  [data-testid='navbar-top-desktop'] {
+    padding-left: max(40px, calc((100% - 1600px) / 2 + 15px)) !important;
+    padding-right: max(40px, calc((100% - 1600px) / 2 + 15px)) !important;
+  }
+  ul:has(> li.laccico-nav-logo) {
+    padding-left: max(43px, calc((100% - 1600px) / 2 + 43px)) !important;
+    padding-right: max(20px, calc((100% - 1600px) / 2 + 15px)) !important;
+  }
+}
