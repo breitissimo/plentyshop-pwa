@@ -303,3 +303,19 @@ ul:has(> li.laccico-nav-logo) [data-testid='category-button'] {
 .\@md\:sticky {
   align-self: start;
 }
+
+/* Kopf klebt beim Scrollen wie Ceres (fixedNavBar, N 19.11.2026): beide Leisten oben, Brotkrumen direkt darunter */
+.header-blocks {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: #ffffff;
+}
+@media (min-width: 1024px) {
+  div:has(> nav[data-testid='breadcrumbs']) {
+    position: sticky;
+    top: var(--laccico-kopf-hoehe, 93px);
+    z-index: 30;
+    background: #ffffff;
+  }
+}
