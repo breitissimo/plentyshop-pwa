@@ -64,13 +64,14 @@ export const useBlocks: UseBlocksReturn = () => {
 
     const { $i18n } = useNuxtApp();
     const loc = computed(() => $i18n.locale.value);
-    const key = `blocks-${loc.value}-${type}-${identifier}`;
+    // LACCICO: Seiteninhalte aus dem Fork haben Vorrang, Produktkategorien je eigene ID (modules/laccico)
+    const laccicoId = laccicoSeitenId(identifier, type);
+    const key = `blocks-${loc.value}-${type}-${laccicoId}`;
 
-    // LACCICO: Seiteninhalte aus dem Fork haben Vorrang (modules/laccico)
     const { data, error } = await useAsyncData(key, async () =>
       laccicoMitInhalt(
         await useSdk().plentysystems.getBlocksWithGlobalBlocks({ identifier, type, enableGlobalBlocks: true }),
-        identifier,
+        laccicoId,
         type,
         loc.value,
       ),

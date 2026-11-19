@@ -1,5 +1,19 @@
 import type { Block, GetBlocksResponse } from '@plentymarkets/shop-api';
 
+/**
+ * Produktkategorien laden in der PWA alle dieselben Blöcke (identifier 0). Für LACCICO bekommt jede
+ * Produktkategorie ihre eigene ID, damit Kategorien mit eigener Datei (z. B. FAQ wie in Ceres) diese zeigen.
+ */
+export const laccicoSeitenId = (identifier: string | number, type: string): string | number => {
+  if (type === 'category' && Number(identifier) === 0) {
+    const id = useProducts().data.value?.category?.id;
+    return id ? Number(id) : identifier;
+  }
+  return identifier;
+};
+
+const istProduktkategorie = () => useProducts().data.value?.category?.type === 'item';
+
 /** Seitenname im Fork: <typ>_<id>, z. B. category_648, immutable_index. */
 const seitenName = (type: string, identifier: string | number) => `${type}_${identifier}`;
 
@@ -28,7 +42,15 @@ export const laccicoMitInhalt = async <T extends { data?: GetBlocksResponse; met
     ladeDatei(sprache, 'immutable_footer'),
   ]);
 
-  if (!seite && !kopf && !fuss) {
+  // Vorlagen (alle Produktkategorien ohne eigene Datei, alle Artikel) kommen aus dem Code, nicht aus Plenty
+  const vorlage =
+    type === 'product'
+      ? resolveBlockTemplate(PRODUCT_TEMPLATE_KIND, createProduct)()
+      : type === 'category' && istProduktkategorie()
+        ? resolveBlockTemplate(CATEGORY_TEMPLATE_KIND, createCategory)()
+        : null;
+
+  if (!seite && !kopf && !fuss && !vorlage) {
     return antwort;
   }
 
@@ -36,6 +58,8 @@ export const laccicoMitInhalt = async <T extends { data?: GetBlocksResponse; met
 
   if (Array.isArray(seite)) {
     daten.blocks = seite;
+  } else if (vorlage) {
+    daten.blocks = vorlage;
   }
   if (kopf && !Array.isArray(kopf)) {
     daten.HeaderContainer = kopf;
