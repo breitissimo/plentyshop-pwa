@@ -66,8 +66,14 @@ export const useBlocks: UseBlocksReturn = () => {
     const loc = computed(() => $i18n.locale.value);
     const key = `blocks-${loc.value}-${type}-${identifier}`;
 
-    const { data, error } = await useAsyncData(key, () =>
-      useSdk().plentysystems.getBlocksWithGlobalBlocks({ identifier, type, enableGlobalBlocks: true }),
+    // LACCICO: Seiteninhalte aus dem Fork haben Vorrang (modules/laccico)
+    const { data, error } = await useAsyncData(key, async () =>
+      laccicoMitInhalt(
+        await useSdk().plentysystems.getBlocksWithGlobalBlocks({ identifier, type, enableGlobalBlocks: true }),
+        identifier,
+        type,
+        loc.value,
+      ),
     );
 
     if (error.value) {
