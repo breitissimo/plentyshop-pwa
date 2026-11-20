@@ -459,14 +459,14 @@ div:has(> [data-testid='recommended-block'] .laccico-listenkopf) button[aria-lab
 .rte-prose h1 { font-size: 1.4rem !important; line-height: 1.3 !important; }
 
 /* Bilder mit Seitenverhältnis „auto“ (aus Ceres übernommen) haben sonst Höhe 0: Bild folgt der eigenen Größe */
-[data-testid='image-block'][style*='aspect-ratio:auto'] { display: block; }
-[data-testid='image-block'][style*='aspect-ratio:auto'] [data-testid='image-link'],
-[data-testid='image-block'][style*='aspect-ratio:auto'] > div { position: static !important; }
-[data-testid='image-block'][style*='aspect-ratio:auto'] img[data-testid='image-block-image'] { position: static !important; height: auto !important; width: 100% !important; }
+[data-testid='image-block']:is([style*='aspect-ratio:auto'],[style*='aspect-ratio: auto']) { display: block; }
+[data-testid='image-block']:is([style*='aspect-ratio:auto'],[style*='aspect-ratio: auto']) [data-testid='image-link'],
+[data-testid='image-block']:is([style*='aspect-ratio:auto'],[style*='aspect-ratio: auto']) > div { position: static !important; }
+[data-testid='image-block']:is([style*='aspect-ratio:auto'],[style*='aspect-ratio: auto']) img[data-testid='image-block-image'] { position: static !important; height: auto !important; width: 100% !important; }
 .laccico-listenkopf h2 { text-transform: uppercase; font-size: 1.1rem; }
 
 /* Fuß wie Ceres: farbige Boxen mit weißer Schrift statt Knöpfen */
-footer [data-testid='text-card'][style*='background-color:#'] [data-testid='text-button'] {
+footer [data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']) [data-testid='text-button'] {
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
@@ -496,7 +496,7 @@ footer [data-testid='text-card'][style*='background-color:#'] [data-testid='text
 header > [data-testid='navbar-top']:only-child { background-color: #f8f9fa !important; }
 
 /* Farbbalken (Titelleiste/Überschriftsleiste aus Ceres): große weiße Überschriften wie dort */
-[data-testid='text-card'][style*='background-color:#'] h2,
-[data-testid='text-card'][style*='background-color:#'] h3 { font-size: 1.7rem; line-height: 1.25; color: #fff; }
-footer [data-testid='text-card'][style*='background-color:#'] h2,
-footer [data-testid='text-card'][style*='background-color:#'] h3 { font-size: 1rem; }
+[data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']) h2,
+[data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']) h3 { font-size: 1.7rem; line-height: 1.25; color: #fff; }
+footer [data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']) h2,
+footer [data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']) h3 { font-size: 1rem; }
