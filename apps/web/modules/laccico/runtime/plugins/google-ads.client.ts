@@ -44,7 +44,7 @@ export default defineNuxtPlugin({
         zuletzt = variante;
         gtag('event', 'view_item', {
           currency: 'EUR',
-          value: productGetters.getPrice(currentProduct.value)?.regular ?? undefined,
+          value: productGetters.getPrice(currentProduct.value) || undefined,
           items: [{ item_id: variante, item_name: productGetters.getName(currentProduct.value) }],
         });
       },

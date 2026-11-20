@@ -72,9 +72,9 @@ export default defineNuxtModule({
       '/en/basket': '/en/cart',
       '/fr/panier': '/fr/cart',
     };
-    nuxt.options.routeRules = nuxt.options.routeRules || {};
+    const routeRules = (nuxt.options.routeRules = nuxt.options.routeRules || {});
     Object.entries(systemseiten).forEach(([von, nach]) => {
-      nuxt.options.routeRules[von] = { redirect: { to: nach, statusCode: 301 } };
+      routeRules[von] = { redirect: { to: nach, statusCode: 301 } };
     });
 
     addImportsDir(resolver.resolve('./runtime/utils'));

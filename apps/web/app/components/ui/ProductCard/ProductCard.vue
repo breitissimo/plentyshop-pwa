@@ -290,7 +290,7 @@ const effectiveHoverImageUrl = computed(() => {
 // LACCICO: alle Bilder der Variante zum Blättern (Pfeile, Wischen)
 const bilder = computed(() => {
   const bilderListe = product.value?.images;
-  const quelle = bilderListe?.variation?.length ? bilderListe.variation : (bilderListe?.all ?? bilderListe?.item ?? []);
+  const quelle = bilderListe?.variation?.length ? bilderListe.variation : (bilderListe?.all ?? []);
   return (quelle as { urlMiddle?: string }[]).map((b) => addModernImageExtension(b.urlMiddle ?? '')).filter(Boolean);
 });
 const bildIndex = ref(0);
