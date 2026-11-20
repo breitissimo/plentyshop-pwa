@@ -12,6 +12,13 @@ import { FailOnLargeChunksPlugin, FailOnForbiddenDataInPublicFolderPlugin } from
 import { FailOnUnmarkedBlockOverridesPlugin } from './app/configuration/vite.block-overrides';
 import { thirdPartyDeps, localPackageDeps } from './app/configuration/optimize-deps.config';
 
+// LACCICO: Google Analytics 4 (Messkennung wie im Ceres-Shop, Tag Manager GTM-T4GVHHB) standardmäßig an; Umgebungsvariablen gehen vor.
+process.env.NUXT_PUBLIC_GOOGLE_ANALITICS_TRACKING_ID ??= 'G-RW7ZMX63D3';
+process.env.NUXT_PUBLIC_ENABLE_GOOGLE_ANALITICS ??= 'true';
+process.env.NUXT_PUBLIC_SEND_GROSS_PRICES_TO_GOOGLE_ANALITICS ??= 'false';
+// LACCICO: Plaketten („Neuheit“, „Artikelpaket“) auf Kacheln der Kategorieseiten wie im Ceres-Shop
+process.env.USE_TAGS_ON_CATEGORY_PAGE ??= '1';
+
 export default defineNuxtConfig({
   srcDir: 'app/',
   telemetry: false,

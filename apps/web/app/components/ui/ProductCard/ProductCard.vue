@@ -12,6 +12,9 @@
         :use-availability="isFromWishlist"
       />
 
+      <!-- LACCICO: Plaketten Neuheit/Artikelpaket wie Ceres -->
+      <LaccicoPlaketten v-if="!isFromWishlist" :product="product" />
+
       <div ref="imageContainerRef" :class="[{ 'size-48': isFromSlider }, 'relative']">
         <UiLink
           :tag="NuxtLink"
@@ -19,6 +22,10 @@
           :aria-label="ariaLabelContent"
           class="relative group/image flex items-center justify-center"
           data-testid="product-card-link"
+          @touchstart.passive="wischStart"
+          @touchmove.passive="wischBewegt"
+          @touchend="wischEnde"
+          @click.capture="wischKlick"
         >
           <div class="relative w-full aspect-square">
             <div
@@ -48,8 +55,21 @@
               @error="onMainImageError"
             />
 
+            <!-- LACCICO: weitere Bilder durchblättern (Pfeile, Wischen); Hover zeigt das zweite Bild -->
+            <img
+              v-if="bildIndex > 0 && bilder[bildIndex]"
+              :src="bilder[bildIndex]"
+              :alt="imageAlt"
+              class="absolute inset-0 z-[1] w-full h-full object-contain rounded-md bg-white"
+              data-testid="laccico-kartenbild"
+            />
+            <template v-if="bilder.length > 1 && !isFromWishlist">
+              <button type="button" class="laccico-bildpfeil laccico-bildpfeil-links" aria-label="‹" @click.prevent.stop="bildWeiter(-1)">‹</button>
+              <button type="button" class="laccico-bildpfeil laccico-bildpfeil-rechts" aria-label="›" @click.prevent.stop="bildWeiter(1)">›</button>
+            </template>
+
             <NuxtImg
-              v-if="canLoadHoverImage && effectiveHoverImageUrl"
+              v-if="canLoadHoverImage && effectiveHoverImageUrl && bildIndex === 0"
               ref="hoverImageRef"
               :src="effectiveHoverImageUrl"
               :alt="imageAlt"
@@ -163,8 +183,15 @@
             <SfLoaderCircular v-if="loading" class="flex justify-center items-center" size="sm" />
             <span v-else>{{ t('common.actions.add') }}</span>
           </UiButton>
+          <!-- LACCICO: Länge, Menge und Warenkorb direkt auf der Kachel (N 19.11.2026) -->
+          <LaccicoKartenKauf
+            v-else-if="!isFromWishlist"
+            :item-id="productGetters.getItemId(product)"
+            :weiter="productPath"
+          />
           <UiButton
             v-else
+            data-testid="show-options"
             :variant="configuration?.addToCartStyle || 'primary'"
             type="button"
             :tag="NuxtLink"
@@ -186,6 +213,8 @@ import { SfIconShoppingCart, SfLoaderCircular, SfRating, SfCounter } from '@stor
 import type { ProductCardProps } from '~/components/ui/ProductCard/types';
 import type { ItemGridContent } from '~/components/blocks/ItemGrid/types';
 import type { BasketItemOrderParamsProperty, Product, DoAddItemParams } from '@plentymarkets/shop-api';
+import LaccicoKartenKauf from '~~/modules/laccico/runtime/components/LaccicoKartenKauf.vue';
+import LaccicoPlaketten from '~~/modules/laccico/runtime/components/LaccicoPlaketten.vue';
 
 const props = withDefaults(defineProps<ProductCardProps>(), {
   configuration: () => ({
@@ -253,10 +282,46 @@ const firstImage = computed(() => productImageGetters.getFirstImage(product.valu
 
 const imageUrl = computed(() => addModernImageExtension(cover.value));
 const effectiveHoverImageUrl = computed(() => {
-  if (!configuration.value?.showSecondImageOnHover) return '';
+  if (props.isFromWishlist) return ''; // LACCICO: Hover zeigt überall das zweite Bild
   const src = addModernImageExtension(secondCover.value);
   return src || '';
 });
+
+// LACCICO: alle Bilder der Variante zum Blättern (Pfeile, Wischen)
+const bilder = computed(() => {
+  const bilderListe = product.value?.images;
+  const quelle = bilderListe?.variation?.length ? bilderListe.variation : (bilderListe?.all ?? bilderListe?.item ?? []);
+  return (quelle as { urlMiddle?: string }[]).map((b) => addModernImageExtension(b.urlMiddle ?? '')).filter(Boolean);
+});
+const bildIndex = ref(0);
+const bildWeiter = (schritt: number) => {
+  const n = bilder.value.length;
+  if (n > 1) bildIndex.value = (bildIndex.value + schritt + n) % n;
+};
+let wischX = 0;
+let wischLetzt = 0;
+let gewischt = false;
+const wischStart = (e: TouchEvent) => {
+  wischX = wischLetzt = e.touches[0]?.clientX ?? 0;
+  gewischt = false;
+};
+const wischBewegt = (e: TouchEvent) => {
+  wischLetzt = e.touches[0]?.clientX ?? wischLetzt;
+};
+const wischEnde = (e: TouchEvent) => {
+  const dx = (e.changedTouches[0]?.clientX ?? wischLetzt) - wischX || wischLetzt - wischX;
+  if (Math.abs(dx) > 40 && bilder.value.length > 1) {
+    gewischt = true;
+    bildWeiter(dx < 0 ? 1 : -1);
+  }
+};
+const wischKlick = (e: Event) => {
+  if (gewischt) {
+    e.preventDefault();
+    e.stopPropagation();
+    gewischt = false;
+  }
+};
 
 const imageAlt = computed(() => productImageGetters.getImageAlternate(firstImage.value) || name.value || '');
 const imageTitle = computed(() => productImageGetters.getImageName(firstImage.value) || '');

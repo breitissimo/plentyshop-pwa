@@ -32,6 +32,9 @@
         {{ cartGetters.getItemName(cartItem) }}
       </UiLink>
 
+      <!-- LACCICO: Länge im Warenkorb tauschbar (N 19.11.2026) -->
+      <LaccicoWarenkorbLaenge v-if="!disabled && !cartItem.variation?.bundleComponents" :cart-item="cartItem" />
+
       <div v-if="!cartItem.variation?.bundleComponents" data-testid="cart-item-price">
         {{ format(cartGetters.getCartItemPrice(cartItem)) }}
       </div>
@@ -146,6 +149,7 @@ import { SfLoaderCircular, SfIconClose } from '@storefront-ui/vue';
 import type { CartProductCardProps } from '~/components/ui/CartProductCard/types';
 import type { Product } from '@plentymarkets/shop-api';
 import { debounce } from '../../../utils/debounce';
+import LaccicoWarenkorbLaenge from '~~/modules/laccico/runtime/components/LaccicoWarenkorbLaenge.vue';
 
 const { cartItem, disabled = false } = defineProps<CartProductCardProps>();
 const emit = defineEmits(['load']);

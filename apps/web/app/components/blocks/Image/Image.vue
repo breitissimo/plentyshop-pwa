@@ -103,7 +103,9 @@ const breakpointConfig = computed(() => {
 
 const depth = getBlockDepth(props.meta.uuid);
 const wrapperStyle = computed(() => {
-  if (depth > 0) {
+  // LACCICO: in Spalten nur dann feste Höhe, wenn kein festes Seitenverhältnis (z. B. „3 / 4“) gesetzt ist
+  const festesVerhaeltnis = props.content?.image?.aspectRatio;
+  if (depth > 0 && (!festesVerhaeltnis || festesVerhaeltnis === 'auto')) {
     return {
       position: 'relative' as const,
       height: '24rem',

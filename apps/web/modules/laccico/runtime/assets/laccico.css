@@ -285,6 +285,39 @@ ul:has(> li.laccico-nav-logo) [data-testid='category-button'] {
 [data-testid='category-sort-filter'] > * {
   flex: 0 1 240px;
 }
+/* Eine graue Zeile wie Ceres: Anzahl je Seite links, danach Sortierung, ohne Ueberschriften */
+@media (min-width: 768px) {
+  [data-testid='category-sort-filter'] {
+    background: #e9ecef;
+    padding: 0.5rem 0.75rem;
+  }
+  [data-testid='category-sort-filter'] aside {
+    position: static !important;
+    display: block !important;
+    transform: none !important;
+    background: transparent !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+  }
+  [data-testid='category-sort-filter'] aside > div {
+    display: flex !important;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  [data-testid='category-sort-filter'] aside > div > div:first-child:not([data-testid]) { display: none !important; }
+  [data-testid='category-sort-filter'] [data-testid='category-items-per-page'] { order: 1; width: auto; margin: 0 !important; }
+  [data-testid='category-sort-filter'] [data-testid='category-sorting'] { order: 2; width: 240px; margin: 0 !important; }
+  [data-testid='category-sort-filter'] [data-testid='category-items-per-page'] > div:first-child,
+  [data-testid='category-sort-filter'] [data-testid='category-sorting'] > div:first-child {
+    display: none;
+  }
+  [data-testid='category-sort-filter'] [data-testid='category-items-per-page'] > div,
+  [data-testid='category-sort-filter'] [data-testid='category-sorting'] > div {
+    padding: 0;
+  }
+  [data-testid='category-sort-filter'] select { background: #fff; padding-top: 0.35rem; padding-bottom: 0.35rem; }
+}
 
 /* Kopf wie Ceres: Leisten farbig ueber die volle Breite, Inhalt hoechstens 1600 px breit und mittig (wie der Seiteninhalt) */
 @media (min-width: 1024px) {
@@ -349,3 +382,121 @@ main [data-testid='reviews-accordion'] summary:hover {
   font-size: 0.875rem;
   padding-top: 1rem;
 }
+
+/* Kategoriebaum links wie Ceres */
+.laccico-kategoriebaum ul { list-style: none; margin: 0; padding: 0; font-size: 0.8rem; }
+.laccico-kategoriebaum li a { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; padding: 0.4rem 0.5rem; color: #333; text-decoration: none; }
+.laccico-kategoriebaum li.auf-pfad > a { background: #e9ecef; font-weight: 600; }
+.laccico-kategoriebaum li.aktiv > a { background: #e9ecef; }
+.laccico-kategoriebaum .zahl { background: #e9ecef; border-radius: 3px; padding: 0 0.4rem; font-size: 0.7rem; }
+.laccico-kategoriebaum li.aktiv .zahl { background: #000; color: #fff; }
+
+/* Längenleiste und Kauf auf der Kategoriekachel */
+.laccico-laengenleiste { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin: 0.5rem 0; font-size: 0.85rem; }
+.laccico-laengenleiste-titel { font-weight: 600; margin-right: 0.25rem; }
+.laccico-laengenleiste button { border: 1px solid #c8cdd0; background: #fff; border-radius: 4px; padding: 0.25rem 0.7rem; }
+.laccico-laengenleiste button.aktiv { background: #4e6066; color: #fff; border-color: #4e6066; }
+.laccico-kartenkauf { display: flex; flex-direction: column; gap: 0.4rem; width: 100%; margin-top: 0.25rem; }
+.laccico-kartenkauf-laenge { width: 100%; border: 1px solid #c8cdd0; border-radius: 4px; padding: 0.3rem 0.5rem; background: #fff; font-size: 0.85rem; }
+.laccico-kartenkauf-zeile { display: flex; gap: 0.4rem; align-items: center; }
+.laccico-kartenkauf-menge { width: 4rem; border: 1px solid #c8cdd0; border-radius: 4px; padding: 0.3rem 0.4rem; font-size: 0.85rem; }
+.laccico-kartenkauf-fehler { font-size: 0.8rem; text-decoration: underline; }
+@media (max-width: 767px) {
+  .laccico-kategoriebaum { display: none; } /* Handy: Artikel zuerst, Baum erreicht man über das Menü */
+}
+.laccico-kartenkauf button { white-space: nowrap; }
+.laccico-kartenkauf-zeile { flex-wrap: wrap; }
+.laccico-warenkorb-laenge { display: flex; align-items: center; gap: 0.5rem; margin: 0.25rem 0; }
+.laccico-warenkorb-laenge select { border: 1px solid #c8cdd0; border-radius: 4px; padding: 0.2rem 0.4rem; background: #fff; font-size: 0.85rem; }
+
+/* Artikellisten auf Übersichtsseiten (z. B. Business & Elegante Schuhe) wie Ceres: 4 Artikel in einer Reihe, ohne Knopf */
+div:has(> [data-testid='recommended-block'] .laccico-listenkopf) [data-testid='product-slider'] {
+  overflow: visible;
+}
+div:has(> [data-testid='recommended-block'] .laccico-listenkopf) [data-testid='product-slider'] > [data-testid='product-card'] {
+  width: calc(25% - 12px);
+  max-width: none;
+  flex: 0 0 calc(25% - 12px);
+}
+div:has(> [data-testid='recommended-block'] .laccico-listenkopf) [data-testid='product-slider'] > [data-testid='product-card']:nth-child(n + 5) {
+  display: none;
+}
+div:has(> [data-testid='recommended-block'] .laccico-listenkopf) [data-testid='product-slider'] [data-testid='product-card'] .size-48 {
+  width: 100%;
+  height: auto;
+}
+div:has(> [data-testid='recommended-block'] .laccico-listenkopf) [data-testid='product-slider'] [data-testid='product-card'] > div:last-child {
+  flex: 1 1 auto;
+}
+div:has(> [data-testid='recommended-block'] .laccico-listenkopf) [data-testid='product-slider'] ~ button,
+div:has(> [data-testid='recommended-block'] .laccico-listenkopf) button[aria-label*='scroll' i] {
+  display: none;
+}
+
+/* Dreispalter in Kategoriebeschreibungen (Ceres-Klassen row/col-md-4) */
+.category-description-bottom .row { display: flex; flex-wrap: wrap; margin-left: -15px; margin-right: -15px; }
+.category-description-bottom .row > [class*='col-md-'] { box-sizing: border-box; padding-left: 15px; padding-right: 15px; flex: 0 0 100%; max-width: 100%; }
+@media (min-width: 768px) {
+  .category-description-bottom .row > .col-md-4 { flex: 0 0 33.3333%; max-width: 33.3333%; }
+  .category-description-bottom .row > .col-md-6 { flex: 0 0 50%; max-width: 50%; }
+}
+
+/* Startseite wie Ceres: hohe Slider-Bilder, Beschriftungen als helle Box mit dunkler Schrift */
+.swiper-slide [data-testid='image-block'] { height: clamp(24rem, 80vh, 780px) !important; }
+[data-testid='image-overlay-wrapper'] > div { align-self: flex-start; padding-bottom: 1rem; }
+[data-testid='image-overlay-wrapper'] [data-testid='text-content-image-overlay'] { width: auto; }
+[data-testid='text-html-image-overlay'] {
+  display: inline-block;
+  background: rgba(222, 218, 208, 0.92);
+  color: #1a1a1a !important;
+  padding: 0.35rem 0.9rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+.swiper-slide [data-testid='image-overlay-wrapper'] > div { align-self: center; padding-bottom: 2.5rem; }
+.swiper-slide [data-testid='text-html-image-overlay'] { font-size: 1.8rem; }
+/* Überschriften in Texten wie Ceres (Startseite: H1 22 px, H2 17 px) */
+.rte-prose h1 { font-size: 1.4rem !important; line-height: 1.3 !important; }
+
+/* Bilder mit Seitenverhältnis „auto“ (aus Ceres übernommen) haben sonst Höhe 0: Bild folgt der eigenen Größe */
+[data-testid='image-block'][style*='aspect-ratio:auto'] { display: block; }
+[data-testid='image-block'][style*='aspect-ratio:auto'] [data-testid='image-link'],
+[data-testid='image-block'][style*='aspect-ratio:auto'] > div { position: static !important; }
+[data-testid='image-block'][style*='aspect-ratio:auto'] img[data-testid='image-block-image'] { position: static !important; height: auto !important; width: 100% !important; }
+.laccico-listenkopf h2 { text-transform: uppercase; font-size: 1.1rem; }
+
+/* Fuß wie Ceres: farbige Boxen mit weißer Schrift statt Knöpfen */
+footer [data-testid='text-card'][style*='background-color:#'] [data-testid='text-button'] {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: #fff !important;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+/* Plaketten auf Kacheln (Neuheit, Artikelpaket) */
+.laccico-plaketten { position: absolute; top: 0.5rem; left: 0.5rem; z-index: 5; list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+.laccico-plaketten li { background: #5e3b42; color: #fff; font-size: 0.7rem; font-weight: 600; padding: 2px 8px; border-radius: 3px; }
+
+/* Kachelbild: Pfeile für weitere Bilder (Hover; auf Touchgeräten immer sichtbar), Wischen im Skript */
+.laccico-bildpfeil {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
+  width: 2rem; height: 2rem; border-radius: 50%; border: 0; cursor: pointer;
+  background: rgba(255, 255, 255, 0.85); color: #1a1a1a; font-size: 1.4rem; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.2s;
+}
+.laccico-bildpfeil-links { left: 0.4rem; }
+.laccico-bildpfeil-rechts { right: 0.4rem; }
+[data-testid='product-card']:hover .laccico-bildpfeil { opacity: 1; }
+@media (hover: none) { .laccico-bildpfeil { opacity: 0.9; } }
+
+/* Kasse: schlanker Kopf mit Logo hat dunklen Grund, das Logo ist dunkel → heller Grund wie die Menüzeile */
+header > [data-testid='navbar-top']:only-child { background-color: #f8f9fa !important; }
+
+/* Farbbalken (Titelleiste/Überschriftsleiste aus Ceres): große weiße Überschriften wie dort */
+[data-testid='text-card'][style*='background-color:#'] h2,
+[data-testid='text-card'][style*='background-color:#'] h3 { font-size: 1.7rem; line-height: 1.25; color: #fff; }
+footer [data-testid='text-card'][style*='background-color:#'] h2,
+footer [data-testid='text-card'][style*='background-color:#'] h3 { font-size: 1rem; }

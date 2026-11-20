@@ -47,8 +47,39 @@ export default defineNuxtModule({
       handler: resolver.resolve('./runtime/server/inhalt'),
     });
 
+    // Alte Ceres-Adressen der Systemseiten (Rechtstexte, Kontakt, Warenkorb) führen auf die PWA-eigenen Seiten (301).
+    // Die Rechtstexte verlinken das Widerrufsformular unter der alten Adresse; ohne Weiterleitung zeigt sie eine leere Kategorie.
+    const systemseiten: Record<string, string> = {
+      '/laccico-finest-waxed-laces/widerrufsrecht': '/cancellation-rights',
+      '/en/laccico-finest-waxed-laces/withdrawal': '/en/cancellation-rights',
+      '/fr/laccicolacetsfinscires/droitderevocation': '/fr/cancellation-rights',
+      '/laccico-finest-waxed-laces/impressum': '/legal-disclosure',
+      '/en/laccico-finest-waxed-laces/imprint': '/en/legal-disclosure',
+      '/fr/laccicolacetsfinscires/mentionslegales': '/fr/legal-disclosure',
+      '/laccico-finest-waxed-laces/datenschutzerklaerung': '/privacy-policy',
+      '/en/laccico-finest-waxed-laces/privacy-policy': '/en/privacy-policy',
+      '/fr/laccicolacetsfinscires/declarationdeconfidentialite': '/fr/privacy-policy',
+      '/laccico-finest-waxed-laces/agb': '/terms-and-conditions',
+      '/en/laccico-finest-waxed-laces/terms-and-conditions': '/en/terms-and-conditions',
+      '/fr/laccicolacetsfinscires/termes': '/fr/terms-and-conditions',
+      '/laccico-finest-waxed-laces/info/kontakt': '/contact',
+      '/en/laccico-finest-waxed-laces/info/contact': '/en/contact',
+      '/fr/laccicolacetsfinscires/info/contact': '/fr/contact',
+      '/laccico-finest-waxed-laces/widerrufsrecht/widerrufsformular': '/cancellation-form',
+      '/en/laccico-finest-waxed-laces/withdrawal/withdrawal-form': '/en/cancellation-form',
+      '/fr/laccicolacetsfinscires/droitderevocation/formerevocable': '/fr/cancellation-form',
+      '/warenkorb': '/cart',
+      '/en/basket': '/en/cart',
+      '/fr/panier': '/fr/cart',
+    };
+    nuxt.options.routeRules = nuxt.options.routeRules || {};
+    Object.entries(systemseiten).forEach(([von, nach]) => {
+      nuxt.options.routeRules[von] = { redirect: { to: nach, statusCode: 301 } };
+    });
+
     addImportsDir(resolver.resolve('./runtime/utils'));
 
     addPlugin({ src: resolver.resolve('./runtime/plugins/faq-fenster.client'), mode: 'client' });
+    addPlugin({ src: resolver.resolve('./runtime/plugins/google-ads.client'), mode: 'client' });
   },
 });
