@@ -57,6 +57,17 @@
           </ul>
           <div v-if="weitere > 0" class="px-4 py-1 text-xs text-neutral-600">+ {{ weitere }} …</div>
           <div class="px-4 py-3 border-t border-neutral-200">
+            <!-- Mengenrabatt wie im Warenkorb: Warenwert, Rabatt, danach Zwischensumme -->
+            <template v-if="rabatt">
+              <div class="flex justify-between text-sm">
+                <span>{{ rabattText.warenwert }}:</span>
+                <span>{{ format(rabatt.vorher) }}</span>
+              </div>
+              <div class="flex justify-between text-sm" data-testid="laccico-vorschau-rabatt">
+                <span>{{ rabattText.rabatt }} ({{ rabatt.prozent }} %):</span>
+                <span>−{{ format(rabatt.betrag) }}</span>
+              </div>
+            </template>
             <div class="flex justify-between text-sm mb-3">
               <span>{{ t('quickCheckout.subTotal') }}:</span>
               <span class="font-medium">{{ format(zwischensumme) }}</span>
@@ -89,7 +100,7 @@ import type { CartItem } from '@plentymarkets/shop-api';
 
 const MAX_SICHTBAR = 5;
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const { data: cart, showNetPrices } = useCart();
 const { format } = usePriceFormatter();
 const { isAuthorized } = useCustomer();
@@ -113,6 +124,25 @@ const anzahl = computed(() => positionen.value.reduce((summe, { quantity }) => s
 const zwischensumme = computed(() =>
   showNetPrices.value ? cartGetters.getItemSumNet(cart.value) : cartGetters.getTotals(cart.value).subtotal,
 );
+
+const RABATT_TEXTE: Record<string, { warenwert: string; rabatt: string }> = {
+  de: { warenwert: 'Warenwert', rabatt: 'Rabatt auf Warenwert' },
+  en: { warenwert: 'Value of goods', rabatt: 'Discount on value of goods' },
+  fr: { warenwert: 'Valeur des articles', rabatt: 'Remise sur la valeur des articles' },
+};
+const rabattText = computed(() => RABATT_TEXTE[String(locale.value)] ?? RABATT_TEXTE.de!);
+
+/** Warenkorbrabatt in Prozent (Plenty: basketRebate, Typ „0“); itemSum ist schon nach Rabatt. */
+const rabatt = computed(() => {
+  const warenkorb = cart.value as unknown as { basketRebate?: number; basketRebateType?: string; itemSum?: number; itemSumNet?: number };
+  const prozent = Number(warenkorb?.basketRebate ?? 0);
+  if (!prozent || prozent >= 100 || String(warenkorb?.basketRebateType ?? '0') !== '0') {
+    return null;
+  }
+  const nachher = Number(zwischensumme.value ?? 0);
+  const vorher = nachher / (1 - prozent / 100);
+  return { prozent, vorher, betrag: vorher - nachher };
+});
 
 const oeffnen = () => {
   if (!kannHover.value) return;
