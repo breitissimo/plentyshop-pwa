@@ -402,6 +402,8 @@ ul:has(> li.laccico-nav-logo) [data-testid='category-button'] {
 /* Artikelansicht (N 19.11.2026): Details, Style Guide, Bewertungen gleich aussehend, offen wie zu, keine Farbflaechen */
 main [data-testid='item-text'] > summary,
 main [data-testid='technical-data'] > summary,
+main [data-testid='item-data'] > summary,
+main [data-testid='laccico-produktsicherheit'] summary,
 main [data-testid='reviews-accordion'] summary {
   background: transparent !important;
   border-radius: 0 !important;
@@ -412,6 +414,8 @@ main [data-testid='reviews-accordion'] summary {
 main [data-testid='item-text'] > summary h2,
 main [data-testid='technical-data'] > summary h2,
 main [data-testid='reviews-accordion'] summary h2,
+main [data-testid='item-data'] > summary h2,
+main [data-testid='laccico-produktsicherheit'] summary h2,
 main [data-testid='item-text'] > summary,
 main [data-testid='technical-data'] > summary {
   font-size: 1.25rem !important;
@@ -420,9 +424,14 @@ main [data-testid='technical-data'] > summary {
 }
 main [data-testid='item-text'] > summary:hover,
 main [data-testid='technical-data'] > summary:hover,
+main [data-testid='item-data'] > summary:hover,
+main [data-testid='laccico-produktsicherheit'] summary:hover,
 main [data-testid='reviews-accordion'] summary:hover {
   background: #f8f9fa !important;
 }
+/* Technische Daten ohne eigenen Einzug wie die anderen Reiter; keine zweite Linie unter offenen Reitern (N 20.11.: doppelte Trennlinie) */
+main [data-testid='item-data'] > summary { padding-left: 0 !important; padding-right: 0 !important; }
+main :is([data-testid='item-text-block'], [data-testid='technical-data-block'], [data-testid='item-data-block']) [data-testid='divider'] { display: none; }
 .laccico-bewertung-hinweis {
   color: #6b6b6b;
   font-size: 0.875rem;
@@ -511,15 +520,32 @@ div:has(> [data-testid='recommended-block'] .laccico-listenkopf) button[aria-lab
 [data-testid='image-block']:is([style*='aspect-ratio:auto'],[style*='aspect-ratio: auto']) img[data-testid='image-block-image'] { position: static !important; height: auto !important; width: 100% !important; }
 .laccico-listenkopf h2 { text-transform: uppercase; font-size: 1.1rem; }
 
-/* Fuß wie Ceres: farbige Boxen mit weißer Schrift statt Knöpfen */
-footer [data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']) [data-testid='text-button'] {
+/* Fuß wie Ceres: farbige Boxen mit weißer Schrift statt Knöpfen, die ganze Box ist der Link (N 20.11.).
+   Ohne Bezug auf die Schreibweise der Farbangabe im style-Attribut (im Plenty-Build anders als lokal, Knöpfe hatten dort wieder Hintergrund).
+   Im Fuß haben nur die drei Boxen einen Knopf (text-button); die Linkzeile und das Copyright sind reiner Text. */
+footer [data-testid='text-card']:has([data-testid='text-button']) { position: relative; }
+footer [data-testid='text-card'] [data-testid='text-button'],
+footer [data-testid='text-card'] [data-testid='text-button']:hover,
+footer [data-testid='text-card'] [data-testid='text-button']:focus {
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
   color: #fff !important;
   font-weight: 700;
   font-size: 1rem;
+  position: static !important;
 }
+footer [data-testid='text-card'] [data-testid='text-button']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+footer [data-testid='text-card']:has([data-testid='text-button']):hover { filter: brightness(1.08); }
+
+/* Preis-Hinweis neben dem Preis (PurchaseCard.vue): Preis bricht nicht um, Hinweis nimmt den Rest der Zeile */
+div:has(> [data-testid='laccico-preis-hinweis']) { align-items: center; gap: 1rem; }
+div:has(> [data-testid='laccico-preis-hinweis']) > :first-child { flex-shrink: 0; white-space: nowrap; }
+[data-testid='laccico-preis-hinweis'] { flex: 1 1 auto; margin-left: 0 !important; line-height: 1.35; }
 
 /* Plaketten auf Kacheln (Neuheit, Artikelpaket) */
 .laccico-plaketten { position: absolute; top: 0.5rem; left: 0.5rem; z-index: 5; list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }

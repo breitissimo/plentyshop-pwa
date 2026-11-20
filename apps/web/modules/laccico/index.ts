@@ -32,6 +32,11 @@ export default defineNuxtModule({
       metaTitle: 'LACCICO',
       ogTitle: 'LACCICO',
     };
+    // Liste „Zuletzt angesehen“ auf Kategorie- und Artikelseiten wie Ceres (N 20.11.2026); ab Werk aus, dann bleibt die Liste leer.
+    // Als Ja/Nein-Wert (Typ wie settings.config). Ein im Editor gespeicherter Wert (Einstellungen › Privacy › Track last seen products) geht vor.
+    if (!process.env.NUXT_PUBLIC_ENABLE_LAST_SEEN_TRACKING) {
+      oeffentlich.enableLastSeenTracking = true;
+    }
     Object.entries(standard).forEach(([schluessel, wert]) => {
       const umgebung = `NUXT_PUBLIC_${schluessel.replace(/([A-Z])/g, '_$1').toUpperCase()}`;
       if (!process.env[umgebung]) {

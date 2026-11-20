@@ -51,6 +51,14 @@
                     t('product.bundleSavings', { percent: productBundleGetters.getBundleDiscount(product) })
                   }}</UiTag>
                 </div>
+                <!-- LACCICO: Mengenrabatt bzw. Händlerstaffel direkt neben dem Preis wie Ceres (N 20.11.2026) -->
+                <LaccicoPreisHinweis
+                  class="self-center !mt-0"
+                  name="LaccicoPreisHinweis"
+                  type="content"
+                  :content="{ haendlerKlasse: 7 }"
+                  :meta="{ uuid: 'laccico-preis-hinweis' }"
+                />
               </div>
               <LowestPrice :product="product" />
               <BasePrice
@@ -250,6 +258,7 @@ import { productGetters, reviewGetters, productBundleGetters } from '@plentymark
 import { SfCounter, SfRating, SfIconShoppingCart, SfLoaderCircular, SfTooltip } from '@storefront-ui/vue';
 import type { PriceCardPadding, PriceCardTextBlockItem, PurchaseCardProps } from '~/components/ui/PurchaseCard/types';
 import type { PayPalAddToCartCallback } from '#paypal/types';
+import LaccicoPreisHinweis from '~~/modules/laccico/runtime/components/blocks/LaccicoPreisHinweis/LaccicoPreisHinweis.vue';
 const isTextBlock = (item: unknown): item is PriceCardTextBlockItem =>
   typeof item === 'object' && item !== null && (item as PriceCardTextBlockItem).type === 'textBlock';
 
