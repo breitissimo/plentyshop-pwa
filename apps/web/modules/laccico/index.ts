@@ -77,9 +77,20 @@ export default defineNuxtModule({
       routeRules[von] = { redirect: { to: nach, statusCode: 301 } };
     });
 
+    // Weiterleitungen und Gast-/Newsletter-Seiten gehören nicht in die Sitemap (Search Console meldet sonst
+    // „Seite mit Weiterleitung“). Das Sitemap-Modul liest die Liste erst nach diesem Modul.
+    const sitemap = ((nuxt.options as unknown as Record<string, { exclude?: string[] }>).plentySitemap ||= {});
+    sitemap.exclude = [
+      ...(sitemap.exclude || []),
+      ...Object.keys(systemseiten),
+      '/guest**',
+      '/newsletter**',
+    ];
+
     addImportsDir(resolver.resolve('./runtime/utils'));
 
     addPlugin({ src: resolver.resolve('./runtime/plugins/faq-fenster.client'), mode: 'client' });
     addPlugin({ src: resolver.resolve('./runtime/plugins/google-ads.client'), mode: 'client' });
+    addPlugin({ src: resolver.resolve('./runtime/plugins/filter-knopf.client'), mode: 'client' });
   },
 });

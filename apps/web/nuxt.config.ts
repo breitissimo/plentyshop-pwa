@@ -143,7 +143,7 @@ export default defineNuxtConfig({
     public: {
       domain: validateApiUrl(process.env.API_URL) ?? process.env.API_ENDPOINT,
       apiEndpoint: process.env.API_ENDPOINT,
-      activeLanguages: process.env.LANGUAGELIST || 'en,de',
+      activeLanguages: process.env.LANGUAGELIST || 'de,en,fr',
       disabledEditorSettings: process.env?.ENABLE_ALL_EDITOR_SETTINGS === '1' ? [] : [],
       cookieGroups: cookieConfig,
       turnstileSiteKey: process.env?.CLOUDFLARETURNSTILEAPISITEKEY ?? '',
@@ -174,7 +174,7 @@ export default defineNuxtConfig({
     'nuxt-color-picker',
   ],
   plentySitemap: {
-    locales: (process.env.LANGUAGELIST || 'en,de').split(','),
+    locales: (process.env.LANGUAGELIST || 'de,en,fr').split(','),
     defaultLocale: nuxtI18nOptions.defaultLocale,
     exclude: [
       '/search',

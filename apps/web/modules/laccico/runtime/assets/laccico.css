@@ -317,6 +317,52 @@ ul:has(> li.laccico-nav-logo) [data-testid='category-button'] {
     padding: 0;
   }
   [data-testid='category-sort-filter'] select { background: #fff; padding-top: 0.35rem; padding-bottom: 0.35rem; }
+
+  /* Knopf Filter wie Ceres (Plugin filter-knopf.client.ts): Filter zugeklappt, Knopf rechts neben der Sortierung,
+     offen als weißes Feld über die volle Breite unter der Leiste, Filtergruppen nebeneinander */
+  [data-testid='category-sort-filter'] > * { flex: 1 1 100%; }
+  [data-testid='category-sort-filter'] aside > div { flex-wrap: wrap; }
+  [data-testid='category-sort-filter'] .laccico-filterfeld { display: none !important; }
+  [data-testid='category-sort-filter'].laccico-filter-offen .laccico-filterfeld {
+    order: 10;
+    flex: 1 1 100%;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.5rem 1.5rem;
+    align-items: start;
+    background: #fff;
+    padding: 0.75rem 1rem;
+    margin: 0.25rem 0 0 !important;
+  }
+  [data-testid='category-sort-filter'] .laccico-filter-knopf {
+    order: 3;
+    background: #fff;
+    border: 1px solid #ced4da;
+    padding: 0.35rem 1rem;
+    line-height: 1.5;
+    cursor: pointer;
+  }
+  [data-testid='category-sort-filter'] .laccico-filter-knopf::after {
+    content: '';
+    display: inline-block;
+    margin-left: 0.5rem;
+    border: solid currentColor;
+    border-width: 0 1.5px 1.5px 0;
+    padding: 2.5px;
+    transform: translateY(-2px) rotate(45deg);
+  }
+  [data-testid='category-sort-filter'].laccico-filter-offen .laccico-filter-knopf {
+    background: #4c595d;
+    border-color: #4c595d;
+    color: #fff;
+  }
+  [data-testid='category-sort-filter'].laccico-filter-offen .laccico-filter-knopf::after {
+    transform: translateY(1px) rotate(-135deg);
+  }
+}
+/* Unter 768 px gibt es den Knopf nicht (dort öffnet „Listeneinstellungen“ das Seitenfenster mit den Filtern) */
+@media (max-width: 767px) {
+  .laccico-filter-knopf { display: none !important; }
 }
 
 /* Kopf wie Ceres: Leisten farbig ueber die volle Breite, Inhalt hoechstens 1600 px breit und mittig (wie der Seiteninhalt) */
