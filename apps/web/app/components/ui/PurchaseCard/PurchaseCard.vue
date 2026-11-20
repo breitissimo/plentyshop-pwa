@@ -22,6 +22,14 @@
               <h1 class="font-bold typography-headline-4 break-word" data-testid="product-name">
                 {{ productGetters.getName(product) }}
               </h1>
+              <!-- LACCICO: Unterzeile wie bei Amazon aus Plenty "Name 2" (01_Artikel\Skripte\Unterzeile_Name2_Schreiben.ps1) -->
+              <p
+                v-if="productGetters.getName2(product)"
+                class="mt-1 typography-text-base text-neutral-600"
+                data-testid="laccico-unterzeile"
+              >
+                {{ productGetters.getName2(product) }}
+              </p>
             </template>
             <template v-if="key === 'variationNumber' && configuration?.fields.variationNumber">
               <p
