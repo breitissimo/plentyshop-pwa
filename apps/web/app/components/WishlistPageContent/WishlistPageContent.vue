@@ -44,13 +44,7 @@
       <span v-else>{{ t('product.priceInclVAT') }}</span>
       <i18n-t keypath="shipping.excludedLabel" scope="global">
         <template #shipping>
-          <UiLink
-            :href="localePath(paths.shipping)"
-            target="_blank"
-            class="focus:outline focus:outline-offset-2 focus:outline-2 outline-secondary-600 rounded"
-          >
-            {{ t('common.labels.delivery') }}
-          </UiLink>
+          <LaccicoVersandkostenLink />
         </template>
       </i18n-t>
     </div>
@@ -58,11 +52,11 @@
 </template>
 
 <script setup lang="ts">
+import LaccicoVersandkostenLink from '~~/modules/laccico/runtime/components/LaccicoVersandkostenLink.vue';
 import { productGetters } from '@plentymarkets/shop-api';
 import { SfLoaderCircular } from '@storefront-ui/vue';
 import type { WishlistPageContentProps } from '~/components/WishlistPageContent/types';
 const { showNetPrices } = useCart();
-const localePath = useLocalizedPath();
 
 const { withHeader = true } = defineProps<WishlistPageContentProps>();
 const { fetchWishlist, data: products, loading } = useWishlist();

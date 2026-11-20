@@ -65,13 +65,7 @@
           <span v-else>{{ t('product.priceInclVAT') }}</span>
           <i18n-t keypath="shipping.excludedLabel" scope="global">
             <template #shipping>
-              <UiLink
-                :href="localePath(paths.shipping)"
-                target="_blank"
-                class="focus:outline focus:outline-offset-2 focus:outline-2 outline-secondary-600 rounded"
-              >
-                {{ t('common.labels.delivery') }}
-              </UiLink>
+              <LaccicoVersandkostenLink />
             </template>
           </i18n-t>
         </div>
@@ -124,6 +118,7 @@
 </template>
 
 <script setup lang="ts">
+import LaccicoVersandkostenLink from '~~/modules/laccico/runtime/components/LaccicoVersandkostenLink.vue';
 import { SfIconClose } from '@storefront-ui/vue';
 import type { QuickCheckoutProps } from './types';
 import type { Product } from '@plentymarkets/shop-api';

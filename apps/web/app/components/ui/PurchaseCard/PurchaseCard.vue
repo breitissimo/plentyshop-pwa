@@ -204,13 +204,7 @@
                   <span>{{ showNetPrices ? t('product.priceExclVAT') : t('product.priceInclVAT') }}</span>
                   <i18n-t keypath="shipping.excludedLabel" scope="global">
                     <template #shipping>
-                      <UiLink
-                        :href="resolvePathTrailingSlash(localePath(paths.shipping))"
-                        class="focus:outline focus:outline-offset-2 focus:outline-2 outline-secondary-600 rounded"
-                        target="_blank"
-                      >
-                        {{ t('common.labels.delivery') }}
-                      </UiLink>
+                      <LaccicoVersandkostenLink />
                     </template>
                   </i18n-t>
                 </div>
@@ -254,6 +248,7 @@
 </template>
 
 <script lang="ts" setup>
+import LaccicoVersandkostenLink from '~~/modules/laccico/runtime/components/LaccicoVersandkostenLink.vue';
 import { productGetters, reviewGetters, productBundleGetters } from '@plentymarkets/shop-api';
 import { SfCounter, SfRating, SfIconShoppingCart, SfLoaderCircular, SfTooltip } from '@storefront-ui/vue';
 import type { PriceCardPadding, PriceCardTextBlockItem, PurchaseCardProps } from '~/components/ui/PurchaseCard/types';
