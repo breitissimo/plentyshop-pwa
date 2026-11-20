@@ -223,6 +223,17 @@ main [data-testid='details-list'] details > summary.laccico-faq-aktiv {
 [data-testid='navbar-top-desktop'] > nav {
   flex: 0 0 auto !important;
 }
+/* Aufgeklappte Suche (Lupe geklickt) braucht feste Breite, sonst bleibt sie so schmal wie die Lupe (N 21.11.2026) */
+[data-testid='navbar-top-desktop'] > div:has(input) {
+  flex: 0 0 360px !important;
+}
+[data-testid='navbar-top-desktop'] > div:has(input) > div.relative {
+  width: 100%;
+}
+/* Suchvorschlaege und Warenkorbvorschau ueber der weissen Menuezeile (folgender Baustein) zeigen */
+.block-wrapper:has([data-testid='navbar-top-desktop']) {
+  z-index: 50;
+}
 li.laccico-nav-logo + li ~ li,
 li.laccico-nav-logo ~ li {
   flex-shrink: 0;

@@ -191,11 +191,12 @@
               />
             </template>
           </UiButton>
+          <!-- LACCICO: Warenkorbvorschau beim Überfahren (N 20.11.2026) -->
+          <LaccicoWarenkorbVorschau v-if="isActionVisible('cart')" :style="{ order: getActionOrder('cart') }">
           <UiButton
-            v-if="isActionVisible('cart')"
             class="group relative hover:!bg-header-400 active:!bg-header-400 mr-1 -ml-0.5 rounded-md"
             :tag="NuxtLink"
-            :style="{ color: iconColor, order: getActionOrder('cart') }"
+            :style="{ color: iconColor }"
             :to="localePath(paths.cart)"
             :aria-label="t('cart.numberInCart', { count: cartItemsCount })"
             variant="tertiary"
@@ -217,6 +218,7 @@
               />
             </template>
           </UiButton>
+          </LaccicoWarenkorbVorschau>
           <div
             v-if="isAuthorized && isActionVisible('account')"
             ref="accountDropdownTriggerRef"
@@ -366,6 +368,7 @@ import {
 import { useFloating, flip, offset, shift } from '@floating-ui/vue';
 import { onClickOutside } from '@vueuse/core';
 import LanguageSelector from '~/components/LanguageSelector/LanguageSelector.vue';
+import LaccicoWarenkorbVorschau from '~~/modules/laccico/runtime/components/LaccicoWarenkorbVorschau.vue';
 
 import type { UtilityBarComponentProps } from './types';
 
@@ -444,6 +447,8 @@ const slotStyle = (sectionId: string) => {
 const expandIconSearch = () => {
   showSearchIcon.value = false;
   isIconSearchExpanded.value = true;
+  // LACCICO: Cursor gleich ins Suchfeld (N 21.11.2026)
+  setTimeout(() => iconSearchContainerRef.value?.querySelector('input')?.focus(), 200);
 };
 
 const collapseIconSearch = () => {
