@@ -45,7 +45,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         zeile.appendChild(knopf);
       }
       const sprache = (document.documentElement.lang || 'de').slice(0, 2);
-      const text = BESCHRIFTUNG[sprache] ?? BESCHRIFTUNG.de;
+      const text = BESCHRIFTUNG[sprache] ?? 'Filter';
       if (knopf.textContent !== text) {
         knopf.textContent = text;
       }
