@@ -500,3 +500,14 @@ header > [data-testid='navbar-top']:only-child { background-color: #f8f9fa !impo
 [data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']) h3 { font-size: 1.7rem; line-height: 1.25; color: #fff; }
 footer [data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']) h2,
 footer [data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']) h3 { font-size: 1rem; }
+
+/* Abschnitt mit Hintergrundbild (Ceres „Hintergrund“, fixiert) */
+.laccico-hintergrund { background-size: cover; background-position: center; background-repeat: no-repeat; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
+.laccico-hintergrund-fest { background-attachment: fixed; }
+@media (max-width: 1024px) { .laccico-hintergrund-fest { background-attachment: scroll; } }
+.laccico-hintergrund-innen { width: 100%; max-width: 1600px; margin: 0 auto; }
+.laccico-hintergrund .color-secondary { color: #d6d3cd; }
+.laccico-hintergrund h2 { font-size: 2.4rem !important; line-height: 1.2 !important; }
+.laccico-hintergrund h3 { font-size: 1.8rem; line-height: 1.25; }
+.laccico-hintergrund-kasten { padding: 1rem 1.25rem; }
+.laccico-hintergrund-kasten, .laccico-hintergrund-kasten * { color: #fff !important; }
