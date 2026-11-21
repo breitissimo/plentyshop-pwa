@@ -4,11 +4,12 @@
     :class="nurRollen ? 'gap-x-2' : 'gap-x-8'"
     data-testid="laccico-megamenue"
   >
-    <div v-for="kind in knoten.children" :key="kind.id" :class="istRolle(kind) ? 'w-36' : 'w-44'">
+    <!-- Alle Menübilder gleich groß: Kachel 144 x 108 px (N 22.11.2026) -->
+    <div v-for="kind in knoten.children" :key="kind.id" class="w-36">
       <NuxtLink :to="localePath(linkFuer(kind))" class="block group/kachel focus-visible:outline focus-visible:rounded-md">
         <div
-          class="overflow-hidden flex items-center justify-center"
-          :class="istRolle(kind) ? 'aspect-square bg-white' : 'aspect-[4/3] rounded-md bg-[#f4f2ee]'"
+          class="aspect-[4/3] overflow-hidden flex items-center justify-center"
+          :class="istRolle(kind) ? 'bg-white' : 'rounded-md bg-[#f4f2ee]'"
         >
           <img
             v-if="bildVon(kind)"
@@ -16,12 +17,12 @@
             :alt="categoryTreeGetters.getName(kind)"
             loading="lazy"
             class="w-full h-full transition-transform duration-300 group-hover/kachel:scale-105"
-            :class="istRolle(kind) ? 'object-contain p-2' : 'object-cover'"
+            :class="istRolle(kind) ? 'object-contain p-1' : 'object-cover'"
           />
           <!-- Platzhalter, solange in Plenty (Kategorie › Bild) noch keins hinterlegt ist -->
           <span v-else class="text-xs text-neutral-400" data-testid="laccico-megamenue-platzhalter">Bild folgt</span>
         </div>
-        <span class="mt-2 block text-center font-medium" :class="istRolle(kind) ? 'typography-text-sm' : 'typography-text-base'">{{ categoryTreeGetters.getName(kind) }}</span>
+        <span class="mt-2 block text-center font-medium typography-text-sm">{{ categoryTreeGetters.getName(kind) }}</span>
       </NuxtLink>
       <ul v-if="kind.children?.length" class="mt-1">
         <li v-for="enkel in kind.children" :key="enkel.id">

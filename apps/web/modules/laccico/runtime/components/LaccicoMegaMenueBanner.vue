@@ -4,7 +4,7 @@
     class="block group/banner focus-visible:outline focus-visible:rounded-md"
     data-testid="laccico-megamenue-banner"
   >
-    <div class="w-[480px] max-w-full aspect-[7/4] rounded-md overflow-hidden bg-[#f4f2ee]">
+    <div class="w-36 aspect-[4/3] rounded-md overflow-hidden bg-[#f4f2ee]">
       <img
         :src="bild"
         :alt="name"
@@ -13,15 +13,15 @@
       />
     </div>
     <!-- KI-Kennzeichnung (Regel N 11.11.2026; Banner sind KI-Bilder auf Basis echter Fotos, N 22.11.2026) -->
-    <span class="laccico-ki-zeile mt-1 block text-xs text-[#666]">{{ kiText }}</span>
-    <span class="mt-2 block text-center font-medium typography-text-base">{{ name }}</span>
+    <span class="laccico-ki-zeile mt-1 block w-36 text-2xs leading-tight text-[#666]">{{ kiText }}</span>
+    <span class="mt-2 block w-36 text-center font-medium typography-text-sm">{{ name }}</span>
   </NuxtLink>
 </template>
 
 <script setup lang="ts">
 /**
  * Bannerbild eines Hauptmenüpunkts ohne Unterkategorien (Business, Sneaker, Stiefel; N 22.11.2026).
- * Erscheint beim Überfahren des Menüpunkts und führt per Klick auf die Kategorie.
+ * Erscheint beim Überfahren direkt unter dem Menüpunkt, gleiche Kachelgröße wie die übrigen Menübilder (144 x 108 px), Klick führt auf die Kategorie.
  */
 defineProps<{ bild: string; name: string; link: string }>();
 

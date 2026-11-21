@@ -15,7 +15,7 @@
 
         <li v-if="categoryTree.length === 0" class="h-10" />
 
-        <li v-for="(menuNode, index) in categoryTree" v-else :key="index" @mouseenter="onCategoryMouseEnter(menuNode)">
+        <li v-for="(menuNode, index) in categoryTree" v-else :key="index" @mouseenter="onMenuEintragEnter($event, menuNode)">
           <NuxtLink
             v-if="menuNode.childCount > 0"
             ref="triggerReference"
@@ -129,8 +129,14 @@
               isOpen && activeNode.length === 1 && activeNode[0] === menuNode.id && laccicoBannerVon(menuNode)
             "
             :key="'banner-' + menuNode.id"
-            :style="{ ...style, backgroundColor: resolvedContent.color.backgroundColor || 'white' }"
-            class="hidden @md:flex justify-center shadow-lg p-6 pt-5 left-0 right-0 outline-none z-sticky"
+            :style="{
+              ...style,
+              left: laccicoBannerMitte + 'px',
+              right: 'auto',
+              transform: 'translateX(-50%)',
+              backgroundColor: resolvedContent.color.backgroundColor || 'white',
+            }"
+            class="hidden @md:block shadow-lg p-4 rounded-b-md outline-none z-sticky"
             @keydown.esc="focusTrigger(index)"
           >
             <LaccicoMegaMenueBanner
@@ -468,6 +474,19 @@ const onMouseLeave = () => {
 /** LACCICO: Bannerbild für Menüpunkte ohne Unterkategorien (nur Desktop-Menü), sonst leer */
 const laccicoBannerVon = (menuNode: CategoryTreeItem): string =>
   menuNode.childCount > 0 || !props.content?.megaBilder ? '' : (megamenueBanner[menuNode.id] ?? '');
+
+/** LACCICO: Mitte des überfahrenen Menüpunkts (px ab linkem Rand der Navigation), dort klappt das Banner auf (N 22.11.2026) */
+const laccicoBannerMitte = ref(0);
+
+const onMenuEintragEnter = (event: MouseEvent, menuNode: CategoryTreeItem) => {
+  const eintrag = event.currentTarget as HTMLElement | null;
+  const wurzel = unrefElement(referenceRef);
+  if (eintrag && wurzel) {
+    laccicoBannerMitte.value =
+      eintrag.getBoundingClientRect().left - wurzel.getBoundingClientRect().left + eintrag.offsetWidth / 2;
+  }
+  onCategoryMouseEnter(menuNode);
+};
 
 const onCategoryMouseEnter = (menuNode: CategoryTreeItem) => {
   if (!viewport.isGreaterOrEquals('lg')) return;
