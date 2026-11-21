@@ -60,7 +60,7 @@
               v-if="bildIndex > 0 && bilder[bildIndex]"
               :src="bilder[bildIndex]"
               :alt="imageAlt"
-              class="absolute inset-0 z-[1] w-full h-full object-contain rounded-md bg-white"
+              class="absolute inset-0 z-raised w-full h-full object-contain rounded-md bg-white"
               data-testid="laccico-kartenbild"
             />
             <template v-if="bilder.length > 1 && !isFromWishlist">
