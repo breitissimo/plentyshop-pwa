@@ -467,8 +467,8 @@ main :is([data-testid='item-text-block'], [data-testid='technical-data-block'], 
 .laccico-kartenkauf-zeile { display: flex; gap: 0.4rem; align-items: center; }
 .laccico-kartenkauf-menge { width: 4rem; border: 1px solid #c8cdd0; border-radius: 4px; padding: 0.3rem 0.4rem; font-size: 0.85rem; }
 .laccico-kartenkauf-fehler { font-size: 0.8rem; text-decoration: underline; }
-@media (max-width: 767px) {
-  .laccico-kategoriebaum { display: none; } /* Handy: Artikel zuerst, Baum erreicht man über das Menü */
+@media (max-width: 1023px) {
+  .laccico-kategoriebaum { display: none; } /* Handy und Tablet-Hochformat (N 21.11.2026): Baum erreicht man über das Menü */
 }
 .laccico-kartenkauf button { white-space: nowrap; }
 .laccico-kartenkauf-zeile { flex-wrap: wrap; }

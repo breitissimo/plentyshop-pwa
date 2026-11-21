@@ -37,7 +37,7 @@ export default function createLaccicoCategory(): Block[] {
       name: 'MultiGrid',
       type: 'structure',
       meta: meta(),
-      configuration: { columnWidths: [3, 9], sticky: [0], layout: { marginTop: '0', marginBottom: '0' } },
+      configuration: { columnWidths: [3, 9], columnWidthsTablet: [12, 12], sticky: [0], layout: { marginTop: '0', marginBottom: '0' } },
       layout: { gap: 'XL', narrowContainer: false },
       content: [
         kategorieDaten({ name: true, description1: true, description2: false }, 0, 0),
@@ -73,7 +73,7 @@ export default function createLaccicoCategory(): Block[] {
           slot_index: 0,
           content: {
             itemsPerRowDesktop: 3,
-            itemsPerRowTablet: 2,
+            itemsPerRowTablet: 3, // LACCICO: Tablet-Hochformat ohne Baum, volle Breite (N 21.11.2026)
             itemsPerRowMobile: 1,
             showItemCount: true,
             itemCountPosition: 'left',
