@@ -27,6 +27,8 @@ export type NavigationContent = {
   text: TextSettings;
   color: ColorSettings;
   logo?: NavigationLogoSettings;
+  /** LACCICO: Megamenü zeigt Bildkacheln (Kategoriebild aus Plenty). */
+  megaBilder?: boolean;
 };
 
 export type NavigationProps = {

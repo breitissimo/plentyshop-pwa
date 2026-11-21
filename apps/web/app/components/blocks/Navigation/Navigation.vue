@@ -77,7 +77,9 @@
             @keydown.down="navigateDropdownItems($event, 'down')"
             @keydown.tab="handleTabInDropdown($event)"
           >
-            <template v-for="node in activeMenu.children" :key="node.id">
+            <!-- LACCICO: Megamenü mit Bildkacheln (Option megaBilder, Bild aus Plenty-Kategorie) -->
+            <LaccicoMegaMenueKacheln v-if="props.content?.megaBilder" :knoten="activeMenu" :link-fuer="generateCategoryLink" />
+            <template v-for="node in activeMenu.children" v-else :key="node.id">
               <template v-if="node.childCount === 0">
                 <ul>
                   <li>
@@ -220,6 +222,7 @@ import {
 import { unrefElement } from '@vueuse/core';
 import { type CategoryTreeItem, categoryTreeGetters } from '@plentymarkets/shop-api';
 import type { NavigationBlockProps } from './types';
+import LaccicoMegaMenueKacheln from '~~/modules/laccico/runtime/components/LaccicoMegaMenueKacheln.vue';
 
 const props = withDefaults(defineProps<NavigationBlockProps>(), {
   categories: () => [],

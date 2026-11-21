@@ -73,7 +73,11 @@ const oeffnen = async () => {
   laedt.value = true;
   try {
     const antwort = await $fetch<Block[] | null>(`/_laccico/inhalt/${sprache.value}/category_${VERSANDKOSTEN_KATEGORIE}`);
-    bloecke.value = (Array.isArray(antwort) ? antwort : []).filter((block) => GEZEIGTE_BLOECKE.has(block.name));
+    bloecke.value = (Array.isArray(antwort) ? antwort : []).filter(
+        (block) =>
+          GEZEIGTE_BLOECKE.has(block.name) &&
+          !/KI-generiert|AI-generated|générée par IA/.test(((block.content as { text?: { htmlDescription?: string } } | undefined)?.text?.htmlDescription ?? '')),
+      );
     geladeneSprache = sprache.value;
   } catch {
     bloecke.value = [];
