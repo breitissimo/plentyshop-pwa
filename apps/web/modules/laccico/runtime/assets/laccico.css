@@ -518,9 +518,9 @@ a:has(.laccico-bildpfeil:hover) [data-testid='image-slot'] { opacity: 1 !importa
 [data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']):not([style*='fbfbf9'],[style*='f8f9fa'],[style*='d6d3cd']) h2,
 [data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']):not([style*='fbfbf9'],[style*='f8f9fa'],[style*='d6d3cd']) h3 { font-size: 1.7rem; line-height: 1.25; color: #fff; }
 /* Abstand ueber und unter der Titelleiste gleich (28 px, N 21.11.2026): Block-Rand 16+40 -> 11+17 unten, 16 -> 11 oben */
-.content > div:first-child [data-testid='block-wrapper']:has(> .block-wrapper > [data-testid='text-card'][style*='d6d3cd']) { padding-top: 11px; padding-bottom: 11px; margin-bottom: 17px; }
+[data-testid='block-wrapper']:has(> .block-wrapper > [data-testid='text-card'][style*='d6d3cd']) { padding-top: 11px !important; padding-bottom: 11px !important; margin-bottom: 17px !important; }
 /* Titelleiste der Inhaltsseiten: schmal, Sekundaerfarbe #d6d3cd (Master-CSS --laccico-secondary), dunkle Schrift (N 21.11.2026) */
-[data-testid='text-card'][style*='background-color:#d6d3cd'] :is(h1, h2, h3), [data-testid='text-card'][style*='background-color: #d6d3cd'] :is(h1, h2, h3) { font-size: 1.35rem !important; line-height: 1.25 !important; color: #121212; margin: 0; }
+[data-testid='text-card'][style*='background-color:#d6d3cd'] :is(h1, h2, h3), [data-testid='text-card'][style*='background-color: #d6d3cd'] :is(h1, h2, h3) { font-size: 1.35rem !important; line-height: 1.25 !important; color: #121212; margin: 0 !important; padding: 0 !important; }
 footer [data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']) h2,
 footer [data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']) h3 { font-size: 1rem; }
 
