@@ -568,3 +568,6 @@ footer [data-testid='text-card']:is([style*='background-color:#'],[style*='backg
 /* Ueber uns: Abstand Philosophie-Text -> Schuhbild fest 28 px wie unter den Titelleisten (21.11.2026) */
 [data-laccico-philosophie] > p:last-child { margin-bottom: 0 !important; }
 [data-testid='multi-grid-column']:has([data-laccico-philosophie]) > .group\/row:has(img) { padding-top: 28px !important; }
+
+/* Kopfleisten der Artikellisten wie die grauen Titelbalken: 21,6 px, fett, ohne Grossbuchstaben (21.11.2026) */
+.rte-prose .laccico-listenkopf h2 { font-size: 1.35rem !important; font-weight: 700 !important; text-transform: none !important; line-height: 1.25 !important; }
