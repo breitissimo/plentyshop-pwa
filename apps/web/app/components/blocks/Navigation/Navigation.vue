@@ -480,7 +480,7 @@ const laccicoBannerMitte = ref(0);
 
 const onMenuEintragEnter = (event: MouseEvent, menuNode: CategoryTreeItem) => {
   const eintrag = event.currentTarget as HTMLElement | null;
-  const wurzel = unrefElement(referenceRef);
+  const wurzel = referenceRef.value as HTMLElement | null;
   if (eintrag && wurzel) {
     laccicoBannerMitte.value =
       eintrag.getBoundingClientRect().left - wurzel.getBoundingClientRect().left + eintrag.offsetWidth / 2;
