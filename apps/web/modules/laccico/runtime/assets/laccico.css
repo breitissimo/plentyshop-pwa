@@ -207,95 +207,15 @@ main [data-testid='details-list'] details > summary.laccico-faq-aktiv {
   z-index: 1;
 }
 
-/* Logo wie Ceres: schlank, ca. 170 px breit (Ceres 170 x 42 px), Seitenverhaeltnis bleibt */
+/* Kopf (N 21.11.2026): Standard-Kopf der PWA in Korundblau #4C595D, Logo weiss (dunkles Logo per Filter weiss gefaerbt) */
+[data-testid='navbar-top-desktop'] #logo,
+[data-testid='navbar-top-mobile'] #logo { filter: brightness(0) invert(1); }
+/* Logo schlank, ca. 170 px breit, Seitenverhaeltnis bleibt */
 #logo {
   width: 170px !important;
   max-width: 170px !important;
   height: auto !important;
   max-height: none !important;
-}
-
-/* Kopf wie Ceres (N 19.11.2026): schmale dunkle Leiste, Symbole rechts; Logo + Menue in einer weissen Zeile */
-[data-testid='navbar-top-desktop'] {
-  justify-content: flex-end;
-}
-[data-testid='navbar-top-desktop'] > div,
-[data-testid='navbar-top-desktop'] > nav {
-  flex: 0 0 auto !important;
-}
-/* Aufgeklappte Suche (Lupe geklickt) braucht feste Breite, sonst bleibt sie so schmal wie die Lupe (N 21.11.2026) */
-[data-testid='navbar-top-desktop'] > div:has(input) {
-  flex: 0 0 360px !important;
-}
-[data-testid='navbar-top-desktop'] > div:has(input) > div.relative {
-  width: 100%;
-}
-/* Suchvorschlaege und Warenkorbvorschau ueber der weissen Menuezeile (folgender Baustein) zeigen */
-.block-wrapper:has([data-testid='navbar-top-desktop']) {
-  z-index: 50;
-}
-/* Menuepunkte duerfen schrumpfen und zweizeilig umbrechen, wenn die Zeile nicht reicht (lange FR-Namen, N 21.11.2026) */
-li.laccico-nav-logo { flex-shrink: 0; }
-li.laccico-nav-logo ~ li {
-  flex-shrink: 1;
-  min-width: 0;
-}
-ul:has(> li.laccico-nav-logo) > li:not(.laccico-nav-logo) [data-testid='category-button'] {
-  white-space: normal;
-  text-align: left;
-  line-height: 1.2;
-}
-ul:has(> li.laccico-nav-logo) {
-  flex-wrap: nowrap !important;
-  align-items: center;
-}
-ul:has(> li.laccico-nav-logo) [data-testid='category-button'] {
-  padding-left: 14px;
-  padding-right: 14px;
-  margin-right: 0;
-  gap: 4px;
-  font-size: 14px;
-  font-weight: 400;
-}
-/* Tablet quer / kleine Bildschirme (1024-1279 px): Menue passte nicht in die Zeile, rechte Punkte fehlten (N 21.11.2026) */
-@media (min-width: 1024px) and (max-width: 1279.98px) {
-  ul:has(> li.laccico-nav-logo) [data-testid='category-button'] { padding-left: 5px; padding-right: 5px; font-size: 12.5px; gap: 2px; }
-  ul:has(> li.laccico-nav-logo) #logo { width: 130px !important; max-width: 130px !important; }
-}
-
-/* Unter 1024 px gibt es keine Menuezeile: Leiste weiss mit Logo und dunklen Symbolen (wie Ceres am Handy) */
-@media (max-width: 1023.98px) {
-  [data-testid='navbar-top-mobile'],
-  [data-testid='navbar-top-desktop'] {
-    background-color: #ffffff !important;
-    border-bottom: 1px solid #e5e5e5;
-  }
-  [data-testid='navbar-top-mobile'] button,
-  [data-testid='navbar-top-desktop'] button,
-  [data-testid='navbar-top-desktop'] a {
-    color: #4e6066 !important;
-  }
-  [data-testid='navbar-top-desktop'] > div:has(#blockified-logo) {
-    margin-right: auto;
-    margin-left: 8px;
-  }
-}
-/* Ab 1024 px steht das Logo in der Menuezeile, nicht in der dunklen Leiste */
-@media (min-width: 1024px) {
-  [data-testid='navbar-top-desktop'] > div:has(#blockified-logo) {
-    display: none !important;
-  }
-}
-
-/* Dunkle Leiste ab 1024 px so schmal wie Ceres (32 px) */
-@media (min-width: 1024px) {
-  [data-testid='navbar-top-desktop'] button,
-  [data-testid='navbar-top-desktop'] nav > * {
-    height: 32px !important;
-    min-height: 32px !important;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-  }
 }
 
 /* Sortierleiste ueber den Artikeln wie Ceres: Sortierung und Anzahl je Seite nebeneinander */
@@ -388,18 +308,6 @@ ul:has(> li.laccico-nav-logo) [data-testid='category-button'] {
   .laccico-filter-knopf { display: none !important; }
 }
 
-/* Kopf wie Ceres: Leisten farbig ueber die volle Breite, Inhalt hoechstens 1600 px breit und mittig (wie der Seiteninhalt) */
-@media (min-width: 1024px) {
-  [data-testid='navbar-top-desktop'] {
-    padding-left: max(40px, calc((100% - 1600px) / 2 + 15px)) !important;
-    padding-right: max(40px, calc((100% - 1600px) / 2 + 15px)) !important;
-  }
-  ul:has(> li.laccico-nav-logo) {
-    padding-left: max(43px, calc((100% - 1600px) / 2 + 43px)) !important;
-    padding-right: max(20px, calc((100% - 1600px) / 2 + 15px)) !important;
-  }
-}
-
 /* Klebende Spalte (MultiGrid sticky, z. B. Bildbox der Artikelansicht, N 19.11.2026): darf nicht ueber die ganze Zeilenhoehe
    gestreckt werden, sonst bleibt sie nicht stehen */
 .\@md\:sticky {
@@ -416,7 +324,7 @@ ul:has(> li.laccico-nav-logo) [data-testid='category-button'] {
 @media (min-width: 1024px) {
   div:has(> nav[data-testid='breadcrumbs']) {
     position: sticky;
-    top: var(--laccico-kopf-hoehe, 93px);
+    top: var(--laccico-kopf-hoehe, 169px);
     z-index: 30;
     background: #ffffff;
   }
@@ -603,9 +511,7 @@ div:has(> [data-testid='laccico-preis-hinweis']) > :first-child { flex-shrink: 0
 @media (hover: none) { .laccico-bildpfeil { opacity: 0.9; } }
 /* Über den Pfeilen kein Hover-Bild: sonst zeigt der erste Klick dasselbe (zweite) Bild und es sieht aus, als passiere nichts */
 a:has(.laccico-bildpfeil:hover) [data-testid='hover-image-slot'] { opacity: 0 !important; }
-
-/* Kasse: schlanker Kopf mit Logo hat dunklen Grund, das Logo ist dunkel → heller Grund wie die Menüzeile */
-header > [data-testid='navbar-top']:only-child { background-color: #f8f9fa !important; }
+a:has(.laccico-bildpfeil:hover) [data-testid='image-slot'] { opacity: 1 !important; }
 
 /* Farbbalken (Titelleiste/Überschriftsleiste aus Ceres): große weiße Überschriften wie dort */
 /* Weiss nur auf dunklen Balken; helle Kaesten (Einleitung #fbfbf9, #f8f9fa) behalten dunkle Schrift (N 21.11.2026) */
