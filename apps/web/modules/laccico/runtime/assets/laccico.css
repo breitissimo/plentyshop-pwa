@@ -540,13 +540,13 @@ footer [data-testid='text-card']:is([style*='background-color:#'],[style*='backg
 
 /* FAQ am Desktop: drei Spalten gleich hoch, die Fragezeilen verteilen den Rest (ein Rechteck, N 21.11.2026) */
 @media (min-width: 992px) {
-  [data-testid='multi-grid-column']:has([data-testid='details-list']) { display: flex; flex-direction: column; }
-  [data-testid='multi-grid-column']:has([data-testid='details-list']) > .group\/row:has([data-testid='details-list']) { flex: 1 1 auto; }
-  [data-testid='multi-grid-column']:has([data-testid='details-list']) > .group\/row:has([data-testid='details-list']),
-  [data-testid='multi-grid-column']:has([data-testid='details-list']) > .group\/row:has([data-testid='details-list']) > .h-full,
-  [data-testid='multi-grid-column']:has([data-testid='details-list']) > .group\/row:has([data-testid='details-list']) .block-wrapper { display: flex; flex-direction: column; }
-  [data-testid='multi-grid-column'] [data-testid='details-list'] { flex: 1 1 auto; }
-  [data-testid='multi-grid-column'] [data-testid='details-list'] > details { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; }
+  [data-testid='multi-grid-structure']:has(> [data-testid='multi-grid-column']:nth-child(3)) > [data-testid='multi-grid-column']:has([data-testid='details-list']) { display: flex; flex-direction: column; }
+  [data-testid='multi-grid-structure']:has(> [data-testid='multi-grid-column']:nth-child(3)) > [data-testid='multi-grid-column']:has([data-testid='details-list']) > .group\/row:has([data-testid='details-list']) { flex: 1 1 auto; }
+  [data-testid='multi-grid-structure']:has(> [data-testid='multi-grid-column']:nth-child(3)) > [data-testid='multi-grid-column']:has([data-testid='details-list']) > .group\/row:has([data-testid='details-list']),
+  [data-testid='multi-grid-structure']:has(> [data-testid='multi-grid-column']:nth-child(3)) > [data-testid='multi-grid-column']:has([data-testid='details-list']) > .group\/row:has([data-testid='details-list']) > .h-full,
+  [data-testid='multi-grid-structure']:has(> [data-testid='multi-grid-column']:nth-child(3)) > [data-testid='multi-grid-column']:has([data-testid='details-list']) > .group\/row:has([data-testid='details-list']) .block-wrapper { display: flex; flex-direction: column; }
+  [data-testid='multi-grid-structure']:has(> [data-testid='multi-grid-column']:nth-child(3)) > [data-testid='multi-grid-column'] [data-testid='details-list'] { flex: 1 1 auto; }
+  [data-testid='multi-grid-structure']:has(> [data-testid='multi-grid-column']:nth-child(3)) > [data-testid='multi-grid-column'] [data-testid='details-list'] > details { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; }
 }
 
 /* Ueber uns: Listenkopf (Balken + "Alle ansehen") ueber die volle Breite der Zeile, Nebenspalte beginnt darunter (Skizze N 21.11.2026).
