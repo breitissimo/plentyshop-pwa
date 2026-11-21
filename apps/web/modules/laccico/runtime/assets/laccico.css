@@ -515,8 +515,10 @@ a:has(.laccico-bildpfeil:hover) [data-testid='image-slot'] { opacity: 1 !importa
 
 /* Farbbalken (Titelleiste/Überschriftsleiste aus Ceres): große weiße Überschriften wie dort */
 /* Weiss nur auf dunklen Balken; helle Kaesten (Einleitung #fbfbf9, #f8f9fa) behalten dunkle Schrift (N 21.11.2026) */
-[data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']):not([style*='fbfbf9'],[style*='f8f9fa']) h2,
-[data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']):not([style*='fbfbf9'],[style*='f8f9fa']) h3 { font-size: 1.7rem; line-height: 1.25; color: #fff; }
+[data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']):not([style*='fbfbf9'],[style*='f8f9fa'],[style*='d6d3cd']) h2,
+[data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']):not([style*='fbfbf9'],[style*='f8f9fa'],[style*='d6d3cd']) h3 { font-size: 1.7rem; line-height: 1.25; color: #fff; }
+/* Titelleiste der Inhaltsseiten: schmal, Sekundaerfarbe #d6d3cd (Master-CSS --laccico-secondary), dunkle Schrift (N 21.11.2026) */
+[data-testid='text-card'][style*='background-color:#d6d3cd'] :is(h1, h2, h3), [data-testid='text-card'][style*='background-color: #d6d3cd'] :is(h1, h2, h3) { font-size: 1.35rem !important; line-height: 1.25 !important; color: #121212; margin: 0; }
 footer [data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']) h2,
 footer [data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']) h3 { font-size: 1rem; }
 
@@ -530,3 +532,6 @@ footer [data-testid='text-card']:is([style*='background-color:#'],[style*='backg
 .laccico-hintergrund h3 { font-size: 1.8rem; line-height: 1.25; }
 .laccico-hintergrund-kasten { padding: 1rem 1.25rem; }
 .laccico-hintergrund-kasten, .laccico-hintergrund-kasten * { color: #fff !important; }
+
+/* Raster im Raster: kein zusaetzlicher Seitenrand, Kacheln und Text fluchten mit Titelleiste und Artikellisten (N 21.11.2026) */
+[class~='group/col'] [class~='items-stretch'] { padding-left: 0; padding-right: 0; }

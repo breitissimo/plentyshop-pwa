@@ -358,7 +358,11 @@ const findNode = (keys: number[], node: CategoryTreeItem): CategoryTreeItem => {
   }
 };
 
+/** LACCICO: Kategorie 63 ist die Startseite (wie in Ceres), der Menüpunkt führt dorthin statt auf eine leere Kategorieseite */
+const LACCICO_STARTSEITE_KATEGORIE = 63;
+
 const generateCategoryLink = (category: CategoryTreeItem) => {
+  if (category.id === LACCICO_STARTSEITE_KATEGORIE) return paths.home;
   return buildCategoryMenuLink(category, categoryTree.value);
 };
 

@@ -134,6 +134,10 @@ export default defineNuxtConfig({
     '/_nuxt-plenty/favicon.ico': { headers: { 'cache-control': `public, max-age=86400` } },
     '/_nuxt-plenty/images/**': { headers: { 'cache-control': `max-age=604800` } },
     '/favicon.ico': { redirect: { to: '/_nuxt-plenty/favicon.ico', statusCode: 301 } },
+    // LACCICO: Kategorie 63 ist die Startseite; ihre Adresse leitet dorthin (in der PWA gibt es dort keinen Inhalt)
+    '/laccico-finest-waxed-laces': { redirect: { to: '/', statusCode: 301 } },
+    '/en/laccico-finest-waxed-laces': { redirect: { to: '/en', statusCode: 301 } },
+    '/fr/laccicolacetsfinscires': { redirect: { to: '/fr', statusCode: 301 } },
   },
   image: {
     provider: 'none',

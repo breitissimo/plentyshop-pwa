@@ -43,6 +43,15 @@ import { onKeyStroke } from '@vueuse/core';
 const VERSANDKOSTEN_KATEGORIE = 648;
 /** Nur Text und Tabelle, keine Artikellisten. */
 const GEZEIGTE_BLOECKE = new Set(['TextCard']);
+/** Alle Textbausteine in Seitenreihenfolge, auch aus Spalten (MultiGrid), damit der Umbau der Seite das Fenster nicht leert. */
+const textkarten = (liste: Block[]): Block[] =>
+  liste.flatMap((block) =>
+    Array.isArray(block.content)
+      ? textkarten(block.content as Block[])
+      : GEZEIGTE_BLOECKE.has(block.name)
+        ? [block]
+        : [],
+  );
 const VERSANDKOSTEN_SEITE: Record<string, string> = {
   de: '/laccico-finest-waxed-laces/versandkosten',
   en: '/laccico-finest-waxed-laces/delivery-costs',
@@ -73,11 +82,12 @@ const oeffnen = async () => {
   laedt.value = true;
   try {
     const antwort = await $fetch<Block[] | null>(`/_laccico/inhalt/${sprache.value}/category_${VERSANDKOSTEN_KATEGORIE}`);
-    bloecke.value = (Array.isArray(antwort) ? antwort : []).filter(
-        (block) =>
-          GEZEIGTE_BLOECKE.has(block.name) &&
-          !/KI-generiert|AI-generated|générée par IA/.test(((block.content as { text?: { htmlDescription?: string } } | undefined)?.text?.htmlDescription ?? '')),
-      );
+    bloecke.value = textkarten(Array.isArray(antwort) ? antwort : []).filter(
+      (block) =>
+        !/KI-generiert|AI-generated|générée par IA/.test(
+          (block.content as { text?: { htmlDescription?: string } } | undefined)?.text?.htmlDescription ?? '',
+        ),
+    );
     geladeneSprache = sprache.value;
   } catch {
     bloecke.value = [];
