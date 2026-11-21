@@ -1,6 +1,6 @@
 <template>
-  <div v-if="attributes.length > 0" data-testid="product-attributes" class="mb-2">
-    <div v-for="(attribute, index) in attributes" :key="index" class="mb-2">
+  <div v-if="sichtbareAttribute.length > 0" data-testid="product-attributes" class="mb-2">
+    <div v-for="(attribute, index) in sichtbareAttribute" :key="index" class="mb-2">
       <Component
         :is="componentsMapper[productAttributeGetters.getAttributeType(attribute)]"
         v-if="componentsMapper[productAttributeGetters.getAttributeType(attribute)]"
@@ -24,6 +24,8 @@ const componentsMapper: ComponentsMapper = {
 };
 
 const { attributes, setAttribute } = useProductAttributes();
+// LACCICO: Merkmale mit nur einem Wert nicht als Auswahl zeigen (werden automatisch gewählt)
+const sichtbareAttribute = computed(() => attributes.value.filter((attribute) => attribute.values.length > 1));
 const props = defineProps<ProductAttributesProps>();
 const product = computed(() => props.product);
 const route = useRoute();

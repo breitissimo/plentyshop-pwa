@@ -147,6 +147,14 @@ export const useProductAttributes = (): UseProductAttributesReturn => {
       });
     }
 
+    // LACCICO: Merkmale mit nur einem Wert (z. B. Farbe bei Farbartikeln) automatisch wählen; die Anzeige blendet sie aus (N 21.11.2026)
+    state.value.attributes.forEach((attribute) => {
+      const einzigerWert = attribute.values.length === 1 ? attribute.values[0] : undefined;
+      if (einzigerWert) {
+        state.value.attributeValues[attribute.attributeId] = einzigerWert.attributeValueId;
+      }
+    });
+
     disableAttributes();
   };
 
