@@ -122,6 +122,23 @@
               </div>
             </template>
           </div>
+
+          <!-- LACCICO: Menüpunkte ohne Unterkategorien zeigen beim Überfahren ihr Bannerbild (N 22.11.2026) -->
+          <div
+            v-if="
+              isOpen && activeNode.length === 1 && activeNode[0] === menuNode.id && laccicoBannerVon(menuNode)
+            "
+            :key="'banner-' + menuNode.id"
+            :style="{ ...style, backgroundColor: resolvedContent.color.backgroundColor || 'white' }"
+            class="hidden @md:flex justify-center shadow-lg p-6 pt-5 left-0 right-0 outline-none z-sticky"
+            @keydown.esc="focusTrigger(index)"
+          >
+            <LaccicoMegaMenueBanner
+              :bild="laccicoBannerVon(menuNode)"
+              :name="categoryTreeGetters.getName(menuNode)"
+              :link="localePath(generateCategoryLink(menuNode))"
+            />
+          </div>
         </li>
       </ul>
     </nav>
@@ -223,6 +240,8 @@ import { unrefElement } from '@vueuse/core';
 import { type CategoryTreeItem, categoryTreeGetters } from '@plentymarkets/shop-api';
 import type { NavigationBlockProps } from './types';
 import LaccicoMegaMenueKacheln from '~~/modules/laccico/runtime/components/LaccicoMegaMenueKacheln.vue';
+import LaccicoMegaMenueBanner from '~~/modules/laccico/runtime/components/LaccicoMegaMenueBanner.vue';
+import { megamenueBanner } from '~~/modules/laccico/runtime/utils/megamenueBilder';
 
 const props = withDefaults(defineProps<NavigationBlockProps>(), {
   categories: () => [],
@@ -446,10 +465,14 @@ const onMouseLeave = () => {
   tappedCategoryId.value = null;
 };
 
+/** LACCICO: Bannerbild für Menüpunkte ohne Unterkategorien (nur Desktop-Menü), sonst leer */
+const laccicoBannerVon = (menuNode: CategoryTreeItem): string =>
+  menuNode.childCount > 0 || !props.content?.megaBilder ? '' : (megamenueBanner[menuNode.id] ?? '');
+
 const onCategoryMouseEnter = (menuNode: CategoryTreeItem) => {
   if (!viewport.isGreaterOrEquals('lg')) return;
 
-  if (menuNode.childCount > 0) {
+  if (menuNode.childCount > 0 || laccicoBannerVon(menuNode)) {
     activeNode.value = [menuNode.id];
     open();
     setCategory([menuNode]);

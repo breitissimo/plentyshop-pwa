@@ -22,3 +22,9 @@ export const megamenueBilder: Record<number, string> = {
 };
 // Kategorien, deren Bild eine freigestellte Rolle ist (quadratisch, weisser Grund, ganz sichtbar)
 export const megamenueRollen: number[] = [747, 748, 749, 750, 751, 752, 753, 754, 755];
+// Hauptmenüpunkte ohne Unterkategorien, die beim Überfahren ihr Bannerbild zeigen (N 22.11.2026): Bild = Banner der Kategorieseite
+export const megamenueBanner: Record<number, string> = {
+  729: 'https://cdn02.plentyone.com/qadol2fdwt1n/frontend/Images/Kategorie/Business_und_Eleganz/Bannerbild-Business-und-Eleganz.jpg',
+  728: 'https://cdn02.plentyone.com/qadol2fdwt1n/frontend/Images/Kategorie/Sneaker_und_Freizeit/Bannerbild-Sneaker-und-Freizeit.jpg',
+  730: 'https://cdn02.plentyone.com/qadol2fdwt1n/frontend/Images/Kategorie/Outdoor/R3-CS-Dunkelbeige-szene-im-wald.jpg'
+};
