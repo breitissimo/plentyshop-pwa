@@ -385,7 +385,14 @@ main :is([data-testid='item-text-block'], [data-testid='technical-data-block'], 
 .laccico-kartenkauf { display: flex; flex-direction: column; gap: 0.4rem; width: 100%; margin-top: 0.25rem; }
 .laccico-kartenkauf-laenge { width: 100%; border: 1px solid #c8cdd0; border-radius: 4px; padding: 0.3rem 0.5rem; background: #fff; font-size: 0.85rem; }
 .laccico-kartenkauf-zeile { display: flex; gap: 0.4rem; align-items: center; }
-.laccico-kartenkauf-menge { width: 4rem; border: 1px solid #c8cdd0; border-radius: 4px; padding: 0.3rem 0.4rem; font-size: 0.85rem; }
+.laccico-kartenkauf-wahl { display: flex; gap: 0.4rem; align-items: stretch; }
+.laccico-kartenkauf-wahl .laccico-kartenkauf-laenge { flex: 1 1 auto; min-width: 0; width: auto; }
+/* Menge als Auswahlliste für bis zu 3 Stellen (N 22.11.2026) */
+.laccico-kartenkauf-menge { flex: 0 0 3.6rem; width: 3.6rem; border: 1px solid #c8cdd0; border-radius: 4px; padding: 0.3rem 0.25rem; background: #fff; font-size: 0.85rem; }
+@media (max-width: 767px) {
+  .laccico-kartenkauf-wahl select { font-size: 0.8rem; padding-left: 0.3rem; padding-right: 0.1rem; }
+  .laccico-kartenkauf-wahl .laccico-kartenkauf-menge { flex-basis: 3.1rem; width: 3.1rem; }
+}
 .laccico-kartenkauf-fehler { font-size: 0.8rem; text-decoration: underline; }
 @media (max-width: 1023px) {
   .laccico-kategoriebaum { display: none; } /* Handy und Tablet-Hochformat (N 21.11.2026): Baum erreicht man über das Menü */
