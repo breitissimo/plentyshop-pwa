@@ -556,3 +556,11 @@ footer [data-testid='text-card']:is([style*='background-color:#'],[style*='backg
   [data-testid='multi-grid-structure']:has(> [data-testid='multi-grid-column']:nth-child(2) [data-laccico-balken], > [data-testid='multi-grid-column']:first-child [data-laccico-balken]) > [data-testid='multi-grid-column']:nth-child(2):has(.laccico-listenkopf) .laccico-listenkopf { margin-left: calc(-33.333% - 4px); }
 }
 @media (max-width: 767px) { [data-laccico-balken] { display: none; } }
+
+/* Infoseiten am Handy: Kachelspalte nicht mehr so hoch wie das Bild (3 x 158 px), sondern kompakt (Befund Shop-6-Vorschau 21.11.2026).
+   Im Plenty-Build steht der Stil mit Leerzeichen, deshalb beide Schreibweisen. */
+@media (max-width: 767px) {
+  [style*='aspect-ratio:343/465'], [style*='aspect-ratio: 343/465'], [style*='aspect-ratio: 343 / 465'] { aspect-ratio: auto !important; gap: 8px !important; padding: 0 !important; }
+  [style*='aspect-ratio:343/465'] > *, [style*='aspect-ratio: 343/465'] > *, [style*='aspect-ratio: 343 / 465'] > * { flex: 0 0 auto !important; }
+  [style*='aspect-ratio:343/465'] div, [style*='aspect-ratio: 343/465'] div, [style*='aspect-ratio: 343 / 465'] div { padding: 10px 14px !important; font-size: 1.05rem !important; }
+}
