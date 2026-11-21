@@ -564,3 +564,7 @@ footer [data-testid='text-card']:is([style*='background-color:#'],[style*='backg
   [style*='aspect-ratio:343/465'] > *, [style*='aspect-ratio: 343/465'] > *, [style*='aspect-ratio: 343 / 465'] > * { flex: 0 0 auto !important; }
   [style*='aspect-ratio:343/465'] div, [style*='aspect-ratio: 343/465'] div, [style*='aspect-ratio: 343 / 465'] div { padding: 10px 14px !important; font-size: 1.05rem !important; }
 }
+
+/* Ueber uns: Abstand Philosophie-Text -> Schuhbild fest 28 px wie unter den Titelleisten (21.11.2026) */
+[data-laccico-philosophie] > p:last-child { margin-bottom: 0 !important; }
+[data-testid='multi-grid-column']:has([data-laccico-philosophie]) > .group\/row:has(img) { padding-top: 28px !important; }
