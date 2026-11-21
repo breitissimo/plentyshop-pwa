@@ -1,6 +1,4 @@
 <template>
-  <div class="w-full p-5 overflow-x-auto break-words no-preflight" v-html="getHTMLTexts()" />
-
   <div class="mx-auto my-8 w-full max-w-4xl rounded-md border border-neutral-200 bg-white p-8">
     <h2 class="mb-6 text-2xl font-semibold text-neutral-900">
       {{ t('legal.cancellationForm') }}
@@ -149,7 +147,6 @@ definePageMeta({
   pageType: 'static',
 });
 
-const { data, getLegalTexts } = useLegalInformation();
 const { loading, submitCancellation, validationSchema, turnstileSiteKey } = useCancellationForm();
 const { getSetting: getCancellationEmail } = useSiteSettings('cancellationFormRecipient');
 const cancellationEmail = getCancellationEmail() ?? '';
@@ -162,9 +159,7 @@ const localePath = useLocalizedPath();
 
 setPageMeta(t('legal.cancellationForm'), 'page');
 
-await getLegalTexts({ type: 'WithdrawalForm' });
 
-const getHTMLTexts = () => data.value.htmlText ?? '';
 
 await getRobots();
 setRobotForStaticPage('CancellationForm');
