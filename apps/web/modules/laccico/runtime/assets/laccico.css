@@ -548,3 +548,11 @@ footer [data-testid='text-card']:is([style*='background-color:#'],[style*='backg
   [data-testid='multi-grid-column'] [data-testid='details-list'] { flex: 1 1 auto; }
   [data-testid='multi-grid-column'] [data-testid='details-list'] > details { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; }
 }
+
+/* Ueber uns: Listenkopf (Balken + "Alle ansehen") ueber die volle Breite der Zeile, Nebenspalte beginnt darunter (Skizze N 21.11.2026).
+   Spalten 9 | 3: Balken nach rechts, 3 | 9: nach links verlaengert (Spalte 3/9 der Breite + Spaltenabstand 12 px). */
+@media (min-width: 768px) {
+  [data-testid='multi-grid-structure']:has(> [data-testid='multi-grid-column']:nth-child(2) [data-laccico-balken], > [data-testid='multi-grid-column']:first-child [data-laccico-balken]) > [data-testid='multi-grid-column']:first-child:has(.laccico-listenkopf) .laccico-listenkopf { margin-right: calc(-33.333% - 4px); }
+  [data-testid='multi-grid-structure']:has(> [data-testid='multi-grid-column']:nth-child(2) [data-laccico-balken], > [data-testid='multi-grid-column']:first-child [data-laccico-balken]) > [data-testid='multi-grid-column']:nth-child(2):has(.laccico-listenkopf) .laccico-listenkopf { margin-left: calc(-33.333% - 4px); }
+}
+@media (max-width: 767px) { [data-laccico-balken] { display: none; } }
