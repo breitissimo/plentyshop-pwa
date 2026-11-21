@@ -131,7 +131,8 @@ const getCategoryMetaTitle = () => {
     const categoryMetaTitle = categoryGetters.getMetaTitle(category.value);
     if (categoryMetaTitle) return categoryMetaTitle;
   }
-  return getMetaTitle();
+  // LACCICO: Startseite und Systemseiten mit eigenem Titel je Sprache statt Shop-Standard (modules/laccico)
+  return laccicoSeitenMeta(route.path)?.titel || getMetaTitle();
 };
 
 const getCategoryMetaDescription = () => {
@@ -139,7 +140,12 @@ const getCategoryMetaDescription = () => {
     const categoryMetaDescription = categoryGetters.getMetaDescription(category.value);
     if (categoryMetaDescription) return categoryMetaDescription;
   }
-  return getMetaDescription();
+  // LACCICO: eigene Beschreibung je Sprache; nie die Vorgabe „Demo shop for PlentyONE Shop“ (modules/laccico)
+  const shopBeschreibung = getMetaDescription();
+  return (
+    laccicoSeitenMeta(route.path)?.beschreibung ||
+    (!shopBeschreibung || shopBeschreibung.startsWith('Demo shop') ? laccicoErsatzBeschreibung() : shopBeschreibung)
+  );
 };
 
 const getCategoryMetaKeywords = () => {
@@ -155,7 +161,7 @@ const getCategoryOgTitle = () => {
     const categoryMetaTitle = categoryGetters.getMetaTitle(category.value);
     if (categoryMetaTitle) return categoryMetaTitle;
   }
-  return getOgTitle() || getMetaTitle();
+  return laccicoSeitenMeta(route.path)?.titel || getOgTitle() || getMetaTitle();
 };
 
 const title = ref(getCategoryMetaTitle());
