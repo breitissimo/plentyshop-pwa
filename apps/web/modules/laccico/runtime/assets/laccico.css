@@ -234,9 +234,16 @@ main [data-testid='details-list'] details > summary.laccico-faq-aktiv {
 .block-wrapper:has([data-testid='navbar-top-desktop']) {
   z-index: 50;
 }
-li.laccico-nav-logo + li ~ li,
+/* Menuepunkte duerfen schrumpfen und zweizeilig umbrechen, wenn die Zeile nicht reicht (lange FR-Namen, N 21.11.2026) */
+li.laccico-nav-logo { flex-shrink: 0; }
 li.laccico-nav-logo ~ li {
-  flex-shrink: 0;
+  flex-shrink: 1;
+  min-width: 0;
+}
+ul:has(> li.laccico-nav-logo) > li:not(.laccico-nav-logo) [data-testid='category-button'] {
+  white-space: normal;
+  text-align: left;
+  line-height: 1.2;
 }
 ul:has(> li.laccico-nav-logo) {
   flex-wrap: nowrap !important;
@@ -249,6 +256,11 @@ ul:has(> li.laccico-nav-logo) [data-testid='category-button'] {
   gap: 4px;
   font-size: 14px;
   font-weight: 400;
+}
+/* Tablet quer / kleine Bildschirme (1024-1279 px): Menue passte nicht in die Zeile, rechte Punkte fehlten (N 21.11.2026) */
+@media (min-width: 1024px) and (max-width: 1279.98px) {
+  ul:has(> li.laccico-nav-logo) [data-testid='category-button'] { padding-left: 5px; padding-right: 5px; font-size: 12.5px; gap: 2px; }
+  ul:has(> li.laccico-nav-logo) #logo { width: 130px !important; max-width: 130px !important; }
 }
 
 /* Unter 1024 px gibt es keine Menuezeile: Leiste weiss mit Logo und dunklen Symbolen (wie Ceres am Handy) */
@@ -469,6 +481,8 @@ main :is([data-testid='item-text-block'], [data-testid='technical-data-block'], 
 .laccico-kartenkauf-fehler { font-size: 0.8rem; text-decoration: underline; }
 @media (max-width: 1023px) {
   .laccico-kategoriebaum { display: none; } /* Handy und Tablet-Hochformat (N 21.11.2026): Baum erreicht man über das Menü */
+  /* FAQ-Spalte (mit dem Baum) unter den Inhalt: erst Einleitung und Artikel, dann Fragen (N 21.11.2026) */
+  [data-testid='multi-grid-structure'] > div:has(.laccico-kategoriebaum) { order: 2; }
 }
 .laccico-kartenkauf button { white-space: nowrap; }
 .laccico-kartenkauf-zeile { flex-wrap: wrap; }
@@ -478,12 +492,25 @@ main :is([data-testid='item-text-block'], [data-testid='technical-data-block'], 
 /* Artikellisten auf Übersichtsseiten (z. B. Business & Elegante Schuhe) wie Ceres: 4 Artikel in einer Reihe, ohne Knopf */
 div:has(> [data-testid='recommended-block'] .laccico-listenkopf) [data-testid='product-slider'] {
   overflow: visible;
+  min-width: 0; /* sonst schieben Längenauswahl und Knopf die Reihe über den Rand (N 21.11.2026) */
+  width: 100%;
 }
 div:has(> [data-testid='recommended-block'] .laccico-listenkopf) [data-testid='product-slider'] > [data-testid='product-card'] {
   width: calc(25% - 12px);
   max-width: none;
+  min-width: 0;
   flex: 0 0 calc(25% - 12px);
 }
+@media (max-width: 767px) {
+  /* Handy: 2 x 2 statt 4 nebeneinander */
+  div:has(> [data-testid='recommended-block'] .laccico-listenkopf) [data-testid='product-slider'] { flex-wrap: wrap; }
+  div:has(> [data-testid='recommended-block'] .laccico-listenkopf) [data-testid='product-slider'] > [data-testid='product-card'] {
+    width: calc(50% - 8px);
+    flex: 0 0 calc(50% - 8px);
+  }
+}
+/* Zu breite Tabellen in FAQ-Antworten seitlich schiebbar statt die Seite zu verbreitern */
+details table { display: block; max-width: 100%; overflow-x: auto; }
 div:has(> [data-testid='recommended-block'] .laccico-listenkopf) [data-testid='product-slider'] > [data-testid='product-card']:nth-child(n + 5) {
   display: none;
 }
@@ -579,8 +606,9 @@ div:has(> [data-testid='laccico-preis-hinweis']) > :first-child { flex-shrink: 0
 header > [data-testid='navbar-top']:only-child { background-color: #f8f9fa !important; }
 
 /* Farbbalken (Titelleiste/Überschriftsleiste aus Ceres): große weiße Überschriften wie dort */
-[data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']) h2,
-[data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']) h3 { font-size: 1.7rem; line-height: 1.25; color: #fff; }
+/* Weiss nur auf dunklen Balken; helle Kaesten (Einleitung #fbfbf9, #f8f9fa) behalten dunkle Schrift (N 21.11.2026) */
+[data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']):not([style*='fbfbf9'],[style*='f8f9fa']) h2,
+[data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']):not([style*='fbfbf9'],[style*='f8f9fa']) h3 { font-size: 1.7rem; line-height: 1.25; color: #fff; }
 footer [data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']) h2,
 footer [data-testid='text-card']:is([style*='background-color:#'],[style*='background-color: #']) h3 { font-size: 1rem; }
 
