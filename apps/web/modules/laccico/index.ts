@@ -67,6 +67,10 @@ export default defineNuxtModule({
       '/laccico-finest-waxed-laces/agb': '/terms-and-conditions',
       '/en/laccico-finest-waxed-laces/terms-and-conditions': '/en/terms-and-conditions',
       '/fr/laccicolacetsfinscires/termes': '/fr/terms-and-conditions',
+      // Ceres-Kurzadresse der AGB (in der PWA sonst 404, geprüft 21.11.2026)
+      '/gtc': '/terms-and-conditions',
+      '/en/gtc': '/en/terms-and-conditions',
+      '/fr/gtc': '/fr/terms-and-conditions',
       '/laccico-finest-waxed-laces/info/kontakt': '/contact',
       '/en/laccico-finest-waxed-laces/info/contact': '/en/contact',
       '/fr/laccicolacetsfinscires/info/contact': '/fr/contact',
