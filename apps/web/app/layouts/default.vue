@@ -8,13 +8,13 @@
     <main>
       <slot />
     </main>
-    <!-- LACCICO: Händler-Bestellliste über dem Fuß, nur Kundenklasse 7 (N 23.11.2026) -->
-    <ClientOnly>
-      <LaccicoHaendlerListe />
-    </ClientOnly>
     <Cookiebar />
     <PreviewMode />
     <UiFooterBlocks />
+    <!-- LACCICO: Händler-Bestellliste als Leiste am unteren Rand, nur Kundenklasse 7 (N 23.11.2026) -->
+    <ClientOnly>
+      <LaccicoHaendlerListe />
+    </ClientOnly>
     <LazyQuickCheckout v-if="isOpen" :product="product" />
   </div>
 </template>

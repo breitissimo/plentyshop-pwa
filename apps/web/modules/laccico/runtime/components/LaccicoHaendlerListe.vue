@@ -1,10 +1,34 @@
 <template>
-  <section v-if="istHaendler" id="laccico-haendlerliste" class="laccico-haendlerliste" data-testid="laccico-haendlerliste">
-    <div class="laccico-haendlerliste-innen">
-      <h2 class="laccico-haendlerliste-titel">
-        {{ text.titel }}
-        <span v-if="zeilen.length" class="laccico-haendlerliste-zahl">({{ paare }} {{ text.paareGesamt }})</span>
-      </h2>
+  <div v-if="istHaendler" class="laccico-haendlerliste-platz" aria-hidden="true" />
+  <section
+    v-if="istHaendler"
+    id="laccico-haendlerliste"
+    class="laccico-haendlerliste z-sticky"
+    :class="{ 'ist-offen': offen, 'ist-neu': neuHinzu }"
+    :style="{ bottom: `${abstandUnten}px` }"
+    data-testid="laccico-haendlerliste"
+  >
+    <!-- Leiste: zu = nur diese Zeile, Klick oder Wischen nach oben öffnet nach oben (N 23.11.2026) -->
+    <button
+      type="button"
+      class="laccico-haendlerliste-leiste"
+      :aria-expanded="offen"
+      aria-controls="laccico-haendlerliste-inhalt"
+      data-testid="laccico-haendlerliste-leiste"
+      @click="umschalten"
+      @touchstart.passive="wischStart"
+      @touchend="wischEnde"
+    >
+      <span class="laccico-haendlerliste-griff" aria-hidden="true" />
+      <span class="laccico-haendlerliste-titel">{{ text.titel }}</span>
+      <span class="laccico-haendlerliste-zahl">
+        <template v-if="zeilen.length">{{ paare }} {{ text.menge }} · {{ format(summe) }}</template>
+        <template v-else>–</template>
+      </span>
+      <span class="laccico-haendlerliste-pfeil" aria-hidden="true">{{ offen ? '▾' : '▴' }}</span>
+    </button>
+
+    <div id="laccico-haendlerliste-inhalt" class="laccico-haendlerliste-innen" :inert="!offen">
       <p class="laccico-haendlerliste-hinweis">{{ text.hinweis }}</p>
 
       <p v-if="!zeilen.length" class="laccico-haendlerliste-leer">{{ text.leer }}</p>
@@ -127,7 +151,61 @@ const turnstileElement = ref();
 const notiz = ref('');
 const sendet = ref(false);
 
-onMounted(laden);
+// Leiste am unteren Rand: auf/zu per Klick oder Wischen; auf dem Handy über der unteren Navigationsleiste
+const offen = ref(false);
+const neuHinzu = ref(false);
+const abstandUnten = ref(0);
+let wischY: number | null = null;
+let neuZeit: ReturnType<typeof setTimeout> | undefined;
+
+const umschalten = () => {
+  offen.value = !offen.value;
+};
+
+const wischStart = (ereignis: TouchEvent) => {
+  wischY = ereignis.touches[0]?.clientY ?? null;
+};
+
+const wischEnde = (ereignis: TouchEvent) => {
+  const ende = ereignis.changedTouches[0]?.clientY;
+  if (wischY === null || ende === undefined) {
+    return;
+  }
+  const weg = ende - wischY;
+  wischY = null;
+  if (Math.abs(weg) < 30) {
+    return;
+  }
+  ereignis.preventDefault();
+  offen.value = weg < 0;
+};
+
+const abstandMessen = () => {
+  const leiste = document.querySelector<HTMLElement>('[data-testid="navbar-bottom"]');
+  abstandUnten.value = leiste && leiste.offsetParent !== null ? leiste.offsetHeight : 0;
+};
+
+// Neu hinzugefügt: Leiste kurz hervorheben, nicht aufklappen
+watch(zuletzt, () => {
+  neuHinzu.value = false;
+  clearTimeout(neuZeit);
+  requestAnimationFrame(() => {
+    neuHinzu.value = true;
+    neuZeit = setTimeout(() => (neuHinzu.value = false), 1200);
+  });
+});
+
+onMounted(() => {
+  laden();
+  abstandMessen();
+  setTimeout(abstandMessen, 1500);
+  window.addEventListener('resize', abstandMessen);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', abstandMessen);
+  clearTimeout(neuZeit);
+});
 
 const preisText = (z: LaccicoListenZeile) => {
   const preis = laccicoListenPreis(z);
@@ -271,22 +349,78 @@ const drucken = () => {
 </script>
 
 <style scoped>
+.laccico-haendlerliste-platz {
+  height: 52px;
+}
 .laccico-haendlerliste {
-  border-top: 1px solid #ddd;
+  position: fixed;
+  left: 0;
+  right: 0;
   background: #f7f6f3;
-  padding: 2rem 1rem;
+  border-top: 1px solid #d5d3cc;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.12);
+}
+.laccico-haendlerliste-leiste {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 1264px;
+  height: 52px;
+  margin: 0 auto;
+  padding: 6px 1rem 0;
+  text-align: left;
+  touch-action: none;
+}
+.laccico-haendlerliste-griff {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 40px;
+  height: 4px;
+  margin-left: -20px;
+  border-radius: 2px;
+  background: #b9b6ad;
+}
+.laccico-haendlerliste-titel {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+.laccico-haendlerliste-zahl {
+  flex: 1;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.laccico-haendlerliste-pfeil {
+  font-size: 1.2rem;
+}
+.laccico-haendlerliste.ist-neu {
+  animation: laccico-liste-neu 1.2s ease-out;
+}
+@keyframes laccico-liste-neu {
+  0% {
+    background: #ffe9a8;
+  }
+  100% {
+    background: #f7f6f3;
+  }
 }
 .laccico-haendlerliste-innen {
   max-width: 1264px;
+  max-height: 0;
   margin: 0 auto;
+  padding: 0 1rem;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
 }
-.laccico-haendlerliste-titel {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-.laccico-haendlerliste-zahl {
-  font-size: 1rem;
-  font-weight: 400;
+.laccico-haendlerliste.ist-offen .laccico-haendlerliste-innen {
+  max-height: 70vh;
+  padding: 0.5rem 1rem 1.25rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 .laccico-haendlerliste-hinweis,
 .laccico-haendlerliste-leer {
