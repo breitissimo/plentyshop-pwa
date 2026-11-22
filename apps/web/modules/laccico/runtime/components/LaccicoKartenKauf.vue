@@ -11,8 +11,8 @@
         @pointerdown="laden"
       >
         <option value="">{{ geladen ? text.waehlen : laedt ? '…' : text.waehlen }}</option>
-        <option v-for="o in optionen" :key="o.variationId" :value="String(o.variationId)" :disabled="!o.verkaeuflich">
-          {{ o.laenge }}{{ o.verkaeuflich ? '' : ' – ' + text.ausverkauft }}
+        <option v-for="o in optionen" :key="o.variationId" :value="String(o.variationId)" :disabled="!o.verkaeuflich && !istHaendler">
+          {{ o.laenge }}{{ o.verkaeuflich || istHaendler ? '' : ' – ' + text.ausverkauft }}
         </option>
       </select>
       <!-- Menge per Auswahl, ohne Tastatur (N 22.11.2026); 25/50/100 = Händlerstaffeln -->
@@ -24,7 +24,7 @@
       <UiButton size="sm" class="w-full" :disabled="!auswahl || sendet" data-testid="laccico-karte-warenkorb" @click="inWarenkorb">
         <template v-if="!sendet" #prefix><SfIconShoppingCart size="sm" /></template>
         <SfLoaderCircular v-if="sendet" size="sm" />
-        <span v-else>{{ text.kaufen }}</span>
+        <span v-else>{{ istHaendler ? haendlerText.aufListe : text.kaufen }}</span>
       </UiButton>
     </div>
     <NuxtLink v-if="fehler" :to="weiter" class="laccico-kartenkauf-fehler">{{ text.optionen }}</NuxtLink>
@@ -33,7 +33,10 @@
 
 <script setup lang="ts">
 import { SfIconShoppingCart, SfLoaderCircular } from '@storefront-ui/vue';
+import type { Product } from '@plentymarkets/shop-api';
 import { laccicoLaengenAus } from '../utils/laccicoLaenge';
+import { laccicoZeileAusProdukt, useLaccicoHaendler, useLaccicoHaendlerListe } from '../utils/laccicoHaendlerListe';
+import { useLaccicoHaendlerTexte } from '../utils/laccicoHaendlerTexte';
 import type { LaccicoLaengenOption } from '../utils/laccicoLaenge';
 
 /** Länge, Menge und Warenkorb direkt auf der Kategoriekachel (N 19.11.2026). */
@@ -42,6 +45,9 @@ const { addToCart } = useCart();
 const { send } = useNotification();
 const { locale } = useI18n();
 const { gewaehlt } = useLaccicoLaenge();
+const { istHaendler } = useLaccicoHaendler();
+const { hinzufuegen: aufHaendlerListe } = useLaccicoHaendlerListe();
+const haendlerText = useLaccicoHaendlerTexte();
 
 const TEXTE = {
   de: { laenge: 'Länge', waehlen: 'Länge', ausverkauft: 'nicht lieferbar', menge: 'Menge', kaufen: 'In den Warenkorb', optionen: 'Optionen anzeigen', danke: 'In den Warenkorb gelegt' },
@@ -83,16 +89,32 @@ watch(
   async (laenge) => {
     if (!laenge) return;
     await laden();
-    const treffer = optionen.value.find((o) => o.laenge === laenge && o.verkaeuflich);
+    const treffer = optionen.value.find((o) => o.laenge === laenge && (o.verkaeuflich || istHaendler.value));
     auswahl.value = treffer ? String(treffer.variationId) : '';
   },
   { immediate: import.meta.client },
 );
 
+/** Händler (Klasse 7): Variante mit Händlerstaffel laden und auf die Bestellliste setzen (N 23.11.2026). */
+const aufListe = async () => {
+  const antwort = await useSdk().plentysystems.getProduct({ id: String(props.itemId), variationId: auswahl.value });
+  const produkt = antwort?.data as Product | undefined;
+  if (!produkt) {
+    fehler.value = true;
+    return;
+  }
+  aufHaendlerListe(laccicoZeileAusProdukt(produkt, Number(menge.value)));
+  send({ message: haendlerText.value.aufListeOk, type: 'positive' });
+};
+
 const inWarenkorb = async () => {
   if (!auswahl.value) return;
   sendet.value = true;
   try {
+    if (istHaendler.value) {
+      await aufListe();
+      return;
+    }
     await addToCart({ productId: Number(auswahl.value), quantity: Math.max(1, Number(menge.value) || 1) });
     send({ message: text.value.danke, type: 'positive' });
   } finally {

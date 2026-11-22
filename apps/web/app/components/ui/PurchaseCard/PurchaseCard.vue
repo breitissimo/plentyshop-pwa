@@ -180,7 +180,7 @@
                     show-arrow
                   >
                     <UiButton
-                      :disabled="loading || !productGetters.isSalable(product)"
+                      :disabled="loading || (!istHaendler && !productGetters.isSalable(product))"
                       class="w-full h-full"
                       data-testid="add-to-cart"
                       size="lg"
@@ -189,7 +189,7 @@
                       <template #prefix>
                         <div v-if="!loading" class="flex row items-center">
                           <SfIconShoppingCart size="sm" />
-                          {{ t('common.actions.addToCart') }}
+                          {{ istHaendler ? haendlerText.aufListe : t('common.actions.addToCart') }}
                         </div>
                         <div v-else>
                           <SfLoaderCircular size="sm" />
@@ -208,7 +208,7 @@
                     </template>
                   </i18n-t>
                 </div>
-                <template v-if="showPayPalButtons">
+                <template v-if="showPayPalButtons && !istHaendler">
                   <PayPalExpressButton
                     class="mt-4"
                     location="itemPage"
@@ -248,6 +248,12 @@
 </template>
 
 <script lang="ts" setup>
+import {
+  laccicoZeileAusProdukt,
+  useLaccicoHaendler,
+  useLaccicoHaendlerListe,
+} from '~~/modules/laccico/runtime/utils/laccicoHaendlerListe';
+import { useLaccicoHaendlerTexte } from '~~/modules/laccico/runtime/utils/laccicoHaendlerTexte';
 import LaccicoVersandkostenLink from '~~/modules/laccico/runtime/components/LaccicoVersandkostenLink.vue';
 import { productGetters, reviewGetters, productBundleGetters } from '@plentymarkets/shop-api';
 import { SfCounter, SfRating, SfIconShoppingCart, SfLoaderCircular, SfTooltip } from '@storefront-ui/vue';
@@ -337,6 +343,9 @@ const {
 } = useValidatorAggregator('attributes');
 const { clear, send } = useNotification();
 const { addToCart, loading } = useCart();
+const { istHaendler } = useLaccicoHaendler();
+const { hinzufuegen: aufHaendlerListe } = useLaccicoHaendlerListe();
+const haendlerText = useLaccicoHaendlerTexte();
 const quantitySelectorValue = ref(productGetters.getMinimumOrderQuantity(props?.product));
 const { isWishlistItem } = useWishlist();
 const { openQuickCheckout } = useQuickCheckout();
@@ -421,6 +430,13 @@ const handleAddToCart = async (quickCheckout = true) => {
   if (!getCombination()) {
     send({ message: t('product.attributes.notValidVariation'), type: 'negative' });
     return false;
+  }
+
+  // LACCICO: Händler (Klasse 7) bestellen über die Bestellliste statt über den Warenkorb (N 23.11.2026)
+  if (istHaendler.value) {
+    aufHaendlerListe(laccicoZeileAusProdukt(props.product, Number(quantitySelectorValue.value)));
+    send({ message: haendlerText.value.aufListeOk, type: 'positive' });
+    return true;
   }
 
   const addedToCart = await addToCart({

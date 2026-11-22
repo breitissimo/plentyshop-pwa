@@ -18,3 +18,24 @@ export type LaccicoBestsellerDatei = {
   zeitraumMonate: number;
   zeilen: { kategorie: number; artikel: LaccicoBestsellerArtikel[] }[];
 };
+
+/** Händler-Bestellliste (N 23.11.2026): Staffelstufe netto je Paar */
+export type LaccicoListenStaffel = { ab: number; preis: number };
+
+/** Eine Zeile der Händler-Bestellliste */
+export type LaccicoListenZeile = {
+  variationId: number;
+  itemId: number;
+  nummer: string;
+  name: string;
+  laenge: string;
+  menge: number;
+  /** Staffel des Händlers (netto je Paar), aufsteigend nach Menge */
+  staffel: LaccicoListenStaffel[];
+};
+
+/** Staffel-Eintrag, wie ihn der Shop liefert (getGraduatedList) */
+export type LaccicoShopStaffel = { quantity: string | number; price: number };
+
+/** Kunde mit Kundenklasse */
+export type LaccicoKundeMitKlasse = { classId?: number | null };
