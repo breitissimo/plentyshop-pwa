@@ -24,6 +24,7 @@ const TEXTE = {
     betreff: 'Händler-Bestellliste',
     offen: 'Preis folgt',
     paareGesamt: 'Paar gesamt',
+    pruefung: 'Einen Moment bitte, die Sicherheitsprüfung läuft noch. Versuchen Sie es in ein paar Sekunden erneut.',
   },
   en: {
     aufListe: 'Add to order list',
@@ -49,6 +50,7 @@ const TEXTE = {
     betreff: 'Trade order list',
     offen: 'price to follow',
     paareGesamt: 'pairs in total',
+    pruefung: 'One moment please, the security check is still running. Please try again in a few seconds.',
   },
   fr: {
     aufListe: 'Ajouter à la liste de commande',
@@ -74,6 +76,7 @@ const TEXTE = {
     betreff: 'Liste de commande revendeur',
     offen: 'prix à suivre',
     paareGesamt: 'paires au total',
+    pruefung: 'Un instant, la vérification de sécurité est en cours. Veuillez réessayer dans quelques secondes.',
   },
 } as const;
 

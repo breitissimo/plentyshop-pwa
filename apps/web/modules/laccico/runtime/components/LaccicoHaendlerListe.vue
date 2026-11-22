@@ -82,7 +82,7 @@
         />
 
         <div class="laccico-haendlerliste-knoepfe">
-          <UiButton :disabled="sendet || (!!turnstileSchluessel && !turnstile)" data-testid="laccico-haendlerliste-senden" @click="absenden">
+          <UiButton :disabled="sendet" data-testid="laccico-haendlerliste-senden" @click="absenden">
             <SfLoaderCircular v-if="sendet" size="sm" />
             <span v-else>{{ text.absenden }}</span>
           </UiButton>
@@ -163,6 +163,11 @@ const listeAlsText = () => {
 
 const absenden = async () => {
   if (!zeilen.value.length || !user.value) {
+    return;
+  }
+  // Spamschutz noch nicht bestanden: erklären statt grauem Knopf (N 23.11.2026)
+  if (turnstileSchluessel && !turnstile.value) {
+    send({ type: 'warning', message: text.value.pruefung });
     return;
   }
   sendet.value = true;
