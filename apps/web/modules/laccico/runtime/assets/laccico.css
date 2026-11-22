@@ -642,19 +642,3 @@ footer [data-testid='text-card']:is([style*='background-color:#'],[style*='backg
 
 .laccico-kategoriebaum li a { padding-top: 0.3rem; padding-bottom: 0.3rem; }
 
-
-/* Handy und Tablet-Ansicht bis 1039 px (N 22.11.2026): Plaketten und Etiketten liegen unter dem Kachelbild statt darüber */
-@media (max-width: 1039px) {
-  .laccico-kachelbild { display: flex; flex-direction: column; }
-  .laccico-kachelbild > .laccico-plaketten,
-  .laccico-kachelbild > .absolute:not(button) {
-    position: static !important;
-    order: 2;
-    margin: 0.35rem 0.5rem 0 !important;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 4px;
-  }
-  .laccico-kachelbild > div:not(.absolute) { order: 1; }
-  .laccico-kachelbild > button.absolute { order: 1; }
-}
