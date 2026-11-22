@@ -593,3 +593,11 @@ footer [data-testid='text-card']:is([style*='background-color:#'],[style*='backg
 
 /* Kopfleisten der Artikellisten wie die grauen Titelbalken: 21,6 px, fett, ohne Grossbuchstaben (21.11.2026) */
 .rte-prose .laccico-listenkopf h2 { font-size: 1.35rem !important; font-weight: 700 !important; text-transform: none !important; line-height: 1.25 !important; }
+
+/* Versandkosten (648): die drei Abschnittsbalken nebeneinander gleich hoch, Text mittig (N 22.11.2026) */
+@media (min-width: 768px) {
+  [data-laccico-versandbalken] { min-height: calc(2.5em + 16px); display: flex; align-items: center; }
+}
+@media (min-width: 768px) and (max-width: 1279px) {
+  [data-laccico-versandbalken] { min-height: calc(3.75em + 16px); }
+}
