@@ -1,7 +1,10 @@
 <template>
   <!-- Megamenü „Form & Durchmesser“ (Skizze N 22.11.2026): je Linie eine Zeile mit Bestsellern und Bestandstipps, nur Hauptbild und Titel;
-       links Zeilenname + Unterkategorien, rechts „Alle ansehen“, unten die übrigen Kategorien des Zweigs -->
+       oben die Kategorien des Zweigs, links Zeilenname, rechts „Alle ansehen“ -->
   <div class="col-span-4 laccico-bestseller" data-testid="laccico-megamenue-bestseller">
+    <div v-if="weitere.length" class="laccico-bestseller-weitere">
+      <NuxtLink v-for="k in weitere" :key="k.id" :to="localePath(linkFuer(k))">{{ categoryTreeGetters.getName(k) }}</NuxtLink>
+    </div>
     <div v-for="zeile in zeilen" :key="zeile.kategorie" class="laccico-bestseller-zeile">
       <div class="laccico-bestseller-kopf">
         <NuxtLink :to="localePath(linkFuer(zeile.knoten))" class="laccico-bestseller-linie">{{ zeile.titel }}</NuxtLink>
@@ -29,9 +32,6 @@
         </NuxtLink>
       </div>
       <NuxtLink :to="localePath(linkFuer(zeile.knoten))" class="laccico-bestseller-alle">{{ text.alle }}</NuxtLink>
-    </div>
-    <div v-if="weitere.length" class="laccico-bestseller-weitere">
-      <NuxtLink v-for="k in weitere" :key="k.id" :to="localePath(linkFuer(k))">{{ categoryTreeGetters.getName(k) }}</NuxtLink>
     </div>
   </div>
 </template>
@@ -69,7 +69,7 @@ function suche(knoten: CategoryTreeItem[], id: number): CategoryTreeItem | undef
   return undefined;
 }
 
-/** Zeilen in der Reihenfolge der Datei (R2, R3, F3, F4, F6); Name und Unterkategorien aus dem Kategoriebaum der Sprache. */
+/** Zeilen in der Reihenfolge der Datei (R2-CS, R2-SL, R3, F3, F4, F6-CS, F6-XR); Name und Unterkategorien aus dem Kategoriebaum der Sprache. */
 const zeilen = computed(() =>
   menue.zeilen.flatMap((z) => {
     const knoten = suche(props.knoten.children ?? [], z.kategorie);
@@ -84,6 +84,6 @@ const zeilen = computed(() =>
   }),
 );
 
-/** Übrige Kategorien des Zweigs „Form & Durchmesser“ (Überkategorien, 3er Pack, Restposten) als Leiste unten. */
+/** Übrige Kategorien des Zweigs „Form & Durchmesser“ (Überkategorien, 3er Pack, Restposten) als Leiste oben. */
 const weitere = computed(() => (props.knoten.children ?? []).filter((k) => categoryTreeGetters.getName(k)));
 </script>

@@ -3,7 +3,7 @@
   "zeitraumMonate": 12,
   "zeilen": [
     {
-      "kategorie": 734,
+      "kategorie": 709,
       "artikel": [
         {
           "id": 300,
@@ -37,23 +37,6 @@
             "de": "/form-durchmesser/rundsenkel-nach-durchmesser/rundsenkel-2-mm/r2-cs_287",
             "en": "/shape-diameter/round-laces-by-diameter/round-laces-2-mm/r2-cs_287",
             "fr": "/forme-et-diametre/lacets-ronds-classes-par-diametre/lacets-ronds-de-2-mm/r2-cs_287"
-          }
-        },
-        {
-          "id": 6290,
-          "tipp": false,
-          "paare": 111,
-          "bestand": 35,
-          "bild": "https://pics.laccico.com/item/images/6290/middle/6290-0482CC-0482CC-0001-Nero.jpg",
-          "titel": {
-            "de": "Splendore Nero (Schwarz)",
-            "en": "Splendore Nero (Black)",
-            "fr": "Splendore Nero (Noir)"
-          },
-          "pfad": {
-            "de": "/form-durchmesser/rundsenkel-nach-durchmesser/rundsenkel-2-mm/r2-sl_6290",
-            "en": "/shape-diameter/round-laces-by-diameter/round-laces-2-mm/r2-sl_6290",
-            "fr": "/forme-et-diametre/lacets-ronds-classes-par-diametre/lacets-ronds-de-2-mm/r2-sl_6290"
           }
         },
         {
@@ -108,6 +91,23 @@
           }
         },
         {
+          "id": 283,
+          "tipp": false,
+          "paare": 75,
+          "bestand": 689,
+          "bild": "https://pics.laccico.com/item/images/283/middle/283-0482C-283---0.jpg",
+          "titel": {
+            "de": "Mittelbraun",
+            "en": "Medium Brown",
+            "fr": "Marron moyen"
+          },
+          "pfad": {
+            "de": "/form-durchmesser/rundsenkel-nach-durchmesser/rundsenkel-2-mm/r2-cs_283",
+            "en": "/shape-diameter/round-laces-by-diameter/round-laces-2-mm/r2-cs_283",
+            "fr": "/forme-et-diametre/lacets-ronds-classes-par-diametre/lacets-ronds-de-2-mm/r2-cs_283"
+          }
+        },
+        {
           "id": 430,
           "tipp": true,
           "paare": 6,
@@ -139,6 +139,147 @@
             "de": "/form-durchmesser/rundsenkel-nach-durchmesser/rundsenkel-2-mm/r2-cs_290",
             "en": "/shape-diameter/round-laces-by-diameter/round-laces-2-mm/r2-cs_290",
             "fr": "/forme-et-diametre/lacets-ronds-classes-par-diametre/lacets-ronds-de-2-mm/r2-cs_290"
+          }
+        }
+      ]
+    },
+    {
+      "kategorie": 724,
+      "artikel": [
+        {
+          "id": 6290,
+          "tipp": false,
+          "paare": 111,
+          "bestand": 35,
+          "bild": "https://pics.laccico.com/item/images/6290/middle/6290-0482CC-0482CC-0001-Nero.jpg",
+          "titel": {
+            "de": "Nero (Schwarz)",
+            "en": "Nero (Black)",
+            "fr": "Nero (Noir)"
+          },
+          "pfad": {
+            "de": "/form-durchmesser/rundsenkel-nach-durchmesser/rundsenkel-2-mm/r2-sl_6290",
+            "en": "/shape-diameter/round-laces-by-diameter/round-laces-2-mm/r2-sl_6290",
+            "fr": "/forme-et-diametre/lacets-ronds-classes-par-diametre/lacets-ronds-de-2-mm/r2-sl_6290"
+          }
+        },
+        {
+          "id": 6297,
+          "tipp": false,
+          "paare": 29,
+          "bestand": 63,
+          "bild": "https://pics.laccico.com/item/images/6297/middle/6297-0482CC-0482CC-0005-Pain-Brule.jpg",
+          "titel": {
+            "de": "Pain Brule (Brotkruste)",
+            "en": "Pain Brule (bread crust)",
+            "fr": "Pain brûlé (croûte de pain)"
+          },
+          "pfad": {
+            "de": "/form-durchmesser/rundsenkel-nach-durchmesser/rundsenkel-2-mm/r2-sl_6297",
+            "en": "/shape-diameter/round-laces-by-diameter/round-laces-2-mm/r2-sl_6297",
+            "fr": "/forme-et-diametre/lacets-ronds-classes-par-diametre/lacets-ronds-de-2-mm/r2-sl_6297"
+          }
+        },
+        {
+          "id": 6298,
+          "tipp": false,
+          "paare": 22,
+          "bestand": 68,
+          "bild": "https://pics.laccico.com/item/images/6298/middle/6298-0482CC-0482CC-0006-Marone-8.jpg",
+          "titel": {
+            "de": "Marrone 8 (Braun 8)",
+            "en": "Marrone 8 (Brown 8)",
+            "fr": "Marrone 8 (Brown 8)"
+          },
+          "pfad": {
+            "de": "/form-durchmesser/rundsenkel-nach-durchmesser/rundsenkel-2-mm/r2-sl_6298",
+            "en": "/shape-diameter/round-laces-by-diameter/round-laces-2-mm/r2-sl_6298",
+            "fr": "/forme-et-diametre/lacets-ronds-classes-par-diametre/lacets-ronds-de-2-mm/r2-sl_6298"
+          }
+        },
+        {
+          "id": 6328,
+          "tipp": false,
+          "paare": 18,
+          "bestand": 90,
+          "bild": "https://pics.laccico.com/item/images/6328/middle/6328-0482CC-0482CC-0036-Cielo.jpg",
+          "titel": {
+            "de": "Cielo (Hellblau)",
+            "en": "Cielo (Light Blue)",
+            "fr": "Cielo (Bleu clair)"
+          },
+          "pfad": {
+            "de": "/form-durchmesser/rundsenkel-nach-durchmesser/rundsenkel-2-mm/r2-sl_6328",
+            "en": "/shape-diameter/round-laces-by-diameter/round-laces-2-mm/r2-sl_6328",
+            "fr": "/forme-et-diametre/lacets-ronds-classes-par-diametre/lacets-ronds-de-2-mm/r2-sl_6328"
+          }
+        },
+        {
+          "id": 6294,
+          "tipp": false,
+          "paare": 18,
+          "bestand": 83,
+          "bild": "https://pics.laccico.com/item/images/6294/middle/6294-0482CC-Testa-Di-Moro.jpg",
+          "titel": {
+            "de": "Testa di Moro (Basisbraun)",
+            "en": "Testa di Moro (base brown)",
+            "fr": "Testa di Moro (base marron)"
+          },
+          "pfad": {
+            "de": "/form-durchmesser/rundsenkel-nach-durchmesser/rundsenkel-2-mm/r2-sl_6294",
+            "en": "/shape-diameter/round-laces-by-diameter/round-laces-2-mm/r2-sl_6294",
+            "fr": "/forme-et-diametre/lacets-ronds-classes-par-diametre/lacets-ronds-de-2-mm/r2-sl_6294"
+          }
+        },
+        {
+          "id": 6296,
+          "tipp": false,
+          "paare": 18,
+          "bestand": 51,
+          "bild": "https://pics.laccico.com/item/images/6296/middle/6296-0482CC-0482CC-0004-Ruggine.jpg",
+          "titel": {
+            "de": "Ruggine (Rost)",
+            "en": "Ruggine (Rust)",
+            "fr": "Ruggine (Rouille)"
+          },
+          "pfad": {
+            "de": "/form-durchmesser/rundsenkel-nach-durchmesser/rundsenkel-2-mm/r2-sl_6296",
+            "en": "/shape-diameter/round-laces-by-diameter/round-laces-2-mm/r2-sl_6296",
+            "fr": "/forme-et-diametre/lacets-ronds-classes-par-diametre/lacets-ronds-de-2-mm/r2-sl_6296"
+          }
+        },
+        {
+          "id": 6293,
+          "tipp": true,
+          "paare": 9,
+          "bestand": 183,
+          "bild": "https://pics.laccico.com/item/images/6293/middle/6293-0482CC-0482CC-0000-Bianco.jpg",
+          "titel": {
+            "de": "Bianco (Weiß)",
+            "en": "Bianco (White)",
+            "fr": "Bianco (Blanc)"
+          },
+          "pfad": {
+            "de": "/form-durchmesser/rundsenkel-nach-durchmesser/rundsenkel-2-mm/r2-sl_6293",
+            "en": "/shape-diameter/round-laces-by-diameter/round-laces-2-mm/r2-sl_6293",
+            "fr": "/forme-et-diametre/lacets-ronds-classes-par-diametre/lacets-ronds-de-2-mm/r2-sl_6293"
+          }
+        },
+        {
+          "id": 6316,
+          "tipp": true,
+          "paare": 0,
+          "bestand": 119,
+          "bild": "https://pics.laccico.com/item/images/6316/middle/6316-0482CC-0482CC-0024-Senape.jpg",
+          "titel": {
+            "de": "Senape (Senf)",
+            "en": "Senape (Mustard)",
+            "fr": "Senape (Moutarde)"
+          },
+          "pfad": {
+            "de": "/form-durchmesser/rundsenkel-nach-durchmesser/rundsenkel-2-mm/r2-sl_6316",
+            "en": "/shape-diameter/round-laces-by-diameter/round-laces-2-mm/r2-sl_6316",
+            "fr": "/forme-et-diametre/lacets-ronds-classes-par-diametre/lacets-ronds-de-2-mm/r2-sl_6316"
           }
         }
       ]
@@ -567,7 +708,7 @@
       ]
     },
     {
-      "kategorie": 738,
+      "kategorie": 705,
       "artikel": [
         {
           "id": 522,
@@ -703,6 +844,147 @@
             "de": "/form-durchmesser/flachsenkel-nach-breite/flachsenkel-6-mm/f6cs_372",
             "en": "/shape-diameter/flat-laces-by-width/flat-laces-6-mm/f6cs_372",
             "fr": "/forme-et-diametre/lacets-plats-classes-par-largeur/lacets-plats-de-6-mm/f6cs_372"
+          }
+        }
+      ]
+    },
+    {
+      "kategorie": 702,
+      "artikel": [
+        {
+          "id": 11772,
+          "tipp": false,
+          "paare": 15,
+          "bestand": 376,
+          "bild": "https://pics.laccico.com/item/images/11772/middle/11772-F6-XR-F6-XR-0009-ANTRAZIT2.jpg",
+          "titel": {
+            "de": "Anthrazit",
+            "en": "Anthracite",
+            "fr": "anthracite"
+          },
+          "pfad": {
+            "de": "/form-durchmesser/flachsenkel-nach-breite/flachsenkel-6-mm/f6xr_11772",
+            "en": "/shape-diameter/flat-laces-by-width/flat-laces-6-mm/f6xr_11772",
+            "fr": "/forme-et-diametre/lacets-plats-classes-par-largeur/lacets-plats-de-6-mm/f6xr_11772"
+          }
+        },
+        {
+          "id": 11770,
+          "tipp": false,
+          "paare": 14,
+          "bestand": 216,
+          "bild": "https://pics.laccico.com/item/images/11770/middle/11770-0479C6-F6-XR-0008-WEISS.jpg",
+          "titel": {
+            "de": "Weiß",
+            "en": "White",
+            "fr": "Blancs"
+          },
+          "pfad": {
+            "de": "/form-durchmesser/flachsenkel-nach-breite/flachsenkel-6-mm/f6xr_11770",
+            "en": "/shape-diameter/flat-laces-by-width/flat-laces-6-mm/f6xr_11770",
+            "fr": "/forme-et-diametre/lacets-plats-classes-par-largeur/lacets-plats-de-6-mm/f6xr_11770"
+          }
+        },
+        {
+          "id": 11769,
+          "tipp": false,
+          "paare": 10,
+          "bestand": 306,
+          "bild": "https://pics.laccico.com/item/images/11769/middle/11769-0479C6-F6-XR-0010-SCHWARZ.jpg",
+          "titel": {
+            "de": "Schwarz",
+            "en": "Black",
+            "fr": "Noirs"
+          },
+          "pfad": {
+            "de": "/form-durchmesser/flachsenkel-nach-breite/flachsenkel-6-mm/f6xr_11769",
+            "en": "/shape-diameter/flat-laces-by-width/flat-laces-6-mm/f6xr_11769",
+            "fr": "/forme-et-diametre/lacets-plats-classes-par-largeur/lacets-plats-de-6-mm/f6xr_11769"
+          }
+        },
+        {
+          "id": 11767,
+          "tipp": false,
+          "paare": 9,
+          "bestand": 379,
+          "bild": "https://pics.laccico.com/item/images/11767/middle/11767-0479C6-F6-XR-0007-DUNKELBRAUN.jpg",
+          "titel": {
+            "de": "Dunkelbraun",
+            "en": "Dark Brown",
+            "fr": "marron foncé"
+          },
+          "pfad": {
+            "de": "/form-durchmesser/flachsenkel-nach-breite/flachsenkel-6-mm/f6xr_11767",
+            "en": "/shape-diameter/flat-laces-by-width/flat-laces-6-mm/f6xr_11767",
+            "fr": "/forme-et-diametre/lacets-plats-classes-par-largeur/lacets-plats-de-6-mm/f6xr_11767"
+          }
+        },
+        {
+          "id": 11762,
+          "tipp": false,
+          "paare": 8,
+          "bestand": 385,
+          "bild": "https://pics.laccico.com/item/images/11762/middle/11762-0479C6-F6-XR-0004-BEIGE.jpg",
+          "titel": {
+            "de": "Beige",
+            "en": "Beige",
+            "fr": "Beige"
+          },
+          "pfad": {
+            "de": "/form-durchmesser/flachsenkel-nach-breite/flachsenkel-6-mm/f6xr_11762",
+            "en": "/shape-diameter/flat-laces-by-width/flat-laces-6-mm/f6xr_11762",
+            "fr": "/forme-et-diametre/lacets-plats-classes-par-largeur/lacets-plats-de-6-mm/f6xr_11762"
+          }
+        },
+        {
+          "id": 11765,
+          "tipp": false,
+          "paare": 7,
+          "bestand": 388,
+          "bild": "https://pics.laccico.com/item/images/11765/middle/11765-0479C6-F6-XR-0006-HELLBRAUN.jpg",
+          "titel": {
+            "de": "Hellbraun",
+            "en": "Light Brown",
+            "fr": "marron clair"
+          },
+          "pfad": {
+            "de": "/form-durchmesser/flachsenkel-nach-breite/flachsenkel-6-mm/f6xr_11765",
+            "en": "/shape-diameter/flat-laces-by-width/flat-laces-6-mm/f6xr_11765",
+            "fr": "/forme-et-diametre/lacets-plats-classes-par-largeur/lacets-plats-de-6-mm/f6xr_11765"
+          }
+        },
+        {
+          "id": 11761,
+          "tipp": true,
+          "paare": 3,
+          "bestand": 396,
+          "bild": "https://pics.laccico.com/item/images/11761/middle/11761-0479C6-F6-XR-0000-VERKEHRS-GELB.jpg",
+          "titel": {
+            "de": "Verkehrsgelb",
+            "en": "Traffic Yellow",
+            "fr": "Jaune signalisation"
+          },
+          "pfad": {
+            "de": "/form-durchmesser/flachsenkel-nach-breite/flachsenkel-6-mm/f6xr_11761",
+            "en": "/shape-diameter/flat-laces-by-width/flat-laces-6-mm/f6xr_11761",
+            "fr": "/forme-et-diametre/lacets-plats-classes-par-largeur/lacets-plats-de-6-mm/f6xr_11761"
+          }
+        },
+        {
+          "id": 11768,
+          "tipp": true,
+          "paare": 2,
+          "bestand": 396,
+          "bild": "https://pics.laccico.com/item/images/11768/middle/11768-0479C6-F6-XR-0002-BLAU.jpg",
+          "titel": {
+            "de": "Blau",
+            "en": "Blue",
+            "fr": "bleus"
+          },
+          "pfad": {
+            "de": "/form-durchmesser/flachsenkel-nach-breite/flachsenkel-6-mm/f6xr_11768",
+            "en": "/shape-diameter/flat-laces-by-width/flat-laces-6-mm/f6xr_11768",
+            "fr": "/forme-et-diametre/lacets-plats-classes-par-largeur/lacets-plats-de-6-mm/f6xr_11768"
           }
         }
       ]
