@@ -242,6 +242,7 @@ import {
 } from '@storefront-ui/vue';
 import { unrefElement } from '@vueuse/core';
 import { type CategoryTreeItem, categoryTreeGetters } from '@plentymarkets/shop-api';
+import { laccicoMenueFuerKunde, useLaccicoHaendler } from '~~/modules/laccico/runtime/utils/laccicoHaendlerListe';
 import type { NavigationBlockProps } from './types';
 import LaccicoMegaMenueKacheln from '~~/modules/laccico/runtime/components/LaccicoMegaMenueKacheln.vue';
 import LaccicoMegaMenueBanner from '~~/modules/laccico/runtime/components/LaccicoMegaMenueBanner.vue';
@@ -284,7 +285,10 @@ const { referenceRef, floatingRef, style } = useDropdown({
 
 const isUsingTouch = ref(false);
 const lastTouchTime = ref(0);
-const categoryTree = ref(categoryTreeGetters.getTree(props.categories));
+// LACCICO: Händler (Klasse 7) sehen im Menü nur Farbwelten und Form & Durchmesser (N 23.11.2026)
+const { istHaendler } = useLaccicoHaendler();
+const menueBaum = (categories: CategoryTreeItem[]) => laccicoMenueFuerKunde(categoryTreeGetters.getTree(categories), istHaendler.value);
+const categoryTree = ref(menueBaum(props.categories));
 const drawerReference = ref();
 const megaMenuReference = ref();
 const triggerReference = ref();
@@ -547,9 +551,9 @@ onNuxtReady(async () => {
 const resolvedCategories = computed(() => (props.categories.length > 0 ? props.categories : fetchedCategoryTree.value));
 
 watch(
-  resolvedCategories,
-  (categories: CategoryTreeItem[]) => {
-    categoryTree.value = categoryTreeGetters.getTree(categories);
+  [resolvedCategories, istHaendler],
+  ([categories]) => {
+    categoryTree.value = menueBaum(categories);
     setCategory(categoryTree.value);
   },
   { immediate: true },

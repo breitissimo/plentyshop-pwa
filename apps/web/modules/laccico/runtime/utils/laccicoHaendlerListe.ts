@@ -48,6 +48,13 @@ export const laccicoZeileAusProdukt = (produkt: Product, menge: number): Laccico
   };
 };
 
+/** Oberkategorien im Menü für Händler (N 23.11.2026): 727 Form & Durchmesser, 731 Farbwelten entdecken */
+export const LACCICO_HAENDLER_MENUE = [727, 731];
+
+/** Menübaum je Kunde: Händler sehen nur die freigegebenen Oberkategorien, alle anderen den ganzen Baum. */
+export const laccicoMenueFuerKunde = <T extends { id: number }>(baum: T[], istHaendler: boolean): T[] =>
+  istHaendler ? baum.filter((k) => LACCICO_HAENDLER_MENUE.includes(Number(k.id))) : baum;
+
 /** Ist der angemeldete Kunde ein freigeschalteter Händler (Klasse 7)? */
 export const useLaccicoHaendler = () => {
   const { user } = useCustomer();
