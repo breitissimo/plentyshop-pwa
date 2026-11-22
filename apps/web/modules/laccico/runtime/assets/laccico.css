@@ -720,17 +720,23 @@ body:has(.laccico-kategoriebaum) main .max-w-screen-3xl:has([data-testid='multi-
 .laccico-kategoriebaum { margin-left: -6px; }
 .laccico-kategoriebaum li a { padding-left: 6px; }
 
-/* Megamenü „Form & Durchmesser“: je Linie eine Zeile Bestseller, Name der Linie links, Rollenbilder auf Weiß (Skizze N 22.11.2026) */
+/* Megamenü „Form & Durchmesser“: je Linie eine Zeile (Name + Unterkategorien | 8 Artikel | Alle ansehen), unten weitere Kategorien (Skizze N 22.11.2026) */
 .laccico-bestseller { display: flex; flex-direction: column; gap: 0.35rem; max-width: 1264px; width: 100%; margin: 0 auto; }
-.laccico-bestseller-zeile { display: grid; grid-template-columns: 10rem minmax(0, 1fr); align-items: center; gap: 1rem; padding-bottom: 0.35rem; border-bottom: 1px solid #eee; }
-.laccico-bestseller-zeile:last-child { border-bottom: 0; padding-bottom: 0; }
+.laccico-bestseller-zeile { display: grid; grid-template-columns: 11rem minmax(0, 1fr) auto; align-items: center; gap: 1rem; padding-bottom: 0.35rem; border-bottom: 1px solid #eee; }
+.laccico-bestseller-kopf { display: flex; flex-direction: column; gap: 0.2rem; }
 .laccico-bestseller-linie { font-weight: 600; font-size: 0.95rem; color: #333; text-decoration: none; }
-.laccico-bestseller-linie:hover { text-decoration: underline; }
+.laccico-bestseller-linie:hover, .laccico-bestseller-unter a:hover, .laccico-bestseller-weitere a:hover { text-decoration: underline; }
+.laccico-bestseller-unter { display: flex; flex-wrap: wrap; gap: 0.15rem 0.75rem; font-size: 0.8rem; }
+.laccico-bestseller-unter a { color: #555; text-decoration: none; }
 .laccico-bestseller-reihe { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 0.75rem; min-height: 5.75rem; }
 .laccico-bestseller-kachel { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #333; }
 .laccico-bestseller-bild { display: block; width: 4rem; height: 4rem; overflow: hidden; }
 .laccico-bestseller-bild img { width: 100%; height: 100%; object-fit: contain; }
 .laccico-bestseller-titel { margin-top: 0.25rem; font-size: 0.75rem; line-height: 1.25; text-align: center; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .laccico-bestseller-kachel:hover .laccico-bestseller-titel { text-decoration: underline; }
+.laccico-bestseller-alle { white-space: nowrap; font-size: 0.85rem; padding: 0.35rem 0.9rem; border: 1px solid #4c595d; color: #4c595d; border-radius: 4px; text-decoration: none; }
+.laccico-bestseller-alle:hover { background: #4c595d; color: #fff; }
+.laccico-bestseller-weitere { display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; padding-top: 0.4rem; font-size: 0.85rem; font-weight: 500; }
+.laccico-bestseller-weitere a { color: #333; text-decoration: none; }
 /* Bestseller-Menü darf bis zum unteren Fensterrand reichen (sonst rollt es schon bei 800 px Fensterhöhe) */
 div:has(> [data-testid='laccico-megamenue-bestseller']) { max-height: calc(100vh - var(--laccico-kopf-hoehe, 136px) - 1rem) !important; }
