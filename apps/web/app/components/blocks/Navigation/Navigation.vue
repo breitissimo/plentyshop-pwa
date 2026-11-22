@@ -129,21 +129,18 @@
               isOpen && activeNode.length === 1 && activeNode[0] === menuNode.id && laccicoBannerVon(menuNode)
             "
             :key="'banner-' + menuNode.id"
-            :style="{
-              ...style,
-              left: laccicoBannerMitte + 'px',
-              right: 'auto',
-              transform: 'translateX(-50%)',
-              backgroundColor: resolvedContent.color.backgroundColor || 'white',
-            }"
-            class="hidden @md:block shadow-lg p-4 rounded-b-md outline-none z-sticky"
+            :style="{ ...style, backgroundColor: resolvedContent.color.backgroundColor || 'white' }"
+            class="hidden @md:block shadow-lg p-6 pt-5 left-0 right-0 outline-none z-sticky"
             @keydown.esc="focusTrigger(index)"
           >
-            <LaccicoMegaMenueBanner
-              :bild="laccicoBannerVon(menuNode)"
-              :name="categoryTreeGetters.getName(menuNode)"
-              :link="localePath(generateCategoryLink(menuNode))"
-            />
+            <!-- Fläche über die ganze Breite wie die übrigen Menüs, Bild direkt unter dem Menüpunkt (N 22.11.2026) -->
+            <div class="w-fit" :style="{ marginLeft: laccicoBannerAbstand + 'px' }">
+              <LaccicoMegaMenueBanner
+                :bild="laccicoBannerVon(menuNode)"
+                :name="categoryTreeGetters.getName(menuNode)"
+                :link="localePath(generateCategoryLink(menuNode))"
+              />
+            </div>
           </div>
         </li>
       </ul>
@@ -477,6 +474,8 @@ const laccicoBannerVon = (menuNode: CategoryTreeItem): string =>
 
 /** LACCICO: Mitte des überfahrenen Menüpunkts (px ab linkem Rand der Navigation), dort klappt das Banner auf (N 22.11.2026) */
 const laccicoBannerMitte = ref(0);
+/** Abstand der Bildkachel (144 px breit) vom linken Rand der Fläche (Innenabstand 24 px), damit sie mittig unter dem Menüpunkt steht */
+const laccicoBannerAbstand = computed(() => Math.max(0, Math.round(laccicoBannerMitte.value - 72 - 24)));
 
 const onMenuEintragEnter = (event: MouseEvent, menuNode: CategoryTreeItem) => {
   const eintrag = event.currentTarget as HTMLElement | null;
