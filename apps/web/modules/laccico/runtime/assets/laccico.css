@@ -653,11 +653,13 @@ footer [data-testid='text-card']:is([style*='background-color:#'],[style*='backg
   [data-testid='multi-grid-structure'] > div:has(.laccico-kategoriebaum) {
     align-self: start !important;
     position: sticky !important;
-    top: 15.5rem;
-    max-height: calc(100vh - 16.5rem);
+    /* genau unter Kopf + Brotkrumen (Plugin kopf-hoehe.client.ts), sonst steht die Spalte ohne Scrollen tiefer als rechts (N 22.11.) */
+    top: calc(var(--laccico-kopf-hoehe, 169px) + var(--laccico-krumen-hoehe, 56px));
+    max-height: calc(100vh - var(--laccico-kopf-hoehe, 169px) - var(--laccico-krumen-hoehe, 56px));
     overflow-y: auto;
-    scrollbar-width: thin;
+    scrollbar-width: none; /* kein Rollbalken (N 22.11.), Mausrad scrollt die Spalte weiter */
   }
+  [data-testid='multi-grid-structure'] > div:has(.laccico-kategoriebaum)::-webkit-scrollbar { display: none; }
 }
 
 .laccico-kategoriebaum li a { padding-top: 0.3rem; padding-bottom: 0.3rem; }
@@ -703,8 +705,8 @@ body:has(.laccico-kategoriebaum) main .max-w-screen-3xl:has([data-testid='multi-
 .laccico-kategorietext-text { padding-top: 1rem; }
 .laccico-kategorietext-text > :last-child { margin-bottom: 0.5rem; }
 [data-testid='multi-grid-structure'] > div:has(.laccico-kategoriebaum) [data-testid='category-name'] {
-  font-size: 1.35rem !important;
-  line-height: 1.3;
+  font-size: 1.5rem !important; /* wie die H2 rechts, damit beide auf einer Linie stehen (N 22.11.) */
+  line-height: 1.5 !important;
 }
 /* Handy und Tablet: linke Spalte steht unter den Artikeln; der Name (H1) muss trotzdem ganz oben stehen.
    Spalte auflösen (display: contents), Name vorn, übrige Teile der linken Spalte hinten. */

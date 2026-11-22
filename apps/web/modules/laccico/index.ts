@@ -101,5 +101,6 @@ export default defineNuxtModule({
     addPlugin({ src: resolver.resolve('./runtime/plugins/faq-fenster.client'), mode: 'client' });
     addPlugin({ src: resolver.resolve('./runtime/plugins/google-ads.client'), mode: 'client' });
     addPlugin({ src: resolver.resolve('./runtime/plugins/filter-knopf.client'), mode: 'client' });
+    addPlugin({ src: resolver.resolve('./runtime/plugins/kopf-hoehe.client'), mode: 'client' });
   },
 });
