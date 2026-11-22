@@ -601,3 +601,6 @@ footer [data-testid='text-card']:is([style*='background-color:#'],[style*='backg
 @media (min-width: 768px) and (max-width: 1279px) {
   [data-laccico-versandbalken] { min-height: calc(3.75em + 16px); }
 }
+
+/* Warenkorbvorschau darf nicht hinter der Menüleiste verschwinden (N 22.11.2026) */
+.block-wrapper:has(.laccico-wk-vorschau) { position: relative !important; z-index: 60 !important; }
