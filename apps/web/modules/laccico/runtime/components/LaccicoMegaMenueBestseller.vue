@@ -7,7 +7,9 @@
     </div>
     <div v-for="zeile in zeilen" :key="zeile.kategorie" class="laccico-bestseller-zeile">
       <div class="laccico-bestseller-kopf">
-        <NuxtLink :to="localePath(linkFuer(zeile.knoten))" class="laccico-bestseller-linie">{{ zeile.titel }}</NuxtLink>
+        <NuxtLink :to="localePath(linkFuer(zeile.knoten))" class="laccico-bestseller-linie">
+          {{ zeile.titel }}<span v-if="zeile.kuerzel" class="laccico-bestseller-kuerzel">{{ zeile.kuerzel }}</span>
+        </NuxtLink>
         <span v-if="zeile.unter.length" class="laccico-bestseller-unter">
           <NuxtLink v-for="u in zeile.unter" :key="u.id" :to="localePath(linkFuer(u))">{{ categoryTreeGetters.getName(u) }}</NuxtLink>
         </span>
@@ -56,6 +58,20 @@ const TEXTE: Record<LaccicoSprache, { alle: string }> = {
 const sprache = computed<LaccicoSprache>(() => (['de', 'en', 'fr'].includes(locale.value) ? locale.value : 'de') as LaccicoSprache);
 const text = computed(() => TEXTE[sprache.value]);
 
+/** Oberkategorie der Kategorie id im Teilbaum (undefined, wenn sie direkt im Teilbaum liegt oder fehlt). */
+function elternVon(knoten: CategoryTreeItem[], id: number): CategoryTreeItem | undefined {
+  for (const k of knoten) {
+    if ((k.children ?? []).some((c) => c.id === id)) {
+      return k;
+    }
+    const treffer = elternVon(k.children ?? [], id);
+    if (treffer) {
+      return treffer;
+    }
+  }
+  return undefined;
+}
+
 function suche(knoten: CategoryTreeItem[], id: number): CategoryTreeItem | undefined {
   for (const k of knoten) {
     if (k.id === id) {
@@ -80,7 +96,12 @@ const zeilen = computed(() =>
       .filter((a) => a.bild && a.pfad[sprache.value])
       .map((a) => ({ id: a.id, tipp: a.tipp, bild: a.bild, titel: a.titel[sprache.value] ?? '', pfad: a.pfad[sprache.value] ?? '' }));
     const unter = (knoten.children ?? []).filter((u) => categoryTreeGetters.getName(u));
-    return [{ kategorie: z.kategorie, knoten, titel: categoryTreeGetters.getName(knoten), unter, artikel }];
+    // Linien-Kategorien (R2-CS, R2-SL, F6-CS, F6-XR) liegen eine Ebene tiefer: Name der Oberkategorie, darunter das Kürzel (N 22.11.)
+    const eltern = elternVon(props.knoten.children ?? [], z.kategorie);
+    const mitEltern = !!eltern && !(props.knoten.children ?? []).some((k) => k.id === eltern.id);
+    const titel = mitEltern ? categoryTreeGetters.getName(eltern) : categoryTreeGetters.getName(knoten);
+    const kuerzel = mitEltern ? categoryTreeGetters.getName(knoten) : '';
+    return [{ kategorie: z.kategorie, knoten, titel, kuerzel, unter, artikel }];
   }),
 );
 

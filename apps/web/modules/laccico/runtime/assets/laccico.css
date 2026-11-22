@@ -740,3 +740,4 @@ body:has(.laccico-kategoriebaum) main .max-w-screen-3xl:has([data-testid='multi-
 .laccico-bestseller-weitere a { color: #333; text-decoration: none; }
 /* Bestseller-Menü darf bis zum unteren Fensterrand reichen (sonst rollt es schon bei 800 px Fensterhöhe) */
 div:has(> [data-testid='laccico-megamenue-bestseller']) { max-height: calc(100vh - var(--laccico-kopf-hoehe, 136px) - 1rem) !important; }
+.laccico-bestseller-kuerzel { display: block; white-space: nowrap; font-size: 0.85rem; font-weight: 400; color: #555; }
