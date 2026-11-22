@@ -2,24 +2,53 @@
  * LACCICO Grundstil für die PWA.
  * Farben wie Ceres (Plugin-Set 30, Ceres-Konfiguration „brand-…“), Schrift Averta wie im Custom-CSS des Ceres-Shops.
  */
+/* Schrift B (N 22.11.2026): echte Schnitte aus Ns Averta-Familie, im Fork gehostet */
 @font-face {
   font-family: 'Averta';
-  src: url('https://cdn02.plentymarkets.com/qadol2fdwt1n/frontend/fonts/averta-light-webfont.ttf') format('truetype');
-  font-weight: 300 400;
+  src: url('/_nuxt-plenty/laccico/fonts/averta-light-webfont.woff2') format('woff2');
+  font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Averta';
-  src: url('https://cdn02.plentymarkets.com/qadol2fdwt1n/frontend/fonts/averta-semibold-webfont.ttf') format('truetype');
-  font-weight: 500 800;
+  src: url('/_nuxt-plenty/laccico/fonts/averta-regular-webfont.woff2') format('woff2');
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Averta';
-  src: url('https://cdn02.plentymarkets.com/qadol2fdwt1n/frontend/fonts/averta-lightitalic-webfont.ttf') format('truetype');
-  font-weight: 300 400;
+  src: url('/_nuxt-plenty/laccico/fonts/averta-semibold-webfont.woff2') format('woff2');
+  font-weight: 500 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Averta';
+  src: url('/_nuxt-plenty/laccico/fonts/averta-bold-webfont.woff2') format('woff2');
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Averta';
+  src: url('/_nuxt-plenty/laccico/fonts/averta-lightitalic-webfont.woff2') format('woff2');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Averta';
+  src: url('/_nuxt-plenty/laccico/fonts/averta-regularitalic-webfont.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Averta';
+  src: url('/_nuxt-plenty/laccico/fonts/averta-bolditalic-webfont.woff2') format('woff2');
+  font-weight: 700 900;
   font-style: italic;
   font-display: swap;
 }
