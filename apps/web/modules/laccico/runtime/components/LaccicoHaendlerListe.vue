@@ -114,6 +114,7 @@ const { istHaendler } = useLaccicoHaendler();
 const { zeilen, zuletzt, laden, mengeSetzen, entfernen, leeren, summe, paare } = useLaccicoHaendlerListe();
 const text = useLaccicoHaendlerTexte();
 const { format } = usePriceFormatter();
+const { locale } = useI18n();
 const { user } = useCustomer();
 const { send } = useNotification();
 const { doCustomerContactMail } = useCustomerContact();
@@ -195,20 +196,77 @@ const absenden = async () => {
   }
 };
 
+/** Text für HTML unschädlich machen (Namen, Anmerkung kommen vom Kunden) */
+const html = (wert: string | number | null | undefined) =>
+  String(wert ?? '').replace(/[&<>"']/g, (z) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[z] ?? z);
+
+/** Druckansicht: Kopf mit Datum und Kunde, Tabelle, Summe, Anmerkung, Lieferhinweis (N 23.11.2026) */
+const druckSeite = () => {
+  const t = text.value;
+  const datum = new Date().toLocaleDateString(locale.value, { day: '2-digit', month: '2-digit', year: 'numeric' });
+  const kunde = user.value ? userGetters.getFullName(user.value) : '';
+  const zeilenHtml = zeilen.value
+    .map(
+      (z) => `<tr>
+        <td>${html(z.name)}<div class="nr">${html(z.nummer)}</div></td>
+        <td>${html(z.laenge)}</td>
+        <td class="r">${html(z.menge)}</td>
+        <td class="r">${html(preisText(z))}</td>
+        <td class="r">${html(zeilenSumme(z))}</td>
+      </tr>`,
+    )
+    .join('');
+  const anmerkung = notiz.value.trim()
+    ? `<h2>${html(t.notiz.split(" (")[0])}</h2><p class="notiz">${html(notiz.value.trim())}</p>`
+    : '';
+  return `<!doctype html><html><head><meta charset="utf-8"><title>${html(t.betreff)} ${html(datum)}</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  body { font: 11pt/1.45 Helvetica, Arial, sans-serif; color: #222; margin: 0; }
+  .kopf { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #4c595d; padding-bottom: 8px; margin-bottom: 18px; }
+  .marke { font-size: 20pt; letter-spacing: 2px; color: #4c595d; }
+  .meta { text-align: right; font-size: 10pt; color: #555; }
+  h1 { font-size: 15pt; font-weight: 600; margin: 0 0 12px; }
+  h2 { font-size: 11pt; font-weight: 600; margin: 18px 0 4px; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; font-size: 9.5pt; text-transform: uppercase; letter-spacing: .5px; color: #555; border-bottom: 1.5px solid #4c595d; padding: 6px 8px; }
+  td { padding: 7px 8px; border-bottom: 1px solid #ddd; vertical-align: top; }
+  tbody tr:nth-child(even) td { background: #f6f6f4; }
+  .r { text-align: right; white-space: nowrap; }
+  .nr { font-size: 8.5pt; color: #777; }
+  tfoot td { border-bottom: none; border-top: 1.5px solid #4c595d; font-weight: 600; }
+  .hinweis { margin-top: 18px; padding: 10px 12px; background: #f6f6f4; font-size: 10pt; }
+  .notiz { white-space: pre-wrap; margin: 0; }
+  .fuss { margin-top: 24px; font-size: 9pt; color: #777; }
+  tr { page-break-inside: avoid; }
+  @media screen { body { max-width: 180mm; margin: 28px auto; padding: 0 16px; } }
+</style></head><body>
+<div class="kopf"><div class="marke">LACCICO</div><div class="meta">${html(datum)}<br>${html(kunde)}${
+    user.value?.id ? `<br>Kd.-Nr. ${html(user.value.id)}` : ''
+  }</div></div>
+<h1>${html(t.titel)}</h1>
+<table>
+  <thead><tr><th>${html(t.artikel)}</th><th>${html(t.laenge)}</th><th class="r">${html(t.menge)}</th><th class="r">${html(t.preis)}</th><th class="r">${html(t.summe)}</th></tr></thead>
+  <tbody>${zeilenHtml}</tbody>
+  <tfoot><tr><td colspan="2">${html(paare.value)} ${html(t.paareGesamt)}</td><td></td><td class="r">${html(t.summe)}</td><td class="r">${html(format(summe.value))}</td></tr></tfoot>
+</table>
+${anmerkung}
+<div class="hinweis">${html(t.hinweis)}</div>
+<div class="fuss">LACCICO · info@laccico.com · laccico.com</div>
+</body></html>`;
+};
+
 /** Liste in einem eigenen Fenster zum Drucken oder Speichern als PDF */
 const drucken = () => {
   const fenster = window.open('', '_blank');
   if (!fenster) {
     return;
   }
-  const pre = fenster.document.createElement('pre');
-  pre.textContent = listeAlsText();
-  pre.style.font = '12px/1.5 sans-serif';
-  pre.style.whiteSpace = 'pre-wrap';
-  fenster.document.title = text.value.betreff;
-  fenster.document.body.appendChild(pre);
+  fenster.document.open();
+  fenster.document.write(druckSeite());
+  fenster.document.close();
   fenster.focus();
-  fenster.print();
+  setTimeout(() => fenster.print(), 300);
 };
 </script>
 
