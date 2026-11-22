@@ -642,3 +642,23 @@ footer [data-testid='text-card']:is([style*='background-color:#'],[style*='backg
 
 .laccico-kategoriebaum li a { padding-top: 0.3rem; padding-bottom: 0.3rem; }
 
+
+/* Handy und Tablet-Ansicht (bis 1039 px, N 22.11.2026): Akkordeon-Köpfe in derselben Schrift wie der Fließtext, nicht fett und nicht kleiner */
+@media (max-width: 1039px) {
+  main details > summary,
+  main details > summary *,
+  [data-testid='multi-grid-structure'] > div:has(.laccico-kategoriebaum) details summary,
+  [data-testid='multi-grid-structure'] > div:has(.laccico-kategoriebaum) details summary *,
+  main [data-testid='item-text'] > summary,
+  main [data-testid='item-text'] > summary h2,
+  main [data-testid='technical-data'] > summary,
+  main [data-testid='technical-data'] > summary h2,
+  main [data-testid='item-data'] > summary,
+  main [data-testid='item-data'] > summary h2,
+  main [data-testid='reviews-accordion'] summary h2,
+  main [data-testid='laccico-produktsicherheit'] summary h2 {
+    font-size: 1rem !important;
+    font-weight: 400 !important;
+    line-height: 1.4 !important;
+  }
+}
