@@ -1,5 +1,8 @@
 <template>
+  <!-- Form & Durchmesser: Bestseller je Linie statt Unterkategorien (Skizze N 22.11.2026) -->
+  <LaccicoMegaMenueBestseller v-if="knoten.id === LACCICO_FORM_DURCHMESSER" :knoten="knoten" :link-fuer="linkFuer" />
   <div
+    v-else
     class="col-span-4 flex flex-wrap justify-center gap-y-6"
     :class="nurRollen ? 'gap-x-2' : 'gap-x-8'"
     data-testid="laccico-megamenue"
@@ -41,6 +44,8 @@
 <script setup lang="ts">
 import { type CategoryTreeItem, categoryTreeGetters } from '@plentymarkets/shop-api';
 import { megamenueBilder, megamenueRollen } from '~~/modules/laccico/runtime/utils/megamenueBilder';
+import { LACCICO_FORM_DURCHMESSER } from '~~/modules/laccico/runtime/utils/laccicoBestseller';
+import LaccicoMegaMenueBestseller from './LaccicoMegaMenueBestseller.vue';
 
 const props = defineProps<{ knoten: CategoryTreeItem; linkFuer: (kategorie: CategoryTreeItem) => string }>();
 
