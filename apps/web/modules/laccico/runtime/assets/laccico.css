@@ -6,14 +6,7 @@
 @font-face {
   font-family: 'Averta';
   src: url('/_nuxt-plenty/laccico/fonts/averta-light-webfont.woff2') format('woff2');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Averta';
-  src: url('/_nuxt-plenty/laccico/fonts/averta-regular-webfont.woff2') format('woff2');
-  font-weight: 400;
+  font-weight: 300 400; /* N 22.11.: Regular zeigte am Windows-Bildschirm fette e-Querstriche, Fließtext bleibt Light */
   font-style: normal;
   font-display: swap;
 }
@@ -34,14 +27,7 @@
 @font-face {
   font-family: 'Averta';
   src: url('/_nuxt-plenty/laccico/fonts/averta-lightitalic-webfont.woff2') format('woff2');
-  font-weight: 300;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Averta';
-  src: url('/_nuxt-plenty/laccico/fonts/averta-regularitalic-webfont.woff2') format('woff2');
-  font-weight: 400;
+  font-weight: 300 400;
   font-style: italic;
   font-display: swap;
 }
@@ -312,6 +298,7 @@ main [data-testid='details-list'] details > summary.laccico-faq-aktiv {
   }
   [data-testid='category-sort-filter'] .laccico-filter-knopf {
     order: 3;
+    margin-left: auto; /* Filter-Knopf rechts außen (N 22.11.) */
     background: #fff;
     border: 1px solid #ced4da;
     padding: 0.35rem 1rem;
@@ -411,7 +398,7 @@ main :is([data-testid='item-text-block'], [data-testid='technical-data-block'], 
 .laccico-kategoriebaum li.aktiv .zahl { background: #000; color: #fff; }
 
 /* Längenleiste und Kauf auf der Kategoriekachel */
-.laccico-laengenleiste { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin: 0.5rem 0; font-size: 0.85rem; }
+.laccico-laengenleiste { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.4rem; margin: 0.5rem 0; font-size: 0.85rem; }
 .laccico-laengenleiste-titel { font-weight: 600; margin-right: 0.25rem; }
 .laccico-laengenleiste button { border: 1px solid #c8cdd0; background: #fff; border-radius: 4px; padding: 0.25rem 0.7rem; }
 .laccico-laengenleiste button.aktiv { background: #4e6066; color: #fff; border-color: #4e6066; }

@@ -150,21 +150,22 @@
           <div v-if="showBasePrice && unitContent !== 1" class="mb-2">
             <BasePriceInLine :base-price="basePrice" :unit-content="unitContent" :unit-name="unitName" />
           </div>
-          <div class="flex flex-col-reverse items-start @md:flex-row @md:items-center mt-auto">
-            <span class="block pb-2 font-bold typography-text-sm" data-testid="product-card-vertical-price">
+          <!-- LACCICO (N 22.11.): „1 Paar“ links und Preis rechts in einer Zeile -->
+          <div class="flex flex-wrap items-baseline justify-between gap-x-3 mt-auto pb-2 w-full">
+            <div v-if="unitContent === 1 && unitName" class="typography-text-sm laccico-einheit">
+              {{ unitContent }} {{ unitName }}
+            </div>
+            <span class="block font-bold typography-text-sm" data-testid="product-card-vertical-price">
               <!-- LACCICO: Preis für 1 Paar wie Ceres (laccicoKartenPreis), kein „ab“ -->
               <span>{{ format(laccicoPreis.preis) }}</span>
               <span>{{ t('common.labels.asterisk') }}</span>
             </span>
             <span
               v-if="laccicoPreis.durchgestrichen"
-              class="typography-text-sm text-neutral-500 line-through @md:ml-3 @md:pb-2"
+              class="typography-text-sm text-neutral-500 line-through"
             >
               {{ format(laccicoPreis.durchgestrichen) }}
             </span>
-          </div>
-          <div v-if="unitContent === 1 && unitName" class="typography-text-sm pb-2 laccico-einheit">
-            {{ unitContent }} {{ unitName }}
           </div>
         </template>
         <template v-if="key === 'addToCart' && configuration?.fields?.addToCart">
