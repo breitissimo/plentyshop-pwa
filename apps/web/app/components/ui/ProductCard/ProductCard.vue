@@ -4,7 +4,7 @@
     data-testid="product-card"
     :class="{ 'border border-neutral-200': configuration?.cardBorders }"
   >
-    <div class="relative overflow-hidden">
+    <div class="relative overflow-hidden laccico-kachelbild">
       <UiBadges
         :use-tags="useTagsOnCategoryPage"
         :class="['absolute', isFromWishlist ? 'mx-2' : 'm-2']"

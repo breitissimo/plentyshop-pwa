@@ -231,7 +231,7 @@ export default defineNuxtConfig({
       xs: 380,
       sm: 640,
       md: 768,
-      lg: 1024,
+      lg: 1040, // LACCICO: iPad Pro 13 hoch (1032 px) zeigt die Tablet-Ansicht (N 22.11.2026)
       '4xl': 1920,
     },
     defaultBreakpoints: {

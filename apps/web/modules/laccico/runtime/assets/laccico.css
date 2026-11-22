@@ -321,7 +321,7 @@ main [data-testid='details-list'] details > summary.laccico-faq-aktiv {
   z-index: 40;
   background: #ffffff;
 }
-@media (min-width: 1024px) {
+@media (min-width: 1040px) {
   div:has(> nav[data-testid='breadcrumbs']) {
     position: sticky;
     top: var(--laccico-kopf-hoehe, 169px);
@@ -394,7 +394,7 @@ main :is([data-testid='item-text-block'], [data-testid='technical-data-block'], 
   .laccico-kartenkauf-wahl .laccico-kartenkauf-menge { flex-basis: 3.1rem; width: 3.1rem; }
 }
 .laccico-kartenkauf-fehler { font-size: 0.8rem; text-decoration: underline; }
-@media (max-width: 1023px) {
+@media (max-width: 1039px) {
   .laccico-kategoriebaum { display: none; } /* Handy und Tablet-Hochformat (N 21.11.2026): Baum erreicht man über das Menü */
   /* FAQ-Spalte (mit dem Baum) unter den Inhalt: erst Einleitung und Artikel, dann Fragen (N 21.11.2026) */
   [data-testid='multi-grid-structure'] > div:has(.laccico-kategoriebaum) { order: 2; }
@@ -549,7 +549,7 @@ footer [data-testid='text-card']:is([style*='background-color:#'],[style*='backg
 /* Abschnitt mit Hintergrundbild (Ceres „Hintergrund“, fixiert) */
 .laccico-hintergrund { background-size: cover; background-position: center; background-repeat: no-repeat; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
 .laccico-hintergrund-fest { background-attachment: fixed; }
-@media (max-width: 1024px) { .laccico-hintergrund-fest { background-attachment: scroll; } }
+@media (max-width: 1040px) { .laccico-hintergrund-fest { background-attachment: scroll; } }
 .laccico-hintergrund-innen { width: 100%; max-width: 1600px; margin: 0 auto; }
 .laccico-hintergrund .color-secondary { color: #d6d3cd; }
 .laccico-hintergrund h2 { font-size: 2.4rem !important; line-height: 1.2 !important; }
@@ -629,7 +629,7 @@ footer [data-testid='text-card']:is([style*='background-color:#'],[style*='backg
   line-height: 1.4 !important;
 }
 /* Spalte klebt beim Scrollen unter Kopf und Brotkrumenleiste und füllt so den Platz links (ab Desktop) */
-@media (min-width: 1024px) {
+@media (min-width: 1040px) {
   [data-testid='multi-grid-structure'] > div:has(.laccico-kategoriebaum) {
     align-self: start !important;
     position: sticky !important;
@@ -642,3 +642,19 @@ footer [data-testid='text-card']:is([style*='background-color:#'],[style*='backg
 
 .laccico-kategoriebaum li a { padding-top: 0.3rem; padding-bottom: 0.3rem; }
 
+
+/* Handy und Tablet-Ansicht bis 1039 px (N 22.11.2026): Plaketten und Etiketten liegen unter dem Kachelbild statt darüber */
+@media (max-width: 1039px) {
+  .laccico-kachelbild { display: flex; flex-direction: column; }
+  .laccico-kachelbild > .laccico-plaketten,
+  .laccico-kachelbild > .absolute:not(button) {
+    position: static !important;
+    order: 2;
+    margin: 0.35rem 0.5rem 0 !important;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .laccico-kachelbild > div:not(.absolute) { order: 1; }
+  .laccico-kachelbild > button.absolute { order: 1; }
+}
