@@ -488,7 +488,7 @@ div:has(> [data-testid='recommended-block'] .laccico-listenkopf) button[aria-lab
 [data-testid='image-block']:is([style*='aspect-ratio:auto'],[style*='aspect-ratio: auto']) img[data-testid='image-block-image'] { position: static !important; height: auto !important; width: 100% !important; }
 .laccico-listenkopf h2 { text-transform: uppercase; font-size: 1.1rem; }
 
-/* Fuß wie Ceres: farbige Boxen mit weißer Schrift statt Knöpfen, die ganze Box ist der Link (N 20.11.).
+/* Fuß: helle Boxen (22.11.) mit dunkler Schrift; vorher wie Ceres farbige Boxen mit weißer Schrift statt Knöpfen, die ganze Box ist der Link (N 20.11.).
    Ohne Bezug auf die Schreibweise der Farbangabe im style-Attribut (im Plenty-Build anders als lokal, Knöpfe hatten dort wieder Hintergrund).
    Im Fuß haben nur die drei Boxen einen Knopf (text-button); die Linkzeile und das Copyright sind reiner Text. */
 footer [data-testid='text-card']:has([data-testid='text-button']) { position: relative; }
@@ -498,9 +498,9 @@ footer [data-testid='text-card'] [data-testid='text-button']:focus {
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
-  color: #fff !important;
+  color: #4c595d !important;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.05rem;
   position: static !important;
 }
 footer [data-testid='text-card'] [data-testid='text-button']::after {
@@ -604,3 +604,41 @@ footer [data-testid='text-card']:is([style*='background-color:#'],[style*='backg
 
 /* Warenkorbvorschau darf nicht hinter der Menüleiste verschwinden (N 22.11.2026) */
 .block-wrapper:has(.laccico-wk-vorschau) { position: relative !important; z-index: 60 !important; }
+
+/* ---- N 22.11.2026: Längenleiste mit Hinweis, ruhigere Seitenspalte, klebende Spalte ---- */
+.laccico-laengenleiste { position: relative; z-index: 20; }
+.laccico-hinweis { position: relative; cursor: help; display: inline-flex; align-items: center; gap: 0.3rem; }
+.laccico-hinweis-i { display: inline-flex; align-items: center; justify-content: center; width: 1.1rem; height: 1.1rem; border: 1px solid #6b6b6b; border-radius: 50%; font-size: 0.7rem; font-style: normal; line-height: 1; color: #4c595d; }
+.laccico-hinweis::after {
+  content: attr(data-hinweis);
+  position: absolute; left: 0; top: calc(100% + 6px); z-index: 70;
+  width: 18rem; max-width: 80vw; padding: 0.6rem 0.75rem;
+  background: #4c595d; color: #fff; font-size: 0.85rem; font-weight: 400; line-height: 1.4; text-align: left;
+  border-radius: 4px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  opacity: 0; visibility: hidden; pointer-events: none;
+}
+.laccico-hinweis:hover::after, .laccico-hinweis:focus::after { opacity: 1 !important; visibility: visible; }
+
+/* Seitenspalte: Baum und FAQ in einer Schrift, mehr Abstand dazwischen */
+.laccico-kategoriebaum ul { font-size: 0.85rem; }
+.laccico-kategoriebaum { margin-bottom: 1.75rem; padding-bottom: 1rem; border-bottom: 1px solid #e5e5e5; }
+[data-testid='multi-grid-structure'] > div:has(.laccico-kategoriebaum) details summary,
+[data-testid='multi-grid-structure'] > div:has(.laccico-kategoriebaum) details summary * {
+  font-size: 0.85rem !important;
+  font-weight: 400 !important;
+  line-height: 1.4 !important;
+}
+/* Spalte klebt beim Scrollen unter Kopf und Brotkrumenleiste und füllt so den Platz links (ab Desktop) */
+@media (min-width: 1024px) {
+  [data-testid='multi-grid-structure'] > div:has(.laccico-kategoriebaum) {
+    align-self: start !important;
+    position: sticky !important;
+    top: 15.5rem;
+    max-height: calc(100vh - 16.5rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+}
+
+.laccico-kategoriebaum li a { padding-top: 0.3rem; padding-bottom: 0.3rem; }
+
