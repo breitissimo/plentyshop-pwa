@@ -1,5 +1,6 @@
 <template>
-  <div ref="referenceRef" :style="navigationRootStyle" class="relative w-full">
+  <!-- LACCICO: Klasse laccico-hauptmenue = ganzes Hauptmenü in Averta Light (N 22.11.2026, wie Ceres) -->
+  <div ref="referenceRef" :style="navigationRootStyle" class="relative w-full laccico-hauptmenue">
     <nav v-if="viewport.isGreaterOrEquals('lg')" ref="floatingRef" @mouseleave="onMouseLeave">
       <ul :class="navigationContainerClasses" :style="navigationContainerStyle" @focusout="onNavBlur">
         <!-- LACCICO: Logo links in der Menüzeile, Menü rechts daneben (wie Ceres) -->
@@ -152,7 +153,7 @@
         ref="drawerReference"
         v-model="isOpen"
         placement="left"
-        class="right-12 max-w-96 bg-white overflow-y-auto z-drawer"
+        class="right-12 max-w-96 bg-white overflow-y-auto z-drawer laccico-hauptmenue"
       >
         <nav>
           <div class="flex items-center justify-between p-4">

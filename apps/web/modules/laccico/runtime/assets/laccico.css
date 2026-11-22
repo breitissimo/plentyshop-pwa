@@ -741,3 +741,10 @@ body:has(.laccico-kategoriebaum) main .max-w-screen-3xl:has([data-testid='multi-
 /* Bestseller-Menü darf bis zum unteren Fensterrand reichen (sonst rollt es schon bei 800 px Fensterhöhe) */
 div:has(> [data-testid='laccico-megamenue-bestseller']) { max-height: calc(100vh - var(--laccico-kopf-hoehe, 136px) - 1rem) !important; }
 .laccico-bestseller-kuerzel { display: block; white-space: nowrap; font-size: 0.85rem; font-weight: 400; color: #555; }
+
+/* Hauptmenü (Menüleiste, Megamenüs, Handy-Menü) in Averta Light statt Semibold, wie Ceres (N 22.11.2026).
+   Gewicht 400 = Light-Schnitt (siehe @font-face oben); Regular bleibt draußen (fette e-Querstriche am Windows-Bildschirm). */
+.laccico-hauptmenue,
+.laccico-hauptmenue * {
+  font-weight: 400 !important;
+}
