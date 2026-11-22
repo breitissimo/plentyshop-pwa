@@ -288,7 +288,11 @@ main [data-testid='details-list'] details > summary.laccico-faq-aktiv {
   [data-testid='category-sort-filter'] [data-testid='category-sorting'] > div {
     padding: 0;
   }
-  [data-testid='category-sort-filter'] select { background: #fff; padding-top: 0.35rem; padding-bottom: 0.35rem; }
+  [data-testid='category-sort-filter'] select { background: #fff; padding-top: 0.35rem; padding-bottom: 0.35rem; padding-right: 2.25rem; }
+  /* „50“ und Pfeil lagen übereinander: Feld hat genug Breite für Zahl + Pfeil (N 22.11.) */
+  [data-testid='category-sort-filter'] [data-testid='category-items-per-page'] { min-width: 5.5rem; }
+  /* Leerer Knopf-Fuß der Filterleiste (p-4) stand ganz links und schob alles um 44 px nach rechts: ans Ende (N 22.11.) */
+  [data-testid='category-sort-filter'] aside > div > div.border-t { order: 10; padding: 0; }
 
   /* Knopf Filter wie Ceres (Plugin filter-knopf.client.ts): Filter zugeklappt, Knopf rechts neben der Sortierung,
      offen als weißes Feld über die volle Breite unter der Leiste, Filtergruppen nebeneinander */
