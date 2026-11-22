@@ -2,7 +2,7 @@
   <div>
   <nav v-if="zeilen.length" class="laccico-kategoriebaum" data-testid="laccico-kategoriebaum" aria-label="Kategorien">
     <ul>
-      <li v-for="z in zeilen" :key="z.id" :class="{ aktiv: z.aktiv, 'auf-pfad': z.aufPfad }" :style="{ paddingLeft: `${z.tiefe * 14 + 8}px` }">
+      <li v-for="z in zeilen" :key="z.id" :class="{ aktiv: z.aktiv, 'auf-pfad': z.aufPfad }" :style="{ paddingLeft: `${z.tiefe * 14}px` }">
         <NuxtLink :to="localePath(z.link)">
           <span class="name">{{ z.name }}</span>
           <span v-if="z.anzahl" class="zahl">{{ z.anzahl }}</span>
