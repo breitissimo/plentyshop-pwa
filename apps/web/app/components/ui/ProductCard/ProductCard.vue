@@ -189,6 +189,7 @@
             v-else-if="productGetters.getItemId(product)"
             :item-id="productGetters.getItemId(product)"
             :weiter="productPath"
+            @wahl="kartenWahl = $event"
           />
           <UiButton
             v-else
@@ -216,6 +217,7 @@ import type { ItemGridContent } from '~/components/blocks/ItemGrid/types';
 import type { BasketItemOrderParamsProperty, Product, DoAddItemParams } from '@plentymarkets/shop-api';
 import LaccicoKartenKauf from '~~/modules/laccico/runtime/components/LaccicoKartenKauf.vue';
 import LaccicoPlaketten from '~~/modules/laccico/runtime/components/LaccicoPlaketten.vue';
+import type { LaccicoKartenWahl, LaccicoShopStaffel } from '~~/modules/laccico/runtime/utils/types';
 
 const props = withDefaults(defineProps<ProductCardProps>(), {
   configuration: () => ({
@@ -275,7 +277,22 @@ const canAddFromCategory = computed(
     productGetters.canBeAddedToCartFromCategoryPage(product.value) ||
     productGetters.hasOrderPropertiesRequiredAndPreselected(product.value),
 );
-const laccicoPreis = computed(() => laccicoKartenPreis(product.value));
+// LACCICO: Händler sehen den Preis je Paar für die auf der Kachel gewählte Menge und Länge (N 23.11.2026);
+// Endkunden bleiben beim Preis für 1 Paar, ihr Rabatt gilt im Warenkorb auf den Warenwert.
+const { istHaendler } = useLaccicoHaendler();
+const kartenWahl = ref<LaccicoKartenWahl>({ menge: 1, preis: null });
+const laccicoPreis = computed(() => {
+  const basis = laccicoKartenPreis(product.value);
+  if (!istHaendler.value) {
+    return basis;
+  }
+  if (kartenWahl.value.preis) {
+    return { preis: kartenWahl.value.preis, durchgestrichen: 0 };
+  }
+  const staffel = laccicoStaffelAus(productGetters.getGraduatedList(product.value) as LaccicoShopStaffel[]);
+  const staffelPreis = laccicoListenPreis({ staffel, menge: kartenWahl.value.menge });
+  return staffelPreis ? { preis: staffelPreis, durchgestrichen: 0 } : basis;
+});
 
 const cover = computed(() => productGetters.getCoverImage(product.value));
 const secondCover = computed(() => productGetters.getSecondCoverImage(product.value));

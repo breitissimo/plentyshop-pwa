@@ -35,12 +35,23 @@
 import { SfIconShoppingCart, SfLoaderCircular } from '@storefront-ui/vue';
 import type { Product } from '@plentymarkets/shop-api';
 import { laccicoLaengenAus } from '../utils/laccicoLaenge';
-import { laccicoZeileAusProdukt, useLaccicoHaendler, useLaccicoHaendlerListe } from '../utils/laccicoHaendlerListe';
+import { productGetters } from '@plentymarkets/shop-api';
+import {
+  laccicoListenPreis,
+  laccicoStaffelAus,
+  laccicoZeileAusProdukt,
+  useLaccicoHaendler,
+  useLaccicoHaendlerListe,
+} from '../utils/laccicoHaendlerListe';
 import { useLaccicoHaendlerTexte } from '../utils/laccicoHaendlerTexte';
+import { laccicoKartenPreis } from '../utils/laccicoKarte';
 import type { LaccicoLaengenOption } from '../utils/laccicoLaenge';
+import type { LaccicoKartenWahl, LaccicoListenStaffel, LaccicoShopStaffel } from '../utils/types';
 
 /** Länge, Menge und Warenkorb direkt auf der Kategoriekachel (N 19.11.2026). */
 const props = defineProps<{ itemId: number | string; weiter: string }>();
+/** Händler: gewählte Menge und Preis je Paar der gewählten Länge an die Kachel melden (N 23.11.2026) */
+const emit = defineEmits<{ wahl: [LaccicoKartenWahl] }>();
 const { addToCart } = useCart();
 const { send } = useNotification();
 const { locale } = useI18n();
@@ -93,6 +104,44 @@ watch(
     auswahl.value = treffer ? String(treffer.variationId) : '';
   },
   { immediate: import.meta.client },
+);
+
+/** Händler: Preis je Paar der gewählten Länge für die gewählte Menge (Staffel je Variante, einmal geladen). */
+const preiseJeVariante = new Map<string, { basis: number; staffel: LaccicoListenStaffel[] }>();
+const variantenPreise = async (variationId: string) => {
+  const vorhanden = preiseJeVariante.get(variationId);
+  if (vorhanden) {
+    return vorhanden;
+  }
+  const antwort = await useSdk().plentysystems.getProduct({ id: String(props.itemId), variationId });
+  const produkt = antwort?.data as Product | undefined;
+  if (!produkt) {
+    return null;
+  }
+  const preise = {
+    basis: laccicoKartenPreis(produkt).preis,
+    staffel: laccicoStaffelAus(productGetters.getGraduatedList(produkt) as LaccicoShopStaffel[]),
+  };
+  preiseJeVariante.set(variationId, preise);
+  return preise;
+};
+
+watch(
+  [auswahl, menge, istHaendler],
+  async ([variante, anzahl, haendler]) => {
+    const wahl: LaccicoKartenWahl = { menge: Number(anzahl) || 1, preis: null };
+    if (haendler && variante) {
+      try {
+        const preise = await variantenPreise(variante);
+        if (preise && variante === auswahl.value) {
+          wahl.preis = laccicoListenPreis({ staffel: preise.staffel, menge: wahl.menge }) ?? preise.basis;
+        }
+      } catch {
+        wahl.preis = null;
+      }
+    }
+    emit('wahl', wahl);
+  },
 );
 
 /** Händler (Klasse 7): Variante mit Händlerstaffel laden und auf die Bestellliste setzen (N 23.11.2026). */

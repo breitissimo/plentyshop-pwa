@@ -34,6 +34,9 @@ export type LaccicoListenZeile = {
   staffel: LaccicoListenStaffel[];
 };
 
+/** Auswahl auf der Kachel (Händler): Menge und Preis je Paar der gewählten Länge, null = noch keine Länge */
+export type LaccicoKartenWahl = { menge: number; preis: number | null };
+
 /** Staffel-Eintrag, wie ihn der Shop liefert (getGraduatedList) */
 export type LaccicoShopStaffel = { quantity: string | number; price: number };
 
