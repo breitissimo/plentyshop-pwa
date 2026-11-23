@@ -58,8 +58,10 @@ export const laccicoMenueFuerKunde = <T extends { id: number }>(baum: T[], istHa
 /** Ist der angemeldete Kunde ein freigeschalteter Händler (Klasse 7)? */
 export const useLaccicoHaendler = () => {
   const { user } = useCustomer();
+  // nur im lokalen Testserver: ?haendler=1 zeigt die Händleransicht ohne Händlerkonto (Preise bleiben Gastpreise)
+  const testHaendler = import.meta.dev && useRoute().query.haendler === '1';
   const istHaendler = computed(
-    () => (user.value as LaccicoKundeMitKlasse | null)?.classId === LACCICO_HAENDLER_KLASSE,
+    () => testHaendler || (user.value as LaccicoKundeMitKlasse | null)?.classId === LACCICO_HAENDLER_KLASSE,
   );
   return { istHaendler };
 };

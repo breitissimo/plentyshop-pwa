@@ -19,13 +19,13 @@
       @touchstart.passive="wischStart"
       @touchend="wischEnde"
     >
-      <span class="laccico-haendlerliste-griff" aria-hidden="true" />
-      <span class="laccico-haendlerliste-titel">{{ text.titel }}</span>
-      <span class="laccico-haendlerliste-zahl">
-        <template v-if="zeilen.length">{{ paare }} {{ text.menge }} · {{ format(summe) }}</template>
-        <template v-else>–</template>
+      <!-- Skizze N 23.11.: Reiter links über der Leiste mit der Paarzahl, Leiste mit Titel links und Summe rechts -->
+      <span class="laccico-haendlerliste-reiter" data-testid="laccico-haendlerliste-reiter">{{ paare }} {{ text.menge }}</span>
+      <span class="laccico-haendlerliste-titel">
+        {{ text.titel }}
+        <span class="laccico-haendlerliste-pfeil" aria-hidden="true">{{ offen ? '▾' : '▴' }}</span>
       </span>
-      <span class="laccico-haendlerliste-pfeil" aria-hidden="true">{{ offen ? '▾' : '▴' }}</span>
+      <span class="laccico-haendlerliste-zahl">{{ zeilen.length ? format(summe) : '–' }}</span>
     </button>
 
     <div id="laccico-haendlerliste-inhalt" class="laccico-haendlerliste-innen" :inert="!offen">
@@ -405,7 +405,7 @@ const drucken = () => {
 
 <style scoped>
 .laccico-haendlerliste-platz {
-  height: 52px;
+  height: 92px; /* Leiste 56 px + Reiter 32 px + Luft */
 }
 .laccico-haendlerliste {
   position: fixed;
@@ -422,29 +422,42 @@ const drucken = () => {
   gap: 0.75rem;
   width: 100%;
   max-width: 1264px;
-  height: 52px;
+  height: 56px;
   margin: 0 auto;
-  padding: 6px 1rem 0;
+  padding: 0 1rem;
   text-align: left;
   touch-action: none;
 }
-.laccico-haendlerliste-griff {
+.laccico-haendlerliste-reiter {
   position: absolute;
-  top: 6px;
-  left: 50%;
-  width: 40px;
-  height: 4px;
-  margin-left: -20px;
-  border-radius: 2px;
-  background: #b9b6ad;
+  bottom: 100%;
+  left: 1rem;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  padding: 0 0.9rem;
+  background: #f7f6f3;
+  border: 1px solid #d5d3cc;
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+  box-shadow: 0 -3px 8px rgba(0, 0, 0, 0.08);
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
 }
 .laccico-haendlerliste-titel {
   font-size: 1.05rem;
   font-weight: 600;
 }
-.laccico-haendlerliste-zahl {
+.laccico-haendlerliste-titel {
   flex: 1;
-  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.laccico-haendlerliste-zahl {
+  font-size: 1.05rem;
+  font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
