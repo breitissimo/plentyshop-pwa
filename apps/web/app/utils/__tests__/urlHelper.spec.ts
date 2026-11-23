@@ -46,11 +46,12 @@ describe('handlePreviousRouteNavigation', () => {
     expect(mockNavigateTo).not.toHaveBeenCalled();
   });
 
-  it('should navigate to back path if it exists and locale matches current locale', () => {
+  it('should go back one step in history if back path exists and locale matches current locale', () => {
     dependencies.router.options.history.state.back = '/en/some-page';
 
     handlePreviousRouteNavigation(dependencies);
-    expect(mockNavigateTo).toHaveBeenCalledWith('/en/some-page');
+    expect(mockRouterGo).toHaveBeenCalledWith(-1);
+    expect(mockNavigateTo).not.toHaveBeenCalled();
   });
 
   it('should navigate to home if back path locale does not match current locale', () => {

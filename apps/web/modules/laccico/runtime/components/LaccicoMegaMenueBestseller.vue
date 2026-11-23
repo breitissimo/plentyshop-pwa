@@ -20,6 +20,7 @@
           :key="artikel.id"
           :to="localePath(artikel.pfad)"
           class="laccico-bestseller-kachel group/kachel"
+          :title="artikel.titel"
           :data-testid="artikel.tipp ? 'laccico-bestseller-tipp' : 'laccico-bestseller-artikel'"
         >
           <span class="laccico-bestseller-bild">
@@ -30,10 +31,11 @@
               class="transition-transform duration-300 group-hover/kachel:scale-105"
             />
           </span>
-          <span class="laccico-bestseller-titel">{{ artikel.titel }}</span>
+          <!-- Farbname nur beim Überfahren (title) und für Vorleseprogramme, dafür größere Bilder (Zettel N 23.11.) -->
+          <span class="sr-only">{{ artikel.titel }}</span>
         </NuxtLink>
       </div>
-      <NuxtLink :to="localePath(linkFuer(zeile.knoten))" class="laccico-bestseller-alle">{{ text.alle }}</NuxtLink>
+      <NuxtLink :to="localePath(linkFuer(zeile.knoten))" class="laccico-bestseller-alle">{{ text.alle(zeile.kuerzel || zeile.titel) }}</NuxtLink>
     </div>
   </div>
 </template>
@@ -50,10 +52,11 @@ const localePath = useLocalizedPath();
 const { locale } = useI18n();
 const menue = menueDatei as LaccicoBestsellerDatei;
 
-const TEXTE: Record<LaccicoSprache, { alle: string }> = {
-  de: { alle: 'Alle ansehen' },
-  en: { alle: 'View all' },
-  fr: { alle: 'Tout voir' },
+/** Knopf je Zeile mit Linienname, z. B. „Alle R2-CS ansehen“ (Zettel N 23.11.) */
+const TEXTE: Record<LaccicoSprache, { alle: (linie: string) => string }> = {
+  de: { alle: (linie) => `Alle ${linie} ansehen` },
+  en: { alle: (linie) => `View all ${linie}` },
+  fr: { alle: (linie) => `Voir tous les ${linie}` },
 };
 const sprache = computed<LaccicoSprache>(() => (['de', 'en', 'fr'].includes(locale.value) ? locale.value : 'de') as LaccicoSprache);
 const text = computed(() => TEXTE[sprache.value]);

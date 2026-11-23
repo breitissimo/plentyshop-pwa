@@ -73,7 +73,7 @@ export default function createLaccicoCategory(): Block[] {
           slot_index: 0,
           content: {
             itemsPerRowDesktop: 3,
-            itemsPerRowTablet: 3, // LACCICO: Tablet-Hochformat ohne Baum, volle Breite (N 21.11.2026)
+            itemsPerRowTablet: 4, // LACCICO: Tablet-Hochformat ohne Baum, volle Breite (N 21.11.2026); 4 (Zettel N 23.11.), 5 war bei 768 px zu eng für Länge/Menge/Knopf
             itemsPerRowMobile: 1,
             showItemCount: true,
             itemCountPosition: 'left',

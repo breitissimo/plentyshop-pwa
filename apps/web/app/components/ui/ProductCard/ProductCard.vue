@@ -184,9 +184,9 @@
             <SfLoaderCircular v-if="loading" class="flex justify-center items-center" size="sm" />
             <span v-else>{{ t('common.actions.add') }}</span>
           </UiButton>
-          <!-- LACCICO: Länge, Menge und Warenkorb direkt auf der Kachel (N 19.11.2026) -->
+          <!-- LACCICO: Länge, Menge und Warenkorb direkt auf der Kachel (N 19.11.2026), auch auf der Wunschliste (N 23.11.) -->
           <LaccicoKartenKauf
-            v-else-if="!isFromWishlist"
+            v-else-if="productGetters.getItemId(product)"
             :item-id="productGetters.getItemId(product)"
             :weiter="productPath"
           />

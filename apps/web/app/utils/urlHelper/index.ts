@@ -25,7 +25,10 @@ export const handlePreviousRouteNavigation = (dependencies: NavigationDependenci
       return navTo(localePath(paths.home));
     }
 
-    return navTo(backPath as string);
+    // LACCICO (N 23.11.): im Verlauf zurueckgehen statt die vorige Seite neu zu oeffnen,
+    // sonst pendelt der Knopf zwischen Warenkorb und Kasse
+    router.go(-1);
+    return;
   }
 
   return navTo(localePath(paths.home));

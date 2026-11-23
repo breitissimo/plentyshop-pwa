@@ -46,13 +46,45 @@
                   {{ cartGetters.getItemName(position) }}
                 </NuxtLink>
                 <div v-if="merkmale(position)" class="text-xs text-neutral-600">{{ merkmale(position) }}</div>
-                <div class="flex justify-between text-xs mt-0.5">
-                  <span>{{ cartGetters.getItemQty(position) }} × {{ format(cartGetters.getCartItemPrice(position)) }}</span>
+                <!-- Menge ändern und löschen direkt in der Vorschau (N 23.11.2026) -->
+                <div class="flex items-center justify-between text-xs mt-1">
+                  <div class="flex items-center gap-1" :class="{ 'opacity-50 pointer-events-none': beschaeftigt === position.id }">
+                    <button
+                      type="button"
+                      class="w-6 h-6 rounded border border-neutral-300 hover:bg-neutral-100 leading-none"
+                      :aria-label="t('product.decreaseQuantity')"
+                      data-testid="laccico-vorschau-weniger"
+                      @click="mengeAendern(position, -1)"
+                    >
+                      −
+                    </button>
+                    <span class="w-6 text-center" data-testid="laccico-vorschau-menge">{{ cartGetters.getItemQty(position) }}</span>
+                    <button
+                      type="button"
+                      class="w-6 h-6 rounded border border-neutral-300 hover:bg-neutral-100 leading-none"
+                      :aria-label="t('product.increaseQuantity')"
+                      data-testid="laccico-vorschau-mehr"
+                      @click="mengeAendern(position, 1)"
+                    >
+                      +
+                    </button>
+                    <span class="ml-1 text-neutral-600">× {{ format(cartGetters.getCartItemPrice(position)) }}</span>
+                  </div>
                   <span class="font-medium">
                     {{ format(cartGetters.getCartItemPrice(position) * cartGetters.getItemQty(position)) }}
                   </span>
                 </div>
               </div>
+              <button
+                type="button"
+                class="self-start text-neutral-500 hover:text-neutral-900 text-lg leading-none px-1"
+                :class="{ 'opacity-50 pointer-events-none': beschaeftigt === position.id }"
+                :aria-label="t('common.actions.removeItemFromBasket')"
+                data-testid="laccico-vorschau-loeschen"
+                @click="loeschen(position)"
+              >
+                ×
+              </button>
             </li>
           </ul>
           <div v-if="weitere > 0" class="px-4 py-1 text-xs text-neutral-600">+ {{ weitere }} …</div>
@@ -101,7 +133,35 @@ import type { CartItem } from '@plentymarkets/shop-api';
 const MAX_SICHTBAR = 5;
 
 const { t, locale } = useI18n();
-const { data: cart, showNetPrices } = useCart();
+const { data: cart, showNetPrices, setCartItemQuantity, deleteCartItem } = useCart();
+const { send } = useNotification();
+/** ID der Position, die gerade geändert wird (Knöpfe solange gesperrt) */
+const beschaeftigt = ref<number | null>(null);
+
+const mengeAendern = async (position: CartItem, schritt: number) => {
+  const neu = cartGetters.getItemQty(position) + schritt;
+  beschaeftigt.value = position.id;
+  try {
+    if (neu < 1) {
+      await deleteCartItem(position);
+      send({ message: t('cart.itemRemoved'), type: 'positive' });
+    } else {
+      await setCartItemQuantity({ quantity: neu, cartItemId: position.id, productId: position.variationId });
+    }
+  } finally {
+    beschaeftigt.value = null;
+  }
+};
+
+const loeschen = async (position: CartItem) => {
+  beschaeftigt.value = position.id;
+  try {
+    await deleteCartItem(position);
+    send({ message: t('cart.itemRemoved'), type: 'positive' });
+  } finally {
+    beschaeftigt.value = null;
+  }
+};
 const { format } = usePriceFormatter();
 const { isAuthorized } = useCustomer();
 const { getImageForViewport, addModernImageExtension } = useModernImage();
