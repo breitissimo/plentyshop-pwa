@@ -11,7 +11,7 @@ export const LACCICO_HAENDLER_SEITE = {
     titel: 'Schnürsenkel für Händler und Werkstätten',
     unterzeile: 'Staffelpreise ab 25 Paar je Farbe und Länge, bestellt über Ihre Bestellliste.',
     einleitung:
-      'Wiederverkäufer wie Schuhmacher und Schuhhändler bestellen bei uns zu Händlerpreisen. Sie registrieren sich als Firma mit Ihrer USt-IdNr. und senden uns Ihren Gewerbenachweis an info@laccico.com, wir prüfen beides und schalten Ihr Händlerkonto frei. Danach sehen Sie angemeldet Ihre Händlerpreise am Artikel und setzen die Senkel auf Ihre Bestellliste. Firmen, die Senkel für den eigenen Bedarf kaufen, registrieren sich ebenso und bestellen über den Warenkorb.',
+      'Wiederverkäufer wie Schuhmacher und Schuhhändler bestellen bei uns zu Händlerpreisen. Sie registrieren sich als Firma mit Ihrer USt-IdNr. und senden uns Ihren Gewerbenachweis an info@laccico.com, wir prüfen beides und schalten Ihr Händlerkonto frei. Danach sehen Sie angemeldet Ihre Händlerpreise am Artikel und setzen die Senkel auf Ihre Bestellliste.',
     staffelTitel: 'So staffeln sich die Preise',
     staffel: [
       ['1 bis 24 Paar', 'Ladenpreis mit Mengenstaffel'],
@@ -35,11 +35,11 @@ export const LACCICO_HAENDLER_SEITE = {
     faq: [
       [
         'Wer kann Händlerpreise bekommen?',
-        'Wiederverkäufer mit gültiger USt-IdNr. und Gewerbenachweis, zum Beispiel Schuhmacher und Schuhhändler. Firmen, die für den eigenen Bedarf kaufen, bestellen mit ihrem Firmenkonto über den Warenkorb.',
+        'Wiederverkäufer mit gültiger USt-IdNr. und Gewerbenachweis, zum Beispiel Schuhmacher und Schuhhändler.',
       ],
       [
         'Wie werde ich freigeschaltet?',
-        'Registrieren Sie sich hier als Firma und tragen Sie Ihre USt-IdNr. ein. Ihr Firmenkonto ist sofort nutzbar. Als Wiederverkäufer senden Sie uns zusätzlich Ihren Gewerbenachweis an info@laccico.com; nach der Prüfung schalten wir die Händlerpreise frei, danach sehen Sie sie, sobald Sie angemeldet sind.',
+        'Registrieren Sie sich hier als Firma und tragen Sie Ihre USt-IdNr. ein. Senden Sie uns zusätzlich Ihren Gewerbenachweis an info@laccico.com; nach der Prüfung schalten wir die Händlerpreise frei, danach sehen Sie sie, sobald Sie angemeldet sind.',
       ],
       [
         'Wie bestelle ich?',
@@ -58,7 +58,7 @@ export const LACCICO_HAENDLER_SEITE = {
     willkommenText: 'Wählen Sie Senkel nach Form und Durchmesser oder nach Farbe und setzen Sie sie auf Ihre Bestellliste.',
     zuForm: 'Form & Durchmesser',
     zuFarben: 'Farbwelten',
-    wartet: 'Ihr Firmenkonto ist aktiv. Sie bestellen über den Warenkorb.',
+    wartet: 'Ihr Konto ist angelegt. Die Händlerpreise sind noch nicht freigeschaltet.',
     wartetText: 'Händlerpreise erhalten Wiederverkäufer wie Schuhmacher und Schuhhändler. Verkaufen Sie unsere Senkel weiter? Senden Sie uns Ihren Gewerbenachweis an info@laccico.com, dann prüfen wir die Freischaltung.',
   },
   en: {
@@ -68,7 +68,7 @@ export const LACCICO_HAENDLER_SEITE = {
     titel: 'Shoelaces for retailers and workshops',
     unterzeile: 'Tiered prices from 25 pairs per colour and length, ordered via your order list.',
     einleitung:
-      'Resellers such as cobblers and shoe retailers order from us at trade prices. Register as a company with your VAT number and send us proof of business registration at info@laccico.com; we check both and activate your trade account. Once logged in, you see your trade prices on each item and add the laces to your order list. Companies buying laces for their own use register the same way and order via the basket.',
+      'Resellers such as cobblers and shoe retailers order from us at trade prices. Register as a company with your VAT number and send us proof of business registration at info@laccico.com; we check both and activate your trade account. Once logged in, you see your trade prices on each item and add the laces to your order list.',
     staffelTitel: 'How the prices are tiered',
     staffel: [
       ['1 to 24 pairs', 'retail price with quantity discount'],
@@ -92,11 +92,11 @@ export const LACCICO_HAENDLER_SEITE = {
     faq: [
       [
         'Who can get trade prices?',
-        'Resellers with a valid VAT number and proof of business registration, for example cobblers and shoe retailers. Companies buying for their own use order with their company account via the basket.',
+        'Resellers with a valid VAT number and proof of business registration, for example cobblers and shoe retailers.',
       ],
       [
         'How do I get activated?',
-        'Register here as a company and enter your VAT number. Your company account can be used right away. Resellers also send us proof of business registration at info@laccico.com; after checking we activate trade prices, which you then see whenever you are logged in.',
+        'Register here as a company and enter your VAT number. Also send us proof of business registration at info@laccico.com; after checking we activate trade prices, which you then see whenever you are logged in.',
       ],
       [
         'How do I order?',
@@ -115,7 +115,7 @@ export const LACCICO_HAENDLER_SEITE = {
     willkommenText: 'Choose laces by shape and diameter or by colour and add them to your order list.',
     zuForm: 'Shape & diameter',
     zuFarben: 'Colour worlds',
-    wartet: 'Your company account is active. You order via the basket.',
+    wartet: 'Your account has been created. Trade prices are not activated yet.',
     wartetText: 'Trade prices are for resellers such as cobblers and shoe retailers. Do you resell our laces? Send us proof of business registration at info@laccico.com and we will check the activation.',
   },
   fr: {
@@ -125,7 +125,7 @@ export const LACCICO_HAENDLER_SEITE = {
     titel: 'Lacets pour revendeurs et ateliers',
     unterzeile: 'Prix dégressifs dès 25 paires par couleur et longueur, commandés via votre liste de commande.',
     einleitung:
-      'Les revendeurs comme les cordonniers et les marchands de chaussures commandent chez nous à prix revendeur. Inscrivez-vous en tant qu’entreprise avec votre numéro de TVA et envoyez-nous votre justificatif d’activité (extrait Kbis ou équivalent) à info@laccico.com ; nous vérifions et activons votre compte revendeur. Une fois connecté, vous voyez vos prix revendeur sur chaque article et ajoutez les lacets à votre liste de commande. Les entreprises qui achètent des lacets pour leur propre usage s’inscrivent de la même façon et commandent via le panier.',
+      'Les revendeurs comme les cordonniers et les marchands de chaussures commandent chez nous à prix revendeur. Inscrivez-vous en tant qu’entreprise avec votre numéro de TVA et envoyez-nous votre justificatif d’activité (extrait Kbis ou équivalent) à info@laccico.com ; nous vérifions et activons votre compte revendeur. Une fois connecté, vous voyez vos prix revendeur sur chaque article et ajoutez les lacets à votre liste de commande.',
     staffelTitel: 'Dégressivité des prix',
     staffel: [
       ['1 à 24 paires', 'prix public avec remise de quantité'],
@@ -149,11 +149,11 @@ export const LACCICO_HAENDLER_SEITE = {
     faq: [
       [
         'Qui peut obtenir les prix revendeur ?',
-        'Les revendeurs avec un numéro de TVA valide et un justificatif d’activité, par exemple cordonniers et marchands de chaussures. Les entreprises qui achètent pour leur propre usage commandent avec leur compte entreprise via le panier.',
+        'Les revendeurs avec un numéro de TVA valide et un justificatif d’activité, par exemple cordonniers et marchands de chaussures.',
       ],
       [
         'Comment mon compte est-il activé ?',
-        'Inscrivez-vous ici en tant qu’entreprise et indiquez votre numéro de TVA. Votre compte entreprise est utilisable tout de suite. Les revendeurs nous envoient en plus leur justificatif d’activité à info@laccico.com ; après vérification, nous activons les prix revendeur, visibles dès que vous êtes connecté.',
+        'Inscrivez-vous ici en tant qu’entreprise et indiquez votre numéro de TVA. Envoyez-nous en plus votre justificatif d’activité à info@laccico.com ; après vérification, nous activons les prix revendeur, visibles dès que vous êtes connecté.',
       ],
       [
         'Comment commander ?',
@@ -172,7 +172,7 @@ export const LACCICO_HAENDLER_SEITE = {
     willkommenText: 'Choisissez les lacets par forme et diamètre ou par couleur et ajoutez-les à votre liste de commande.',
     zuForm: 'Forme & diamètre',
     zuFarben: 'Univers de couleurs',
-    wartet: 'Votre compte entreprise est actif. Vous commandez via le panier.',
+    wartet: 'Votre compte est créé. Les prix revendeur ne sont pas encore activés.',
     wartetText: 'Les prix revendeur sont réservés aux revendeurs comme les cordonniers et les marchands de chaussures. Vous revendez nos lacets ? Envoyez-nous votre justificatif d’activité à info@laccico.com, nous vérifierons l’activation.',
   },
 } as const;
