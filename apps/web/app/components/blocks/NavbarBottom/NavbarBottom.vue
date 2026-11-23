@@ -43,6 +43,7 @@
 import { SfBadge, SfIconShoppingCart, SfIconHome, SfIconMenu, SfIconPerson, SfIconFavorite } from '@storefront-ui/vue';
 import type { ActionType } from '~/components/blocks/UtilityBar/types';
 import type { NavbarItem } from './types';
+import { useLaccicoHaendler } from '~~/modules/laccico/runtime/utils/laccicoHaendlerListe';
 
 const props = withDefaults(
   defineProps<{
@@ -64,6 +65,7 @@ const route = useRoute();
 const { wishlistItemIds } = useWishlist();
 const { data: cart } = useCart();
 const { isAuthorized } = useCustomer();
+const { istHaendler } = useLaccicoHaendler();
 const { open } = useMegaMenu();
 
 const fixedItems = computed<NavbarItem[]>(() => [
@@ -108,6 +110,8 @@ const orderedActionItems = computed<NavbarItem[]>(() => {
   return props.actionOrder
     .filter((action) => allowedActions.includes(action))
     .filter((action) => props.actionVisibility[action] !== false)
+    // Händler (Klasse 7): kein Warenkorb, sie bestellen über die Bestellliste (Zettel N 23.11.)
+    .filter((action) => !(istHaendler.value && action === 'cart'))
     .map((action) => configurableActionItems.value[action as 'wishlist' | 'cart' | 'account'])
     .filter((item): item is NavbarItem => Boolean(item));
 });

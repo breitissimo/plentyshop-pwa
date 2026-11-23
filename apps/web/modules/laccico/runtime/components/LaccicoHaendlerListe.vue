@@ -68,6 +68,13 @@
                   :aria-label="text.menge"
                   @change="mengeAendern(z.variationId, $event)"
                 />
+                <!-- Bestand je Zeile: sofort lieferbar / mit Nachlieferung (Zettel N 23.11.2026) -->
+                <div v-if="aufteilung(z)" class="laccico-haendlerliste-bestand" data-testid="laccico-haendlerliste-bestand">
+                  <template v-if="aufteilung(z)!.spaeter === 0">{{ text.vorraetig }}</template>
+                  <template v-else>
+                    {{ aufteilung(z)!.sofort }} {{ text.sofort }} · {{ aufteilung(z)!.spaeter }} {{ text.spaeter }}
+                  </template>
+                </div>
               </td>
               <td class="rechts">{{ preisText(z) }}</td>
               <td class="rechts">{{ zeilenSumme(z) }}</td>
@@ -205,6 +212,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('resize', abstandMessen);
   clearTimeout(neuZeit);
+  clearTimeout(bestandZeit);
 });
 
 const preisText = (z: LaccicoListenZeile) => {
@@ -215,6 +223,52 @@ const preisText = (z: LaccicoListenZeile) => {
 const zeilenSumme = (z: LaccicoListenZeile) => {
   const preis = laccicoListenPreis(z);
   return preis === null ? '–' : format(preis * z.menge);
+};
+
+/** Lagerbestand je Variante, vom PWA-Server (server/routes/laccico-bestand.get.ts); null = unbekannt */
+const bestand = ref<Record<string, number | null>>({});
+let bestandZeit: ReturnType<typeof setTimeout> | undefined;
+
+const bestandLaden = async () => {
+  const fehlend = zeilen.value.map((z) => z.variationId).filter((id) => !(String(id) in bestand.value));
+  if (!fehlend.length) {
+    return;
+  }
+  try {
+    const antwort = await $fetch<Record<string, number | null>>('/laccico-bestand', { query: { ids: fehlend.join(',') } });
+    bestand.value = { ...bestand.value, ...antwort };
+  } catch {
+    // ohne Bestand bleibt die Zeile wie bisher
+  }
+};
+
+// beim Öffnen und bei neuen Zeilen nachladen (kurz gebündelt)
+watch(
+  [offen, () => zeilen.value.length],
+  () => {
+    clearTimeout(bestandZeit);
+    if (offen.value) {
+      bestandZeit = setTimeout(bestandLaden, 300);
+    }
+  },
+);
+
+/** Aufteilung der Menge: was sofort geht, was mit der Nachlieferung kommt */
+const aufteilung = (z: LaccicoListenZeile) => {
+  const lager = bestand.value[String(z.variationId)];
+  if (lager === null || lager === undefined) {
+    return null;
+  }
+  const sofort = Math.min(z.menge, lager);
+  return { sofort, spaeter: z.menge - sofort };
+};
+
+const aufteilungText = (z: LaccicoListenZeile) => {
+  const a = aufteilung(z);
+  if (!a) {
+    return '';
+  }
+  return a.spaeter === 0 ? text.value.vorraetig : `${a.sofort} ${text.value.sofort} · ${a.spaeter} ${text.value.spaeter}`;
 };
 
 const mengeAendern = (variationId: number, ereignis: Event) => {
@@ -231,7 +285,8 @@ const listeAlsText = () => {
   ];
   const positionen = zeilen.value.map(
     (z) =>
-      `${z.menge} Paar | ${z.nummer} | ${z.name} | ${z.laenge} | Variante ${z.variationId} | ${preisText(z)} je Paar | ${zeilenSumme(z)}`,
+      `${z.menge} Paar | ${z.nummer} | ${z.name} | ${z.laenge} | Variante ${z.variationId} | ${preisText(z)} je Paar | ${zeilenSumme(z)}` +
+      (aufteilungText(z) ? ` | ${aufteilungText(z)}` : ''),
   );
   const fuss = ['', `${text.value.summe}: ${format(summe.value)} (${paare.value} Paar)`];
   if (notiz.value.trim()) {
@@ -288,7 +343,7 @@ const druckSeite = () => {
       (z) => `<tr>
         <td>${html(z.name)}<div class="nr">${html(z.nummer)}</div></td>
         <td>${html(z.laenge)}</td>
-        <td class="r">${html(z.menge)}</td>
+        <td class="r">${html(z.menge)}${aufteilungText(z) ? `<div class="nr">${html(aufteilungText(z))}</div>` : ''}</td>
         <td class="r">${html(preisText(z))}</td>
         <td class="r">${html(zeilenSumme(z))}</td>
       </tr>`,
@@ -444,6 +499,13 @@ const drucken = () => {
 .laccico-haendlerliste-tabelle tr.ist-neu td {
   background: #fff7e0;
   transition: background 1s;
+}
+.laccico-haendlerliste-bestand {
+  margin-top: 2px;
+  font-size: 0.72rem;
+  line-height: 1.2;
+  color: #555;
+  white-space: nowrap;
 }
 .laccico-haendlerliste-menge {
   width: 5rem;

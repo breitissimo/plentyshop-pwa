@@ -192,7 +192,8 @@
             </template>
           </UiButton>
           <!-- LACCICO: Warenkorbvorschau beim Überfahren (N 20.11.2026) -->
-          <LaccicoWarenkorbVorschau v-if="isActionVisible('cart')" :style="{ order: getActionOrder('cart') }">
+          <!-- Händler (Klasse 7) bestellen über die Bestellliste: kein Warenkorb-Symbol (Zettel N 23.11.) -->
+          <LaccicoWarenkorbVorschau v-if="isActionVisible('cart') && !istHaendler" :style="{ order: getActionOrder('cart') }">
           <UiButton
             class="group relative hover:!bg-header-400 active:!bg-header-400 mr-1 -ml-0.5 rounded-md"
             :tag="NuxtLink"
@@ -369,6 +370,7 @@ import { useFloating, flip, offset, shift } from '@floating-ui/vue';
 import { onClickOutside } from '@vueuse/core';
 import LanguageSelector from '~/components/LanguageSelector/LanguageSelector.vue';
 import LaccicoWarenkorbVorschau from '~~/modules/laccico/runtime/components/LaccicoWarenkorbVorschau.vue';
+import { useLaccicoHaendler } from '~~/modules/laccico/runtime/utils/laccicoHaendlerListe';
 
 import type { UtilityBarComponentProps } from './types';
 
@@ -379,6 +381,7 @@ const props = withDefaults(defineProps<UtilityBarComponentProps>(), {
 
 const isLogin = ref(true);
 const { data: cart } = useCart();
+const { istHaendler } = useLaccicoHaendler();
 const { wishlistItemIds } = useWishlist();
 const cartItemsCount = ref(0);
 const { open: openMegaMenu } = useMegaMenu();

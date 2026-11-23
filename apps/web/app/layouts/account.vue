@@ -97,12 +97,14 @@ import {
   SfIconFavorite,
 } from '@storefront-ui/vue';
 import type { MyAccountSubsection } from '~/layouts/types';
+import { useLaccicoHaendler } from '~~/modules/laccico/runtime/utils/laccicoHaendlerListe';
 const localePath = useLocalizedPath();
 const viewport = useViewport();
 const router = useRouter();
 const { logout } = useCustomer();
+const { istHaendler } = useLaccicoHaendler();
 
-const sections = computed(() => [
+const alleSections = computed(() => [
   {
     title: t('account.accountSettings.heading'),
     icon: SfIconPerson,
@@ -151,6 +153,33 @@ const sections = computed(() => [
     ],
   },
 ]);
+
+/**
+ * LACCICO (Zettel N 23.11.2026): Händler (Klasse 7) bestellen über die Bestellliste, nicht über den Warenkorb.
+ * Im Konto nur die Anmeldedaten (Persönliche Daten) und Abmelden; keine Bestellungen, Retouren, Adressen, Wunschliste.
+ */
+const sections = computed(() => {
+  if (!istHaendler.value) {
+    return alleSections.value;
+  }
+  const erste = alleSections.value[0]!;
+  return [{ ...erste, subsections: erste.subsections.filter(({ link }) => link === localePath(paths.accountPersonalData)) }];
+});
+
+// Händler, die eine ausgeblendete Kontoseite direkt aufrufen, landen bei den persönlichen Daten
+watch(
+  [istHaendler, () => router.currentRoute.value.path],
+  ([haendler, pfad]) => {
+    if (!haendler || pfad === localePath(paths.account)) {
+      return;
+    }
+    const erlaubt = sections.value.flatMap(({ subsections }) => subsections).some(({ link }) => pfad.includes(link));
+    if (!erlaubt) {
+      navigateTo(localePath(paths.accountPersonalData));
+    }
+  },
+  { immediate: true },
+);
 
 const currentPath = computed(() => router.currentRoute.value.path);
 const isRoot = computed(() => currentPath.value === localePath(paths.account));
