@@ -146,12 +146,31 @@ useHead(() => ({
   margin: 1.5rem auto 4rem;
   padding: 0 1rem;
 }
-/* Vor dem Login: Text und Anmeldefeld nebeneinander, als Block mittig, ohne Scrollen (N 24.11.2026) */
+/* Vor dem Login: linksbündig, Text und darunter ein breites, flaches Anmeldefeld, ohne Scrollen (N 24.11.2026) */
 .laccico-haendlerseite.ist-kurz {
-  grid-template-columns: minmax(0, 30rem) 24rem;
-  justify-content: center;
-  align-items: center;
-  margin-top: 2.5rem;
+  grid-template-columns: minmax(0, 52rem);
+}
+.laccico-haendlerseite.ist-kurz .laccico-haendlerseite-zugang :deep(form) {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem 1.5rem;
+  width: 100%;
+  padding: 0.5rem 0 0;
+}
+.laccico-haendlerseite.ist-kurz .laccico-haendlerseite-zugang :deep(form > .text-end) {
+  align-self: center;
+  text-align: left;
+}
+.laccico-haendlerseite.ist-kurz .laccico-haendlerseite-zugang :deep(form > button) {
+  margin-top: 0;
+}
+/* „Sie haben noch kein Konto?“ doppelt den Reiter „Als Firma registrieren“ */
+.laccico-haendlerseite.ist-kurz .laccico-haendlerseite-zugang :deep(form > .text-center) {
+  display: none;
+}
+.laccico-haendlerseite.ist-kurz .laccico-haendlerseite-zugang :deep(form ~ *),
+.laccico-haendlerseite.ist-kurz .laccico-haendlerseite-zugang :deep(.text-lg) {
+  text-align: left;
 }
 .laccico-haendlerseite-info h1 {
   font-size: 1.6rem;
@@ -255,10 +274,10 @@ useHead(() => ({
   .laccico-haendlerseite.ist-kurz {
     grid-template-columns: minmax(0, 1fr);
   }
-  .laccico-haendlerseite.ist-kurz .laccico-haendlerseite-zugang {
-    width: 100%;
-    max-width: 26rem;
-    justify-self: center;
+}
+@media (max-width: 640px) {
+  .laccico-haendlerseite.ist-kurz .laccico-haendlerseite-zugang :deep(form) {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 </style>
