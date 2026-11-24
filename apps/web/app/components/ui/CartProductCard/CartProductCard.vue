@@ -40,6 +40,23 @@
       </div>
 
       <UiBadges v-if="cartItem.variation" :product="cartItem.variation" :use-availability="true" />
+      <!-- LACCICO (Zettel N 24.11.): Angaben wie im Ceres-Warenkorb (Einstellung basket.item_data):
+           Kurzbeschreibung = wesentliche Merkmale vor dem Kauf, dazu Artikel-ID und Artikelnummer -->
+      <div
+        v-if="cartItem.variation && !cartItem.variation.bundleComponents"
+        class="laccico-wk-angaben text-xs leading-5 @sm:typography-text-sm text-neutral-700"
+        data-testid="laccico-wk-angaben"
+      >
+        <ul v-if="kurzbeschreibung.length" class="mb-1 list-disc pl-4">
+          <li v-for="punkt in kurzbeschreibung" :key="punkt">{{ punkt }}</li>
+        </ul>
+        <p>
+          {{ laccicoText.artikelId }}: {{ productGetters.getItemId(cartItem.variation) }}
+          <template v-if="productGetters.getVariationNumber(cartItem.variation)">
+            · {{ laccicoText.artikelnummer }}: {{ productGetters.getVariationNumber(cartItem.variation) }}
+          </template>
+        </p>
+      </div>
       <div v-if="!cartItem.variation?.bundleComponents && showBundleComponents">
         <div v-if="cartItem.variation" class="mt-2">
           <BasePrice
@@ -169,6 +186,29 @@ const itemQuantitySelector = ref(cartGetters.getItemQty(cartItem));
 const itemQuantity = computed(() => cartGetters.getItemQty(cartItem));
 const maximumOrderQuantity = ref();
 const { getSetting } = useSiteSettings('dontSplitItemBundle');
+// LACCICO (Zettel N 24.11.): Beschriftung je Sprache und Kurzbeschreibung als reiner Text
+const { locale: laccicoSprache } = useI18n();
+const laccicoText = computed(
+  () =>
+    ({
+      de: { artikelId: 'Artikel-ID', artikelnummer: 'Artikelnummer' },
+      en: { artikelId: 'Item ID', artikelnummer: 'Item number' },
+      fr: { artikelId: "ID de l'article", artikelnummer: "Numéro d'article" },
+    })[laccicoSprache.value as 'de' | 'en' | 'fr'] ?? { artikelId: 'Artikel-ID', artikelnummer: 'Artikelnummer' },
+);
+const kurzbeschreibung = computed(() => {
+  const roh = cartItem.variation ? productGetters.getShortDescription(cartItem.variation) : '';
+  return roh
+    .replace(/<\/(li|p)>|<br\s*\/?>/gi, '•')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/\s+/g, ' ')
+    .split('•')
+    .map((punkt) => punkt.trim())
+    .filter(Boolean);
+});
+
 const showBundleComponents = computed(() => {
   return getSetting() !== '1';
 });
