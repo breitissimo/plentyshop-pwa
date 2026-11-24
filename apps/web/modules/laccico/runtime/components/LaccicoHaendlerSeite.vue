@@ -146,11 +146,17 @@ useHead(() => ({
   margin: 1.5rem auto 4rem;
   padding: 0 1rem;
 }
+/* Vor dem Login: alles mittig (N 24.11.2026) */
 .laccico-haendlerseite.ist-kurz {
   grid-template-columns: minmax(0, 40rem);
+  justify-content: center;
+  text-align: center;
 }
 .laccico-haendlerseite.ist-kurz .laccico-haendlerseite-zugang {
+  width: 100%;
   max-width: 26rem;
+  justify-self: center;
+  text-align: left;
 }
 .laccico-haendlerseite-info h1 {
   font-size: 1.6rem;
