@@ -843,6 +843,6 @@ div:has(> [data-testid='laccico-megamenue-bestseller']) { max-height: calc(100vh
 
 /* Rechtsseiten im Aufbau der Infoseiten (N 24.11., Zettel (12)): Ränder 16 px wie Brotkrumen, Titelbalken #d6d3cd
    mit 28 px Abstand darunter wie die ShopBuilder-Titelleiste */
-.laccico-rechtsseite { padding: 0 16px 40px; }
+.laccico-rechtsseite { max-width: 1536px; margin: 0 auto; padding: 0 16px 40px; } /* wie die Infoseiten (max-w-screen-3xl, p-4) */
 .laccico-rechtsseite-balken { background: #d6d3cd; padding: 8px 16px; text-align: center; margin: 0 0 28px; }
 .laccico-rechtsseite-balken h1 { font-size: 1.35rem; line-height: 1.25; font-weight: 600; color: #121212; margin: 0; }
