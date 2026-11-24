@@ -20,6 +20,8 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
   const state = useState('useRegisterForm', () => ({
     isLoading: false,
     hasCompany: false,
+    /** LACCICO (N 24.11.2026): Registrierung als Firma von der Händlerseite, USt-IdNr. ist dort Pflicht */
+    laccicoFirma: false,
     turnstileElement: null as { reset?: () => void } | null,
     defaultFormValues: {
       email: '',
@@ -61,20 +63,9 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
           return value === passwordValue;
         })
         .default(state.value.defaultFormValues.repeatPassword),
-      firstName: string()
-        .trim()
-        .when([], {
-          is: () => !state.value.hasCompany,
-          then: (schema) => schema.required(t('error.requiredField')).default(state.value.defaultFormValues.firstName),
-          otherwise: (schema) => schema.optional().default(state.value.defaultFormValues.firstName),
-        }),
-      lastName: string()
-        .trim()
-        .when([], {
-          is: () => !state.value.hasCompany,
-          then: (schema) => schema.required(t('error.requiredField')).default(state.value.defaultFormValues.lastName),
-          otherwise: (schema) => schema.optional().default(state.value.defaultFormValues.lastName),
-        }),
+      // LACCICO (N 24.11.2026): Vor- und Nachname sind immer Pflicht, auch mit Firmendaten
+      firstName: string().trim().required(t('error.requiredField')).default(state.value.defaultFormValues.firstName),
+      lastName: string().trim().required(t('error.requiredField')).default(state.value.defaultFormValues.lastName),
       companyName: string()
         .trim()
         .when([], {
@@ -87,7 +78,10 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
         .trim()
         .when([], {
           is: () => state.value.hasCompany,
-          then: (schema) => schema.default(state.value.defaultFormValues.vatNumber),
+          then: (schema) =>
+            state.value.laccicoFirma
+              ? schema.required(t('error.requiredField')).default(state.value.defaultFormValues.vatNumber)
+              : schema.default(state.value.defaultFormValues.vatNumber),
           otherwise: (schema) => schema.optional().default(state.value.defaultFormValues.vatNumber),
         }),
       streetName: string().trim().required(t('error.requiredField')).default(state.value.defaultFormValues.streetName),
@@ -222,6 +216,7 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
 
   return {
     hasCompany: toRef(state.value, 'hasCompany'),
+    laccicoFirma: toRef(state.value, 'laccicoFirma'),
     turnstileElement: toRef(state.value, 'turnstileElement'),
     errors,
     onSubmit,

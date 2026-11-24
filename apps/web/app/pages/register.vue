@@ -96,7 +96,7 @@
         <div class="grid grid-cols-1 @md:grid-cols-2 gap-4">
           <label>
             <UiFormLabel>
-              {{ hasCompany ? t('form.firstNameLabel') : `${t('form.firstNameLabel')} ${t('form.required')}` }}
+              {{ t('form.firstNameLabel') }} {{ t('form.required') }}
             </UiFormLabel>
             <SfInput
               v-model="formFields.firstName.value"
@@ -110,7 +110,7 @@
 
           <label>
             <UiFormLabel>
-              {{ hasCompany ? t('form.lastNameLabel') : `${t('form.lastNameLabel')} ${t('form.required')}` }}
+              {{ t('form.lastNameLabel') }} {{ t('form.required') }}
             </UiFormLabel>
             <SfInput
               v-model="formFields.lastName.value"
@@ -153,7 +153,7 @@
           </label>
 
           <label for="vatNumber">
-            <UiFormLabel for="vatNumber">{{ t('form.vatIdLabel') }}</UiFormLabel>
+            <UiFormLabel for="vatNumber">{{ t('form.vatIdLabel') }}{{ firma ? ` ${t('form.required')}` : '' }}</UiFormLabel>
             <SfInput
               id="vatNumber"
               v-model="formFields.vatNumber.value"
@@ -167,6 +167,7 @@
             <span v-if="invalidVAT" class="flex text-negative-700 text-sm mt-2">
               {{ t('storefrontError.address.vatInvalid') }}
             </span>
+            <ErrorMessage as="span" name="vatNumber" class="flex text-negative-700 text-sm mt-2" />
           </label>
         </div>
 
@@ -355,6 +356,7 @@ const haendlerText = computed(
 const { invalidVAT, clearInvalidVAT } = useCreateAddress(AddressType.Shipping);
 const {
   hasCompany,
+  laccicoFirma,
   turnstileElement,
   errors,
   onSubmit,
@@ -366,6 +368,7 @@ const {
   formFieldsAttributes,
 } = useRegisterForm();
 
+laccicoFirma.value = firma.value;
 if (firma.value) {
   hasCompany.value = true;
 }

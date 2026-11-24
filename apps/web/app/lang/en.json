@@ -739,7 +739,7 @@
     "selectPlaceholder": "-- Select --",
     "stateLabel": "State",
     "streetNameLabel": "Street",
-    "streetNumberLabel": "Number",
+    "streetNumberLabel": "House number",
     "useAsBillingLabel": "Use as billing address",
     "useAsShippingLabel": "Use as shipping address",
     "vatIdLabel": "VAT ID"

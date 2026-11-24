@@ -739,7 +739,7 @@
     "selectPlaceholder": "-- Auswählen --",
     "stateLabel": "Bundesland",
     "streetNameLabel": "Straße",
-    "streetNumberLabel": "Nummer",
+    "streetNumberLabel": "Hausnummer",
     "useAsBillingLabel": "Als Rechnungsadresse nutzen",
     "useAsShippingLabel": "Als Lieferadresse nutzen",
     "vatIdLabel": "USt-IdNr."
