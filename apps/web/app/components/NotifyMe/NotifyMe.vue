@@ -72,7 +72,7 @@
             <i18n-t keypath="notifyMe.readAndAccepted" tag="span">
               <template #privacyPolicy>
                 <NuxtLink
-                  :to="localePath(paths.privacyPolicy)"
+                  :to="localePath('privacy-policy')"
                   class="text-primary-700 underline"
                   target="_blank"
                   :aria-label="t('notifyMe.aria.privacyPolicyLink')"

@@ -94,7 +94,7 @@ const configurableActionItems = computed<Record<'wishlist' | 'cart' | 'account',
     id: 'cart',
     label: t('common.labels.cart'),
     icon: SfIconShoppingCart,
-    link: localePath(paths.cart),
+    link: localePath('cart'),
   },
   account: {
     id: 'account',

@@ -13,7 +13,7 @@
         <i18n-t keypath="legal.termsInfo" scope="global">
           <template #terms>
             <UiLink
-              :href="localePath(paths.termsAndConditions)"
+              :href="localePath('terms-and-conditions')"
               target="_blank"
               class="focus:outline focus:outline-offset-2 focus:outline-2 outline-secondary-600 rounded"
             >
@@ -23,7 +23,7 @@
 
           <template #cancellationRights>
             <UiLink
-              :href="localePath(paths.cancellationRights)"
+              :href="localePath('cancellation-rights')"
               target="_blank"
               class="focus:outline focus:outline-offset-2 focus:outline-2 outline-secondary-600 rounded"
             >
@@ -33,7 +33,7 @@
 
           <template #privacyPolicy>
             <UiLink
-              :href="localePath(paths.privacyPolicy)"
+              :href="localePath('privacy-policy')"
               target="_blank"
               class="focus:outline focus:outline-offset-2 focus:outline-2 outline-secondary-600 rounded"
             >

@@ -130,7 +130,7 @@
         </div>
         <p class="laccico-haendlerliste-datenschutz">
           {{ text.datenschutz }}
-          <NuxtLink :to="localePath(paths.privacyPolicy)">{{ text.datenschutzLink }}</NuxtLink>.
+          <NuxtLink :to="localePath('privacy-policy')">{{ text.datenschutzLink }}</NuxtLink>.
         </p>
       </template>
     </div>

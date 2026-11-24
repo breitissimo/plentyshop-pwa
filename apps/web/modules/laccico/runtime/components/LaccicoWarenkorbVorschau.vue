@@ -107,7 +107,7 @@
             <div class="flex gap-2">
               <UiButton
                 :tag="NuxtLink"
-                :to="localePath(paths.cart)"
+                :to="localePath('cart')"
                 variant="secondary"
                 size="sm"
                 class="flex-1 whitespace-nowrap"

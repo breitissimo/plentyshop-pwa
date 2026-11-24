@@ -102,7 +102,7 @@ const addToCart = async () => {
       type: 'positive',
       message: t('cart.itemAdded'),
     });
-    goToPage(paths.cart);
+    goToPage('cart');
   }
   loadingAddToCart.value = false;
 };

@@ -177,13 +177,13 @@ const payPalAvailable = computed(() =>
 const handle = async () => {
   if (!paypalOrderId) {
     await unreserve();
-    return navigateTo(localePath(paths.cart));
+    return navigateTo(localePath('cart'));
   }
   const payPalScript = await getScript(currency.value);
   if (!payPalScript) {
     send({ type: 'negative', message: t('paypalPayment.expressNotAvailable') });
     await unreserve();
-    return navigateTo(localePath(paths.cart));
+    return navigateTo(localePath('cart'));
   }
 
   await setAddressesFromPayPal(paypalOrderId);
@@ -236,7 +236,7 @@ const validateFields = async () => {
 
   if (cartIsEmpty.value) {
     send({ type: 'neutral', message: t('cart.emptyNotification') });
-    await navigateTo(localePath(paths.cart));
+    await navigateTo(localePath('cart'));
     return false;
   }
 
@@ -292,14 +292,14 @@ const buy = async () => {
       }
     } else {
       send({ type: 'negative', message: t('paypalPayment.invalidOrder') });
-      navigateTo(localePath(paths.cart));
+      navigateTo(localePath('cart'));
     }
   }
 };
 
 const cancelOrder = async () => {
   await unreserve();
-  await navigateTo(localePath(paths.cart));
+  await navigateTo(localePath('cart'));
 };
 
 watch(payPalAvailable, async (newValue) => {

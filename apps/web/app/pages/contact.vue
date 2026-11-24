@@ -104,7 +104,7 @@
               <i18n-t keypath="contact.privacyPolicy" scope="global">
                 <template #privacyPolicy>
                   <UiLink
-                    :href="localePath(paths.privacyPolicy)"
+                    :href="localePath('privacy-policy')"
                     target="_blank"
                     class="focus:outline focus:outline-offset-2 focus:outline-2 outline-secondary-600 rounded"
                   >

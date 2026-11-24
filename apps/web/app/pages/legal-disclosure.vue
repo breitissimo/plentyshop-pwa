@@ -7,6 +7,8 @@ import type { Locale } from '#i18n';
 
 defineI18nRoute({
   locales: process.env.LANGUAGELIST?.split(',') as Locale[],
+  // LACCICO: Adressen wie die Plenty-Kategorie bzw. der Ceres-Shop (N 24.11.2026), statt englischer Systemnamen
+  paths: { de: '/laccico-finest-waxed-laces/impressum', en: '/laccico-finest-waxed-laces/imprint', fr: '/laccicolacetsfinscires/mentionslegales' },
 });
 
 const { data, getLegalTexts } = useLegalInformation();

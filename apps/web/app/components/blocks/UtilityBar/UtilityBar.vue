@@ -198,7 +198,7 @@
             class="group relative hover:!bg-header-400 active:!bg-header-400 mr-1 -ml-0.5 rounded-md"
             :tag="NuxtLink"
             :style="{ color: iconColor }"
-            :to="localePath(paths.cart)"
+            :to="localePath('cart')"
             :aria-label="t('cart.numberInCart', { count: cartItemsCount })"
             variant="tertiary"
             square

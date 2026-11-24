@@ -52,34 +52,40 @@ export default defineNuxtModule({
       handler: resolver.resolve('./runtime/server/inhalt'),
     });
 
-    // Alte Ceres-Adressen der Systemseiten (Rechtstexte, Kontakt, Warenkorb) führen auf die PWA-eigenen Seiten (301).
-    // Die Rechtstexte verlinken das Widerrufsformular unter der alten Adresse; ohne Weiterleitung zeigt sie eine leere Kategorie.
+    // Rechtsseiten und Warenkorb liegen seit 24.11.2026 unter den Adressen der Plenty-Kategorien wie in Ceres
+    // (paths in app/pages/*.vue). Die englischen PWA-Systemnamen und die Ceres-Kurzadresse /gtc leiten dorthin (301).
     const systemseiten: Record<string, string> = {
-      '/laccico-finest-waxed-laces/widerrufsrecht': '/cancellation-rights',
-      '/en/laccico-finest-waxed-laces/withdrawal': '/en/cancellation-rights',
-      '/fr/laccicolacetsfinscires/droitderevocation': '/fr/cancellation-rights',
-      '/laccico-finest-waxed-laces/impressum': '/legal-disclosure',
-      '/en/laccico-finest-waxed-laces/imprint': '/en/legal-disclosure',
-      '/fr/laccicolacetsfinscires/mentionslegales': '/fr/legal-disclosure',
-      '/laccico-finest-waxed-laces/datenschutzerklaerung': '/privacy-policy',
-      '/en/laccico-finest-waxed-laces/privacy-policy': '/en/privacy-policy',
-      '/fr/laccicolacetsfinscires/declarationdeconfidentialite': '/fr/privacy-policy',
-      '/laccico-finest-waxed-laces/agb': '/terms-and-conditions',
-      '/en/laccico-finest-waxed-laces/terms-and-conditions': '/en/terms-and-conditions',
-      '/fr/laccicolacetsfinscires/termes': '/fr/terms-and-conditions',
+      '/terms-and-conditions': '/laccico-finest-waxed-laces/agb',
+      '/de/terms-and-conditions': '/de/laccico-finest-waxed-laces/agb',
+      '/en/terms-and-conditions': '/en/laccico-finest-waxed-laces/terms-and-conditions',
+      '/fr/terms-and-conditions': '/fr/laccicolacetsfinscires/termes',
+      '/cancellation-rights': '/laccico-finest-waxed-laces/widerrufsrecht',
+      '/de/cancellation-rights': '/de/laccico-finest-waxed-laces/widerrufsrecht',
+      '/en/cancellation-rights': '/en/laccico-finest-waxed-laces/withdrawal',
+      '/fr/cancellation-rights': '/fr/laccicolacetsfinscires/droitderevocation',
+      '/legal-disclosure': '/laccico-finest-waxed-laces/impressum',
+      '/de/legal-disclosure': '/de/laccico-finest-waxed-laces/impressum',
+      '/en/legal-disclosure': '/en/laccico-finest-waxed-laces/imprint',
+      '/fr/legal-disclosure': '/fr/laccicolacetsfinscires/mentionslegales',
+      '/privacy-policy': '/laccico-finest-waxed-laces/datenschutzerklaerung',
+      '/de/privacy-policy': '/de/laccico-finest-waxed-laces/datenschutzerklaerung',
+      '/en/privacy-policy': '/en/laccico-finest-waxed-laces/privacy-policy',
+      '/fr/privacy-policy': '/fr/laccicolacetsfinscires/declarationdeconfidentialite',
+      '/cancellation-form': '/laccico-finest-waxed-laces/widerrufsrecht/widerrufsformular',
+      '/de/cancellation-form': '/de/laccico-finest-waxed-laces/widerrufsrecht/widerrufsformular',
+      '/en/cancellation-form': '/en/laccico-finest-waxed-laces/withdrawal/withdrawal-form',
+      '/fr/cancellation-form': '/fr/laccicolacetsfinscires/droitderevocation/formerevocable',
+      '/cart': '/warenkorb',
+      '/de/cart': '/de/warenkorb',
+      '/en/cart': '/en/basket',
+      '/fr/cart': '/fr/panier',
       // Ceres-Kurzadresse der AGB (in der PWA sonst 404, geprüft 21.11.2026)
-      '/gtc': '/terms-and-conditions',
-      '/en/gtc': '/en/terms-and-conditions',
-      '/fr/gtc': '/fr/terms-and-conditions',
+      '/gtc': '/laccico-finest-waxed-laces/agb',
+      '/en/gtc': '/en/laccico-finest-waxed-laces/terms-and-conditions',
+      '/fr/gtc': '/fr/laccicolacetsfinscires/termes',
       '/laccico-finest-waxed-laces/info/kontakt': '/contact',
       '/en/laccico-finest-waxed-laces/info/contact': '/en/contact',
       '/fr/laccicolacetsfinscires/info/contact': '/fr/contact',
-      '/laccico-finest-waxed-laces/widerrufsrecht/widerrufsformular': '/cancellation-form',
-      '/en/laccico-finest-waxed-laces/withdrawal/withdrawal-form': '/en/cancellation-form',
-      '/fr/laccicolacetsfinscires/droitderevocation/formerevocable': '/fr/cancellation-form',
-      '/warenkorb': '/cart',
-      '/en/basket': '/en/cart',
-      '/fr/panier': '/fr/cart',
     };
     const routeRules = (nuxt.options.routeRules = nuxt.options.routeRules || {});
     Object.entries(systemseiten).forEach(([von, nach]) => {

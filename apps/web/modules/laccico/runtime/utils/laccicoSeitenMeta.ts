@@ -139,9 +139,29 @@ const sprache = (): Sprache => {
 };
 
 /** Pfad ohne Sprachkürzel und ohne Schrägstrich am Ende: /en/contact → /contact, /fr → / */
+/** Adressen der Rechtsseiten (wie Plenty-Kategorie/Ceres, seit 24.11.2026) → Schlüssel in META */
+const ADRESSE_ZU_SCHLUESSEL: Record<string, string> = {
+  '/laccico-finest-waxed-laces/agb': '/terms-and-conditions',
+  '/laccico-finest-waxed-laces/terms-and-conditions': '/terms-and-conditions',
+  '/laccicolacetsfinscires/termes': '/terms-and-conditions',
+  '/laccico-finest-waxed-laces/widerrufsrecht': '/cancellation-rights',
+  '/laccico-finest-waxed-laces/withdrawal': '/cancellation-rights',
+  '/laccicolacetsfinscires/droitderevocation': '/cancellation-rights',
+  '/laccico-finest-waxed-laces/impressum': '/legal-disclosure',
+  '/laccico-finest-waxed-laces/imprint': '/legal-disclosure',
+  '/laccicolacetsfinscires/mentionslegales': '/legal-disclosure',
+  '/laccico-finest-waxed-laces/datenschutzerklaerung': '/privacy-policy',
+  '/laccico-finest-waxed-laces/privacy-policy': '/privacy-policy',
+  '/laccicolacetsfinscires/declarationdeconfidentialite': '/privacy-policy',
+  '/laccico-finest-waxed-laces/widerrufsrecht/widerrufsformular': '/cancellation-form',
+  '/laccico-finest-waxed-laces/withdrawal/withdrawal-form': '/cancellation-form',
+  '/laccicolacetsfinscires/droitderevocation/formerevocable': '/cancellation-form',
+};
+
 const grundpfad = (pfad: string): string => {
-  const ohneSprache = pfad.replace(/^\/(en|fr)(?=\/|$)/, '') || '/';
-  return ohneSprache.length > 1 ? ohneSprache.replace(/\/$/, '') : ohneSprache;
+  const ohneSprache = pfad.replace(/^\/(de|en|fr)(?=\/|$)/, '') || '/';
+  const ohneSchraegstrich = ohneSprache.length > 1 ? ohneSprache.replace(/\/$/, '') : ohneSprache;
+  return ADRESSE_ZU_SCHLUESSEL[ohneSchraegstrich] ?? ohneSchraegstrich;
 };
 
 export const laccicoSeitenMeta = (pfad: string): SeitenMeta | undefined => META[grundpfad(pfad)]?.[sprache()];

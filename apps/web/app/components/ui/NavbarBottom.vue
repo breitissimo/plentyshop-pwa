@@ -64,7 +64,7 @@ const items = computed(() => [
   {
     label: t('common.labels.cart'),
     icon: SfIconShoppingCart,
-    link: localePath(paths.cart),
+    link: localePath('cart'),
   },
   {
     label: isAuthorized.value ? t('account.navBottomHeadingAccount') : t('account.navBottomHeadingLogin'),

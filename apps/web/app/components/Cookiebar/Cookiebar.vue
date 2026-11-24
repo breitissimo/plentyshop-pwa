@@ -192,8 +192,8 @@ const NuxtLink = resolveComponent('NuxtLink');
 const localePath = useLocalizedPath();
 const furtherSettingsOn = ref(false);
 
-const privacyPolicy = computed(() => localePath(paths.privacyPolicy));
-const legalDisclosure = computed(() => localePath(paths.legalDisclosure));
+const privacyPolicy = computed(() => localePath('privacy-policy'));
+const legalDisclosure = computed(() => localePath('legal-disclosure'));
 
 const triggerCookieConsent = (group: CookieGroup) => {
   group.accepted = group.cookies.some((cookie: Cookie) => cookie.accepted);

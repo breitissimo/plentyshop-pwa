@@ -101,7 +101,7 @@
         <i18n-t keypath="cancellationForm.privacyPolicy" scope="global">
           <template #privacyPolicy>
             <UiLink
-              :href="localePath(paths.privacyPolicy)"
+              :href="localePath('privacy-policy')"
               target="_blank"
               rel="noopener noreferrer"
               class="focus:outline focus:outline-offset-2 focus:outline-2 outline-secondary-600 rounded"
@@ -141,6 +141,8 @@ import { useForm, ErrorMessage } from 'vee-validate';
 
 defineI18nRoute({
   locales: process.env.LANGUAGELIST?.split(',') as Locale[],
+  // LACCICO: Adressen wie die Plenty-Kategorie bzw. der Ceres-Shop (N 24.11.2026), statt englischer Systemnamen
+  paths: { de: '/laccico-finest-waxed-laces/widerrufsrecht/widerrufsformular', en: '/laccico-finest-waxed-laces/withdrawal/withdrawal-form', fr: '/laccicolacetsfinscires/droitderevocation/formerevocable' },
 });
 
 definePageMeta({

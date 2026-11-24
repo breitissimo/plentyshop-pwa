@@ -150,7 +150,7 @@ const { createOrderLoading: processingOrder } = useDynamicPaymentButtons();
 watch(cartIsEmpty, async () => {
   if (!processingOrder.value) {
     send({ type: 'neutral', message: t('cart.emptyNotification') });
-    await navigateTo(localePath(paths.cart));
+    await navigateTo(localePath('cart'));
   }
 });
 </script>

@@ -89,7 +89,7 @@
           size="lg"
           class="w-full mb-3"
           variant="secondary"
-          @click="goToPage(paths.cart)"
+          @click="goToPage('cart')"
         >
           {{ t('quickCheckout.checkYourCart') }}
         </UiButton>

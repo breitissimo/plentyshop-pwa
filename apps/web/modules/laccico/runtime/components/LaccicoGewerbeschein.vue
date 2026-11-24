@@ -21,7 +21,7 @@
       </UiButton>
       <p class="laccico-gewerbeschein-klein">
         {{ text.upHinweis }}
-        <NuxtLink :to="localePath(paths.privacyPolicy)" class="underline">{{ text.upHinweisLink }}</NuxtLink>.
+        <NuxtLink :to="localePath('privacy-policy')" class="underline">{{ text.upHinweisLink }}</NuxtLink>.
       </p>
     </template>
   </div>
