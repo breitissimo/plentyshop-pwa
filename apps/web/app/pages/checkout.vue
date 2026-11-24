@@ -6,7 +6,8 @@
     :heading="t('common.labels.checkout')"
   >
     <div v-if="cart" class="@lg:grid @lg:grid-cols-12 @lg:gap-x-6">
-      <div class="col-span-6 @xl:col-span-7 mb-10 @lg:mb-0">
+      <!-- LACCICO (N 24.11.2026): Kasse 50:50 statt 7:5, Gesamt und Bezahlknopf früher sichtbar -->
+      <div class="col-span-6 mb-10 @lg:mb-0">
         <UiDivider id="top-contact-information-divider" class="w-screen @md:w-auto -mx-4 @md:mx-0" />
         <ContactInformation id="contact-information" />
         <UiDivider id="top-shipping-divider" class="w-screen @md:w-auto -mx-4 @md:mx-0" />
@@ -39,7 +40,7 @@
         <UiDivider class="w-screen @md:w-auto -mx-4 @md:mx-0 mb-10" />
         <CheckoutGeneralTerms />
       </div>
-      <div class="col-span-6 @xl:col-span-5">
+      <div class="col-span-6">
         <div v-for="(cartItem, index) in cart?.items" :key="cartItem.id">
           <UiCartProductCard :cart-item="cartItem" :class="{ 'border-t': index === 0 }" />
         </div>

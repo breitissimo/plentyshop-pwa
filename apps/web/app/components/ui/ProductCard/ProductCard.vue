@@ -5,8 +5,10 @@
     :class="{ 'border border-neutral-200': configuration?.cardBorders }"
   >
     <div class="relative overflow-hidden laccico-kachelbild">
+      <!-- LACCICO (N 24.11.2026): Plenty-Tags (Material, Ausführung, Verpackungseinheit …) nie über dem Kachelbild,
+           auch wenn Shop 6 USE_TAGS_ON_CATEGORY_PAGE setzt; Tags sind für Filter gedacht (Zettel (8)) -->
       <UiBadges
-        :use-tags="useTagsOnCategoryPage"
+        :use-tags="false"
         :class="['absolute', isFromWishlist ? 'mx-2' : 'm-2']"
         :product="product"
         :use-availability="isFromWishlist"
@@ -263,8 +265,6 @@ const { openQuickCheckout } = useQuickCheckout();
 const { addToCart } = useCart();
 const { send } = useNotification();
 const loading = ref(false);
-const config = useRuntimeConfig();
-const useTagsOnCategoryPage = config.public.useTagsOnCategoryPage;
 const name = computed(
   () => productGetters.getName(product.value) + productGetters.getGroupedAttributesString(product.value),
 );
