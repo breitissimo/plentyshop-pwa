@@ -59,16 +59,12 @@
             :aria-selected="ansicht === 'register'"
             :class="{ aktiv: ansicht === 'register' }"
             data-testid="laccico-haendlerseite-registrieren"
-            @click="ansicht = 'register'"
+            @click="zurFirmenRegistrierung"
           >
             {{ text.registrieren }}
           </button>
         </div>
-        <LoginComponent v-if="ansicht === 'login'" @change-view="ansicht = 'register'" @logged-in="nachAnmeldung" />
-        <template v-else>
-          <p class="laccico-haendlerseite-hinweis">{{ text.registrierHinweis }}</p>
-          <Register @change-view="ansicht = 'login'" @registered="nachAnmeldung" />
-        </template>
+        <LoginComponent @change-view="zurFirmenRegistrierung" @logged-in="nachAnmeldung" />
       </template>
     </aside>
 
@@ -127,6 +123,12 @@ const linkZu = (id: number) => {
 };
 const linkForm = computed(() => linkZu(ID_FORM));
 const linkFarben = computed(() => linkZu(ID_FARBEN));
+
+/**
+ * Registrieren als Firma auf eigener Seite (Zettel N 24.11.2026): Formular mit Firmenfeldern links, Erklärung rechts.
+ * Das kurze Registrierfeld hier hatte keine Firmenfelder (Firma, USt-IdNr.); nach der Registrierung zurück hierher.
+ */
+const zurFirmenRegistrierung = () => navigateTo({ path: localePath('/register'), query: { firma: '1', redirect: '/haendler' } });
 
 /** Nach Anmeldung/Registrierung auf dieser Seite bleiben und neu laden, damit Kundenklasse und Preise gelten */
 const nachAnmeldung = () => {

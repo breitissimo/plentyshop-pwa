@@ -786,3 +786,43 @@ div:has(> [data-testid='laccico-megamenue-bestseller']) { max-height: calc(100vh
   text-underline-offset: 2px;
   margin: 0.5rem 0 1rem;
 }
+
+/* Firmen-Registrierung /register?firma=1 (Zettel N 24.11., Skizze): Formular links, Erklärung rechts in eigener Box */
+.laccico-firmenregistrierung .laccico-firmenregistrierung-info {
+  background: #f5f5f5;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+.laccico-firmenregistrierung .laccico-firmenregistrierung-info h2 {
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+}
+.laccico-firmenregistrierung .laccico-firmenregistrierung-info ol {
+  list-style: decimal;
+  padding-left: 1.25rem;
+}
+.laccico-firmenregistrierung .laccico-firmenregistrierung-info li + li {
+  margin-top: 0.5rem;
+}
+@media (min-width: 1024px) {
+  main:has(.laccico-firmenregistrierung) {
+    max-width: 1200px !important;
+  }
+  .laccico-firmenregistrierung {
+    max-width: 1200px !important;
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+    margin-bottom: 2rem;
+  }
+  .laccico-firmenregistrierung .laccico-firmenregistrierung-kopf {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+  }
+  .laccico-firmenregistrierung form {
+    max-width: none !important;
+    margin: 0 !important;
+  }
+}

@@ -1,9 +1,14 @@
 <template>
   <NuxtLayout name="auth" :heading="''">
-    <div class="w-full max-w-full @md:max-w-4xl @lg:max-w-3xl @xl:max-w-4xl mx-auto @md:px-6 @lg:px-8">
-      <div class="text-center mb-8">
-        <div class="text-2xl font-semibold mb-2">{{ t('authentication.signup.heading') }}</div>
-        <div class="text-lg text-gray-600 mb-6">{{ t('authentication.signup.subheading') }}</div>
+    <div
+      class="w-full max-w-full @md:max-w-4xl @lg:max-w-3xl @xl:max-w-4xl mx-auto @md:px-6 @lg:px-8"
+      :class="{ 'laccico-firmenregistrierung': firma }"
+    >
+      <div class="text-center mb-8 laccico-firmenregistrierung-kopf">
+        <div class="text-2xl font-semibold mb-2">
+          {{ firma ? haendlerText.registrieren : t('authentication.signup.heading') }}
+        </div>
+        <div v-if="!firma" class="text-lg text-gray-600 mb-6">{{ t('authentication.signup.subheading') }}</div>
       </div>
 
       <form
@@ -119,7 +124,7 @@
           </label>
         </div>
 
-        <div class="grid grid-cols-1">
+        <div v-if="!firma" class="grid grid-cols-1">
           <UiLink
             class="select-none hover:cursor-pointer"
             role="button"
@@ -289,6 +294,14 @@
           </UiButton>
         </div>
       </form>
+
+      <!-- LACCICO (Zettel N 24.11.2026, Skizze): Erklärung zur Händler-Freischaltung rechts neben dem Formular -->
+      <aside v-if="firma" class="laccico-firmenregistrierung-info" data-testid="laccico-firmenregistrierung-info">
+        <h2 class="laccico-firmenregistrierung-titel">{{ haendlerText.registrierSchritteTitel }}</h2>
+        <ol>
+          <li v-for="schritt in haendlerText.registrierSchritte" :key="schritt">{{ schritt }}</li>
+        </ol>
+      </aside>
     </div>
   </NuxtLayout>
 </template>
@@ -298,6 +311,7 @@ import { ErrorMessage } from 'vee-validate';
 import { SfInput, SfLoaderCircular, SfCheckbox, SfIconCheck, SfIconClose, SfSelect } from '@storefront-ui/vue';
 import { AddressType } from '@plentymarkets/shop-api';
 import type { Locale } from '#i18n';
+import { LACCICO_HAENDLER_SEITE } from '~~/modules/laccico/runtime/utils/laccicoHaendlerSeiteTexte';
 
 defineI18nRoute({
   locales: process.env.LANGUAGELIST?.split(',') as Locale[],
@@ -316,6 +330,19 @@ useHead({
   meta: [{ name: 'robots', content: 'noindex, nofollow' }],
 });
 const turnstileLoad = ref(false);
+
+// LACCICO (Zettel N 24.11.2026): Aufruf von der Händlerseite mit ?firma=1 → Firmenfelder offen, Erklärung rechts
+const route = useRoute();
+const { locale } = useI18n();
+const firma = computed(() => route.query.firma === '1');
+const haendlerText = computed(
+  () =>
+    LACCICO_HAENDLER_SEITE[
+      (locale.value as keyof typeof LACCICO_HAENDLER_SEITE) in LACCICO_HAENDLER_SEITE
+        ? (locale.value as keyof typeof LACCICO_HAENDLER_SEITE)
+        : 'de'
+    ],
+);
 const { invalidVAT, clearInvalidVAT } = useCreateAddress(AddressType.Shipping);
 const {
   hasCompany,
@@ -329,6 +356,10 @@ const {
   formFields,
   formFieldsAttributes,
 } = useRegisterForm();
+
+if (firma.value) {
+  hasCompany.value = true;
+}
 
 onNuxtReady(async () => {
   if (!shippingCountries.value?.length) await fetchAggregatedCountries();
