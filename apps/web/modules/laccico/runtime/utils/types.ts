@@ -34,8 +34,17 @@ export type LaccicoListenZeile = {
   staffel: LaccicoListenStaffel[];
 };
 
-/** Auswahl auf der Kachel (Händler): Menge und Preis je Paar der gewählten Länge, null = noch keine Länge */
-export type LaccicoKartenWahl = { menge: number; preis: number | null };
+/**
+ * Auswahl auf der Kachel: Menge und Preis je Paar der gewählten Länge (null = noch keine Länge).
+ * Händler: Staffelpreis netto; Endkunden: Preis für 1 Paar mit Streichpreis der Länge (Rabatt rechnet die Kachel).
+ */
+export type LaccicoKartenWahl = { menge: number; preis: number | null; durchgestrichen?: number };
+
+/** Preis auf der Kachel: Preis je Paar, durchgestrichener Vergleichspreis (0 = keiner), Ersparnis in Prozent (0 = keine) */
+export type LaccicoKartenPreis = { preis: number; durchgestrichen: number; prozent: number };
+
+/** Stufe der Rabattstaffel auf den Nettowarenwert (Kundenklasse Standard-Endkunden) */
+export type LaccicoWarenwertStufe = { abNetto: number; prozent: number };
 
 /** Staffel-Eintrag, wie ihn der Shop liefert (getGraduatedList) */
 export type LaccicoShopStaffel = { quantity: string | number; price: number };

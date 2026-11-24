@@ -106,8 +106,11 @@ watch(
   { immediate: import.meta.client },
 );
 
-/** Händler: Preis je Paar der gewählten Länge für die gewählte Menge (Staffel je Variante, einmal geladen). */
-const preiseJeVariante = new Map<string, { basis: number; staffel: LaccicoListenStaffel[] }>();
+/**
+ * Preis der gewählten Länge (je Variante einmal geladen): Händler bekommen den Staffelpreis für die Menge,
+ * Endkunden den Preis für 1 Paar mit Streichpreis; den Mengenrabatt rechnet die Kachel (N 24.11.2026).
+ */
+const preiseJeVariante = new Map<string, { basis: number; durchgestrichen: number; staffel: LaccicoListenStaffel[] }>();
 const variantenPreise = async (variationId: string) => {
   const vorhanden = preiseJeVariante.get(variationId);
   if (vorhanden) {
@@ -118,8 +121,10 @@ const variantenPreise = async (variationId: string) => {
   if (!produkt) {
     return null;
   }
+  const karte = laccicoKartenPreis(produkt);
   const preise = {
-    basis: laccicoKartenPreis(produkt).preis,
+    basis: karte.preis,
+    durchgestrichen: karte.durchgestrichen,
     staffel: laccicoStaffelAus(productGetters.getGraduatedList(produkt) as LaccicoShopStaffel[]),
   };
   preiseJeVariante.set(variationId, preise);
@@ -130,11 +135,16 @@ watch(
   [auswahl, menge, istHaendler],
   async ([variante, anzahl, haendler]) => {
     const wahl: LaccicoKartenWahl = { menge: Number(anzahl) || 1, preis: null };
-    if (haendler && variante) {
+    if (variante) {
       try {
         const preise = await variantenPreise(variante);
         if (preise && variante === auswahl.value) {
-          wahl.preis = laccicoListenPreis({ staffel: preise.staffel, menge: wahl.menge }) ?? preise.basis;
+          if (haendler) {
+            wahl.preis = laccicoListenPreis({ staffel: preise.staffel, menge: wahl.menge }) ?? preise.basis;
+          } else {
+            wahl.preis = preise.basis;
+            wahl.durchgestrichen = preise.durchgestrichen;
+          }
         }
       } catch {
         wahl.preis = null;

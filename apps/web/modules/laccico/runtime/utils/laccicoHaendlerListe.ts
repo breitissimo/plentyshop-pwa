@@ -51,6 +51,9 @@ export const laccicoZeileAusProdukt = (produkt: Product, menge: number): Laccico
 /** Oberkategorien im Menü für Händler (N 23.11.2026): 727 Form & Durchmesser, 731 Farbwelten entdecken */
 export const LACCICO_HAENDLER_MENUE = [727, 731];
 
+/** Anker der Versandfrage auf der Händlerseite; Ziel des Menüpunkts „Versandkosten“ für Händler (Zettel N 24.11.2026) */
+export const LACCICO_HAENDLER_VERSAND_ANKER = 'haendler-versand';
+
 /** Menübaum je Kunde: Händler sehen nur die freigegebenen Oberkategorien, alle anderen den ganzen Baum. */
 export const laccicoMenueFuerKunde = <T extends { id: number }>(baum: T[], istHaendler: boolean): T[] =>
   istHaendler ? baum.filter((k) => LACCICO_HAENDLER_MENUE.includes(Number(k.id))) : baum;

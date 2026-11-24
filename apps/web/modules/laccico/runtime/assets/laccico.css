@@ -751,3 +751,19 @@ div:has(> [data-testid='laccico-megamenue-bestseller']) { max-height: calc(100vh
 .laccico-hauptmenue * {
   font-weight: 400 !important;
 }
+
+/* Ersparnis in Prozent auf der Artikelkachel (Zettel N 24.11.2026): Mengenrabatt bzw. Aktionspreis, oben rechts auf dem Bild */
+.laccico-prozent {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 5;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: var(--laccico-bordeaux);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+}

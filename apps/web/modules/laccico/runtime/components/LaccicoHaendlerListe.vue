@@ -1,10 +1,18 @@
 <template>
   <div v-if="istHaendler" class="laccico-haendlerliste-platz" aria-hidden="true" />
+  <!-- Offene Liste: Klick daneben klappt nur ein und löst auf der Seite nichts aus (Zettel N 24.11.2026) -->
+  <div
+    v-if="istHaendler && offen"
+    class="laccico-haendlerliste-abdeckung z-dropdown"
+    aria-hidden="true"
+    data-testid="laccico-haendlerliste-abdeckung"
+    @click="schliessen"
+  />
   <section
     v-if="istHaendler"
     id="laccico-haendlerliste"
-    class="laccico-haendlerliste z-sticky"
-    :class="{ 'ist-offen': offen, 'ist-neu': neuHinzu }"
+    class="laccico-haendlerliste"
+    :class="{ 'ist-offen': offen, 'ist-neu': neuHinzu, 'z-dropdown': offen, 'z-sticky': !offen }"
     :style="{ bottom: `${abstandUnten}px` }"
     data-testid="laccico-haendlerliste"
   >
@@ -167,6 +175,10 @@ let neuZeit: ReturnType<typeof setTimeout> | undefined;
 
 const umschalten = () => {
   offen.value = !offen.value;
+};
+
+const schliessen = () => {
+  offen.value = false;
 };
 
 const wischStart = (ereignis: TouchEvent) => {
@@ -406,6 +418,11 @@ const drucken = () => {
 <style scoped>
 .laccico-haendlerliste-platz {
   height: 92px; /* Leiste 56 px + Reiter 32 px + Luft */
+}
+.laccico-haendlerliste-abdeckung {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.15);
 }
 .laccico-haendlerliste {
   position: fixed;

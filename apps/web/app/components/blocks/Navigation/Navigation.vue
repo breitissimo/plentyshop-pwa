@@ -144,6 +144,17 @@
             </div>
           </div>
         </li>
+        <!-- LACCICO: Händler sehen „Versandkosten“ im Hauptmenü, Ziel ist die Versandfrage der Händlerseite (Zettel N 24.11.2026) -->
+        <li v-if="istHaendler && categoryTree.length > 0">
+          <NuxtLink
+            :to="haendlerVersandLink"
+            data-testid="laccico-menue-versand"
+            :class="categoryButtonClasses"
+            :style="categoryButtonStyle"
+          >
+            <span>{{ haendlerText.menueVersand }}</span>
+          </NuxtLink>
+        </li>
       </ul>
     </nav>
 
@@ -222,6 +233,11 @@
                 </div>
               </li>
             </template>
+            <li v-if="istHaendler && activeMenu.id === 0">
+              <SfListItem size="lg" :tag="NuxtLink" :href="haendlerVersandLink" class="nav-hover-bg" @click="close()">
+                <p class="text-left">{{ haendlerText.menueVersand }}</p>
+              </SfListItem>
+            </li>
           </ul>
         </nav>
       </SfDrawer>
@@ -242,7 +258,12 @@ import {
 } from '@storefront-ui/vue';
 import { unrefElement } from '@vueuse/core';
 import { type CategoryTreeItem, categoryTreeGetters } from '@plentymarkets/shop-api';
-import { laccicoMenueFuerKunde, useLaccicoHaendler } from '~~/modules/laccico/runtime/utils/laccicoHaendlerListe';
+import {
+  LACCICO_HAENDLER_VERSAND_ANKER,
+  laccicoMenueFuerKunde,
+  useLaccicoHaendler,
+} from '~~/modules/laccico/runtime/utils/laccicoHaendlerListe';
+import { useLaccicoHaendlerTexte } from '~~/modules/laccico/runtime/utils/laccicoHaendlerTexte';
 import type { NavigationBlockProps } from './types';
 import LaccicoMegaMenueKacheln from '~~/modules/laccico/runtime/components/LaccicoMegaMenueKacheln.vue';
 import LaccicoMegaMenueBanner from '~~/modules/laccico/runtime/components/LaccicoMegaMenueBanner.vue';
@@ -287,6 +308,8 @@ const isUsingTouch = ref(false);
 const lastTouchTime = ref(0);
 // LACCICO: Händler (Klasse 7) sehen im Menü nur Farbwelten und Form & Durchmesser (N 23.11.2026)
 const { istHaendler } = useLaccicoHaendler();
+const haendlerText = useLaccicoHaendlerTexte();
+const haendlerVersandLink = computed(() => `${localePath('/haendler')}#${LACCICO_HAENDLER_VERSAND_ANKER}`);
 const menueBaum = (categories: CategoryTreeItem[]) => laccicoMenueFuerKunde(categoryTreeGetters.getTree(categories), istHaendler.value);
 const categoryTree = ref(menueBaum(props.categories));
 const drawerReference = ref();

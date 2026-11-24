@@ -14,6 +14,10 @@
 
       <!-- LACCICO: Plaketten Neuheit/Artikelpaket wie Ceres -->
       <LaccicoPlaketten v-if="!isFromWishlist" :product="product" />
+      <!-- LACCICO: Ersparnis in Prozent oben rechts auf dem Bild, damit die Preiszeile einzeilig bleibt (Zettel N 24.11.2026) -->
+      <span v-if="laccicoPreis.prozent" class="laccico-prozent" data-testid="laccico-karten-prozent">
+        −{{ laccicoPreis.prozent }} %
+      </span>
 
       <div ref="imageContainerRef" :class="[{ 'size-48': isFromSlider }, 'relative']">
         <UiLink
@@ -218,6 +222,7 @@ import type { BasketItemOrderParamsProperty, Product, DoAddItemParams } from '@p
 import LaccicoKartenKauf from '~~/modules/laccico/runtime/components/LaccicoKartenKauf.vue';
 import LaccicoPlaketten from '~~/modules/laccico/runtime/components/LaccicoPlaketten.vue';
 import type { LaccicoKartenWahl, LaccicoShopStaffel } from '~~/modules/laccico/runtime/utils/types';
+import { laccicoEndkundenPreis, laccicoProzent } from '~~/modules/laccico/runtime/utils/laccicoKarte';
 
 const props = withDefaults(defineProps<ProductCardProps>(), {
   configuration: () => ({
@@ -278,20 +283,27 @@ const canAddFromCategory = computed(
     productGetters.hasOrderPropertiesRequiredAndPreselected(product.value),
 );
 // LACCICO: Händler sehen den Preis je Paar für die auf der Kachel gewählte Menge und Länge (N 23.11.2026);
-// Endkunden bleiben beim Preis für 1 Paar, ihr Rabatt gilt im Warenkorb auf den Warenwert.
+// Endkunden sehen den Preis je Paar nach Mengenrabatt (Warenwert-Staffel) mit Streichpreis und Prozent (Zettel N 24.11.).
 const { istHaendler } = useLaccicoHaendler();
 const kartenWahl = ref<LaccicoKartenWahl>({ menge: 1, preis: null });
 const laccicoPreis = computed(() => {
   const basis = laccicoKartenPreis(product.value);
   if (!istHaendler.value) {
-    return basis;
+    const gewaehlt = kartenWahl.value.preis
+      ? {
+          preis: kartenWahl.value.preis,
+          durchgestrichen: kartenWahl.value.durchgestrichen ?? 0,
+          prozent: laccicoProzent(kartenWahl.value.preis, kartenWahl.value.durchgestrichen ?? 0),
+        }
+      : basis;
+    return laccicoEndkundenPreis(gewaehlt, kartenWahl.value.menge);
   }
   if (kartenWahl.value.preis) {
-    return { preis: kartenWahl.value.preis, durchgestrichen: 0 };
+    return { preis: kartenWahl.value.preis, durchgestrichen: 0, prozent: 0 };
   }
   const staffel = laccicoStaffelAus(productGetters.getGraduatedList(product.value) as LaccicoShopStaffel[]);
   const staffelPreis = laccicoListenPreis({ staffel, menge: kartenWahl.value.menge });
-  return staffelPreis ? { preis: staffelPreis, durchgestrichen: 0 } : basis;
+  return staffelPreis ? { preis: staffelPreis, durchgestrichen: 0, prozent: 0 } : basis;
 });
 
 const cover = computed(() => productGetters.getCoverImage(product.value));

@@ -62,7 +62,13 @@
 
     <section class="laccico-haendlerseite-faq">
       <h2>{{ text.faqTitel }}</h2>
-      <details v-for="[frage, antwort] in text.faq" :key="frage">
+      <!-- Versandfrage mit Anker: Ziel des Menüpunkts „Versandkosten“ für Händler, dort gleich aufgeklappt (N 24.11.2026) -->
+      <details
+        v-for="([frage, antwort], i) in text.faq"
+        :id="i === VERSAND_FRAGE ? LACCICO_HAENDLER_VERSAND_ANKER : undefined"
+        :key="frage"
+        :open="i === VERSAND_FRAGE && route.hash === `#${LACCICO_HAENDLER_VERSAND_ANKER}`"
+      >
         <summary>{{ frage }}</summary>
         <p>{{ antwort }}</p>
       </details>
@@ -73,10 +79,13 @@
 <script setup lang="ts">
 import type { CategoryTreeItem } from '@plentymarkets/shop-api';
 import { LACCICO_HAENDLER_SEITE } from '../utils/laccicoHaendlerSeiteTexte';
-import { useLaccicoHaendler } from '../utils/laccicoHaendlerListe';
+import { LACCICO_HAENDLER_VERSAND_ANKER, useLaccicoHaendler } from '../utils/laccicoHaendlerListe';
 
 const ID_FORM = 727;
 const ID_FARBEN = 731;
+/** Stelle der Frage „Was kostet der Versand?“ in `faq` (in allen Sprachen dieselbe) */
+const VERSAND_FRAGE = 4;
+const route = useRoute();
 
 const { locale } = useI18n();
 const { isAuthorized } = useCustomer();

@@ -2,6 +2,7 @@
 const TEXTE = {
   de: {
     aufListe: 'Auf die Bestellliste',
+    menueVersand: 'Versandkosten',
     aufListeOk: 'Auf die Bestellliste gesetzt',
     titel: 'Ihre Bestellliste',
     leer: 'Ihre Bestellliste ist leer. Wählen Sie am Artikel Länge und Menge und setzen Sie ihn auf die Liste.',
@@ -31,6 +32,7 @@ const TEXTE = {
   },
   en: {
     aufListe: 'Add to order list',
+    menueVersand: 'Shipping costs',
     aufListeOk: 'Added to your order list',
     titel: 'Your order list',
     leer: 'Your order list is empty. Choose length and quantity on an item and add it to the list.',
@@ -60,6 +62,7 @@ const TEXTE = {
   },
   fr: {
     aufListe: 'Ajouter à la liste de commande',
+    menueVersand: 'Frais de livraison',
     aufListeOk: 'Ajouté à votre liste de commande',
     titel: 'Votre liste de commande',
     leer: 'Votre liste de commande est vide. Choisissez la longueur et la quantité sur un article et ajoutez-le à la liste.',
