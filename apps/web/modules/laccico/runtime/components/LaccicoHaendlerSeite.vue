@@ -146,17 +146,12 @@ useHead(() => ({
   margin: 1.5rem auto 4rem;
   padding: 0 1rem;
 }
-/* Vor dem Login: alles mittig (N 24.11.2026) */
+/* Vor dem Login: Text und Anmeldefeld nebeneinander, als Block mittig, ohne Scrollen (N 24.11.2026) */
 .laccico-haendlerseite.ist-kurz {
-  grid-template-columns: minmax(0, 40rem);
+  grid-template-columns: minmax(0, 30rem) 24rem;
   justify-content: center;
-  text-align: center;
-}
-.laccico-haendlerseite.ist-kurz .laccico-haendlerseite-zugang {
-  width: 100%;
-  max-width: 26rem;
-  justify-self: center;
-  text-align: left;
+  align-items: center;
+  margin-top: 2.5rem;
 }
 .laccico-haendlerseite-info h1 {
   font-size: 1.6rem;
@@ -256,8 +251,14 @@ useHead(() => ({
   line-height: 1.6;
 }
 @media (max-width: 1039px) {
-  .laccico-haendlerseite {
+  .laccico-haendlerseite,
+  .laccico-haendlerseite.ist-kurz {
     grid-template-columns: minmax(0, 1fr);
+  }
+  .laccico-haendlerseite.ist-kurz .laccico-haendlerseite-zugang {
+    width: 100%;
+    max-width: 26rem;
+    justify-self: center;
   }
 }
 </style>
