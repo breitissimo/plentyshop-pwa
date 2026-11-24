@@ -794,6 +794,12 @@ div:has(> [data-testid='laccico-megamenue-bestseller']) { max-height: calc(100vh
   margin-bottom: 2rem;
   line-height: 1.6;
 }
+.laccico-firmenregistrierung .laccico-firmenregistrierung-haupttitel {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0 0 1rem;
+}
 .laccico-firmenregistrierung .laccico-firmenregistrierung-info h2 {
   font-weight: 600;
   margin: 0 0 0.5rem;
@@ -811,18 +817,26 @@ div:has(> [data-testid='laccico-megamenue-bestseller']) { max-height: calc(100vh
   }
   .laccico-firmenregistrierung {
     max-width: 1200px !important;
-    display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-    gap: 2rem;
-    align-items: start;
-    margin-bottom: 2rem;
-  }
-  .laccico-firmenregistrierung .laccico-firmenregistrierung-kopf {
-    grid-column: 1 / -1;
-    margin-bottom: 0;
   }
   .laccico-firmenregistrierung form {
     max-width: none !important;
-    margin: 0 !important;
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: stretch;
+  }
+  /* rechte Spalte so hoch wie die Felder: Kasten wächst, Häkchen und Knopf schließen unten bündig ab (N 24.11.) */
+  .laccico-firmenregistrierung .laccico-reg-rechts {
+    display: flex;
+    flex-direction: column;
+  }
+  .laccico-firmenregistrierung .laccico-reg-rechts > aside {
+    flex: 1 1 auto;
+  }
+  .laccico-firmenregistrierung form > * {
+    margin-top: 0 !important;
+  }
+  .laccico-firmenregistrierung .laccico-firmenregistrierung-info {
+    margin-bottom: 0;
   }
 }

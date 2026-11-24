@@ -4,11 +4,9 @@
       class="w-full max-w-full @md:max-w-4xl @lg:max-w-3xl @xl:max-w-4xl mx-auto @md:px-6 @lg:px-8"
       :class="{ 'laccico-firmenregistrierung': firma }"
     >
-      <div class="text-center mb-8 laccico-firmenregistrierung-kopf">
-        <div class="text-2xl font-semibold mb-2">
-          {{ firma ? haendlerText.registrieren : t('authentication.signup.heading') }}
-        </div>
-        <div v-if="!firma" class="text-lg text-gray-600 mb-6">{{ t('authentication.signup.subheading') }}</div>
+      <div v-if="!firma" class="text-center mb-8">
+        <div class="text-2xl font-semibold mb-2">{{ t('authentication.signup.heading') }}</div>
+        <div class="text-lg text-gray-600 mb-6">{{ t('authentication.signup.subheading') }}</div>
       </div>
 
       <form
@@ -16,6 +14,7 @@
         class="max-w-2xl mx-auto bg-white rounded-lg @md:shadow-sm @md:border @md:border-gray-100 @md:p-6 @lg:p-8 space-y-4 mb-8"
         @submit.prevent="onSubmit"
       >
+        <div class="laccico-reg-felder space-y-4">
         <label class="w-full">
           <UiFormLabel>{{ t('form.emailLabel') }} {{ t('form.required') }}</UiFormLabel>
           <SfInput
@@ -248,6 +247,19 @@
           </label>
         </div>
 
+        </div>
+
+        <!-- LACCICO (Zettel N 24.11.2026, Skizze): rechte Spalte mit Erklärung, darunter Häkchen und Knopf,
+             damit die Firmen-Registrierung auf einen Bildschirm passt -->
+        <div class="laccico-reg-rechts space-y-4">
+          <aside v-if="firma" class="laccico-firmenregistrierung-info" data-testid="laccico-firmenregistrierung-info">
+            <h1 class="laccico-firmenregistrierung-haupttitel">{{ haendlerText.registrieren }}</h1>
+            <h2 class="laccico-firmenregistrierung-titel">{{ haendlerText.registrierSchritteTitel }}</h2>
+            <ol>
+              <li v-for="schritt in haendlerText.registrierSchritte" :key="schritt">{{ schritt }}</li>
+            </ol>
+          </aside>
+
         <div class="flex items-start space-x-3">
           <SfCheckbox
             id="privacyPolicy"
@@ -275,6 +287,10 @@
           </label>
         </div>
         <ErrorMessage as="div" name="privacyPolicy" class="text-negative-700 text-left text-sm -mt-2" />
+        <!-- LACCICO (N 24.11.2026): Pflichtfeldhinweis wie in der Kasse -->
+        <div class="text-sm text-neutral-500 ml-7" data-testid="laccico-pflichtfeldhinweis">
+          * {{ t('contact.form.asterixHint') }}
+        </div>
 
         <NuxtTurnstile
           v-if="turnstileSiteKey.length > 0 && turnstileLoad"
@@ -293,15 +309,8 @@
             <template v-else>{{ t('authentication.signup.submitLabel') }}</template>
           </UiButton>
         </div>
+        </div>
       </form>
-
-      <!-- LACCICO (Zettel N 24.11.2026, Skizze): Erklärung zur Händler-Freischaltung rechts neben dem Formular -->
-      <aside v-if="firma" class="laccico-firmenregistrierung-info" data-testid="laccico-firmenregistrierung-info">
-        <h2 class="laccico-firmenregistrierung-titel">{{ haendlerText.registrierSchritteTitel }}</h2>
-        <ol>
-          <li v-for="schritt in haendlerText.registrierSchritte" :key="schritt">{{ schritt }}</li>
-        </ol>
-      </aside>
     </div>
   </NuxtLayout>
 </template>
