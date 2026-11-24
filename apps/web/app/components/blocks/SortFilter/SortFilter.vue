@@ -70,6 +70,16 @@
           />
         </template>
       </template>
+      <!-- LACCICO (Zettel N 24.11.): alle gesetzten Filter mit einem Klick entfernen -->
+      <button
+        v-if="filterGesetzt"
+        type="button"
+        class="laccico-filter-zuruecksetzen"
+        data-testid="laccico-filter-zuruecksetzen"
+        @click="alleFilterZuruecksetzen"
+      >
+        {{ zuruecksetzenText }}
+      </button>
     </CategorySidebar>
 
     <UiButton variant="tertiary" class="@md:hidden whitespace-nowrap !px-0" @click="open">
@@ -101,6 +111,23 @@ const { t } = useI18n({ useScope: 'global' });
 const viewport = useViewport();
 const { isInEditorClient } = useEditorState();
 const clientPreview = computed(() => isInEditorClient.value && viewport.isGreaterOrEquals('lg'));
+
+// LACCICO (Zettel N 24.11.): Knopf „Alle Filter zurücksetzen“, sichtbar sobald ein Filter oder Preis gesetzt ist
+const route = useRoute();
+const { locale } = useI18n();
+const FILTER_PARAMETER = ['facets', 'priceMin', 'priceMax'];
+const filterGesetzt = computed(() => FILTER_PARAMETER.some((name) => !!route.query[name]));
+const zuruecksetzenText = computed(
+  () =>
+    ({ de: 'Alle Filter zurücksetzen', en: 'Reset all filters', fr: 'Réinitialiser les filtres' })[
+      locale.value as 'de' | 'en' | 'fr'
+    ] ?? 'Alle Filter zurücksetzen',
+);
+const alleFilterZuruecksetzen = () => {
+  const query = { ...route.query };
+  [...FILTER_PARAMETER, 'page'].forEach((name) => delete query[name]);
+  navigateTo({ query });
+};
 
 const showAllFiltersImmediately = computed(() => props.content?.showAllFiltersImmediately ?? true);
 const numberOfFiltersToShowInitially = computed(() => props.content?.numberOfFiltersToShowInitially ?? 0);

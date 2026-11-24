@@ -298,6 +298,18 @@ main [data-testid='details-list'] details > summary.laccico-faq-aktiv {
     padding: 0.75rem 1rem;
     margin: 0.25rem 0 0 !important;
   }
+  /* Knopf „Alle Filter zurücksetzen“ (Zettel N 24.11.) neben dem Knopf Filter, nur bei gesetztem Filter */
+  [data-testid='category-sort-filter'] .laccico-filter-zuruecksetzen {
+    order: 4;
+    margin-left: 0.75rem;
+    background: transparent;
+    border: 0;
+    padding: 0.35rem 0;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
   [data-testid='category-sort-filter'] .laccico-filter-knopf {
     order: 3;
     margin-left: auto; /* Filter-Knopf rechts außen (N 22.11.) */
@@ -766,4 +778,11 @@ div:has(> [data-testid='laccico-megamenue-bestseller']) { max-height: calc(100vh
   font-weight: 600;
   line-height: 1.4;
   white-space: nowrap;
+}
+
+/* Knopf „Alle Filter zurücksetzen“ im Handy-Seitenfenster (Zettel N 24.11.), Desktop-Regel oben im Block „Knopf Filter“ */
+.laccico-filter-zuruecksetzen {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  margin: 0.5rem 0 1rem;
 }
