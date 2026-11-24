@@ -46,7 +46,7 @@
         </div>
         <div class="relative @md:sticky @md:top-20 h-fit" :class="{ 'pointer-events-none opacity-50': cartLoading }">
           <SfLoaderCircular v-if="cartLoading" class="absolute top-[130px] right-0 left-0 m-auto z-loader" size="2xl" />
-          <Coupon />
+          <!-- LACCICO (N 24.11.2026): kein Gutscheinfeld (Gutscheine im Tarif Expand nicht genutzt) -->
           <OrderSummary v-if="cart" :cart="cart" class="mt-4">
             <CheckoutExportDeliveryHint v-if="cart.isExportDelivery" />
             <ClientOnly>

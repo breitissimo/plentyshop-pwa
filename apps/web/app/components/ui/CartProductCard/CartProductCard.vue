@@ -47,15 +47,19 @@
         class="laccico-wk-angaben text-xs leading-5 @sm:typography-text-sm text-neutral-700"
         data-testid="laccico-wk-angaben"
       >
-        <ul v-if="kurzbeschreibung.length" class="mb-1 list-disc pl-4">
-          <li v-for="punkt in kurzbeschreibung" :key="punkt">{{ punkt }}</li>
-        </ul>
-        <p>
+        <!-- ausklappbar (N 24.11.2026), damit die Zeile kurz bleibt -->
+        <details class="laccico-wk-details">
+          <summary class="cursor-pointer underline underline-offset-2">{{ laccicoText.details }}</summary>
+          <ul v-if="kurzbeschreibung.length" class="mt-1 mb-1 list-disc pl-4">
+            <li v-for="punkt in kurzbeschreibung" :key="punkt">{{ punkt }}</li>
+          </ul>
+          <p>
           {{ laccicoText.artikelId }}: {{ productGetters.getItemId(cartItem.variation) }}
           <template v-if="productGetters.getVariationNumber(cartItem.variation)">
             · {{ laccicoText.artikelnummer }}: {{ productGetters.getVariationNumber(cartItem.variation) }}
           </template>
-        </p>
+          </p>
+        </details>
       </div>
       <div v-if="!cartItem.variation?.bundleComponents && showBundleComponents">
         <div v-if="cartItem.variation" class="mt-2">
@@ -191,10 +195,14 @@ const { locale: laccicoSprache } = useI18n();
 const laccicoText = computed(
   () =>
     ({
-      de: { artikelId: 'Artikel-ID', artikelnummer: 'Artikelnummer' },
-      en: { artikelId: 'Item ID', artikelnummer: 'Item number' },
-      fr: { artikelId: "ID de l'article", artikelnummer: "Numéro d'article" },
-    })[laccicoSprache.value as 'de' | 'en' | 'fr'] ?? { artikelId: 'Artikel-ID', artikelnummer: 'Artikelnummer' },
+      de: { artikelId: 'Artikel-ID', artikelnummer: 'Artikelnummer', details: 'Artikeldetails' },
+      en: { artikelId: 'Item ID', artikelnummer: 'Item number', details: 'Item details' },
+      fr: { artikelId: "ID de l'article", artikelnummer: "Numéro d'article", details: "Détails de l'article" },
+    })[laccicoSprache.value as 'de' | 'en' | 'fr'] ?? {
+      artikelId: 'Artikel-ID',
+      artikelnummer: 'Artikelnummer',
+      details: 'Artikeldetails',
+    },
 );
 const kurzbeschreibung = computed(() => {
   const roh = cartItem.variation ? productGetters.getShortDescription(cartItem.variation) : '';

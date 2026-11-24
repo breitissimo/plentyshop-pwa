@@ -6,19 +6,19 @@
     :heading="t('cart.myCart')"
   >
     <div v-if="!cartIsEmpty" class="@md:grid @md:grid-cols-12 @md:gap-x-6" data-testid="cart-page-content">
-      <div class="col-span-7 mb-2 @md:mb-0">
+      <!-- LACCICO (N 24.11.2026): Warenkorb 50:50 wie die Kasse -->
+      <div class="col-span-6 mb-2 @md:mb-0">
         <div v-for="(cartItem, index) in cart?.items" :key="cartItem.id">
           <UiCartProductCard :cart-item="cartItem" :class="{ 'border-t': index === 0 }" />
         </div>
-        <Coupon v-if="viewport.isLessThan('lg')" class="mb-2" />
+        <!-- LACCICO (N 24.11.2026): kein Gutscheinfeld (Gutscheine im Tarif Expand nicht genutzt) -->
       </div>
       <div
-        class="relative col-span-5 @md:sticky @md:top-10 h-fit"
+        class="relative col-span-6 @md:sticky @md:top-10 h-fit"
         :class="{ 'pointer-events-none opacity-50': loading }"
       >
         <SfLoaderCircular v-if="loading" class="absolute top-[130px] right-0 left-0 m-auto z-loader" size="2xl" />
         <OrderSummary :cart="cart">
-          <Coupon v-if="viewport.isGreaterOrEquals('lg')" class="mb-5" />
           <UiButton
             data-testid="checkout-button"
             :tag="NuxtLink"
@@ -62,7 +62,6 @@ const { setPageMeta } = usePageMeta();
 definePageMeta({ pageType: 'static' });
 
 const NuxtLink = resolveComponent('NuxtLink');
-const viewport = useViewport();
 const localePath = useLocalizedPath();
 const { isAuthorized } = useCustomer();
 const { data: cart, cartIsEmpty, loading } = useCart();
