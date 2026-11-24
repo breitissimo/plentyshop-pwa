@@ -40,6 +40,7 @@
       <template v-else-if="isAuthorized">
         <p class="laccico-haendlerseite-gruss" data-testid="laccico-haendlerseite-wartet">{{ text.wartet }}</p>
         <p>{{ text.wartetText }}</p>
+        <LaccicoGewerbeschein />
       </template>
       <template v-else>
         <div class="laccico-haendlerseite-reiter" role="tablist">
@@ -89,6 +90,7 @@
 
 <script setup lang="ts">
 import type { CategoryTreeItem } from '@plentymarkets/shop-api';
+import LaccicoGewerbeschein from './LaccicoGewerbeschein.vue';
 import { LACCICO_HAENDLER_SEITE } from '../utils/laccicoHaendlerSeiteTexte';
 import { LACCICO_HAENDLER_VERSAND_ANKER, useLaccicoHaendler } from '../utils/laccicoHaendlerListe';
 

@@ -51,3 +51,12 @@ export type LaccicoShopStaffel = { quantity: string | number; price: number };
 
 /** Kunde mit Kundenklasse */
 export type LaccicoKundeMitKlasse = { classId?: number | null };
+
+/** Antwort der Middleware-Funktion laccicoGewerbeschein (apps/server/laccicoGewerbeschein.ts) */
+export type LaccicoGewerbescheinAntwort = { ok: boolean; grund?: string };
+
+/** Google reCAPTCHA v3 im Fenster (nur geladen, wenn der Kunde den Gewerbeschein sendet) */
+export type LaccicoGrecaptcha = {
+  ready: (fertig: () => void) => void;
+  execute: (schluessel: string, optionen: { action: string }) => Promise<string>;
+};

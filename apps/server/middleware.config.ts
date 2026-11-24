@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import * as path from 'path';
+import { laccicoGewerbeschein } from './laccicoGewerbeschein';
 dotenv.config({
   path: path.resolve(__dirname, '../web/.env'),
 });
@@ -11,6 +12,11 @@ const config = {
   integrations: {
     plentysystems: {
       location: '@plentymarkets/shop-api/server',
+      // LACCICO: eigene Funktion für den Gewerbeschein-Upload (N 24.11.2026), Aufruf im Shop: useSdk().plentysystems.laccicoGewerbeschein
+      extensions: (extensions: any) => [
+        ...extensions,
+        { name: 'laccico', extendApiMethods: { laccicoGewerbeschein } },
+      ],
       configuration: {
         api: {
           url: process.env.API_ENDPOINT,
