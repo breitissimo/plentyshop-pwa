@@ -1,25 +1,28 @@
 <template>
   <!-- Händler-Startseite /haendler (Zettel N 23.11.2026): links Infotext, rechts Anmelden/Registrieren bzw. Gruß -->
-  <div class="laccico-haendlerseite" data-testid="laccico-haendlerseite">
+  <!-- Vor dem Login nur Titel und erster Absatz, darunter das Anmeldefeld (N 24.11.2026); alles Weitere nach dem Login -->
+  <div class="laccico-haendlerseite" :class="{ 'ist-kurz': kurz }" data-testid="laccico-haendlerseite">
     <div class="laccico-haendlerseite-info">
       <h1>{{ text.titel }}</h1>
       <p class="laccico-haendlerseite-unterzeile">{{ text.unterzeile }}</p>
       <p>{{ text.einleitung }}</p>
 
-      <h2>{{ text.staffelTitel }}</h2>
-      <table class="laccico-haendlerseite-staffel">
-        <tbody>
-          <tr v-for="[menge, preis] in text.staffel" :key="menge">
-            <th>{{ menge }}</th>
-            <td>{{ preis }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="laccico-haendlerseite-fuss">{{ text.staffelFuss }}</p>
+      <template v-if="!kurz">
+        <h2>{{ text.staffelTitel }}</h2>
+        <table class="laccico-haendlerseite-staffel">
+          <tbody>
+            <tr v-for="[menge, preis] in text.staffel" :key="menge">
+              <th>{{ menge }}</th>
+              <td>{{ preis }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="laccico-haendlerseite-fuss">{{ text.staffelFuss }}</p>
 
-      <template v-for="abschnitt in text.abschnitte" :key="abschnitt.titel">
-        <h2>{{ abschnitt.titel }}</h2>
-        <p>{{ abschnitt.text }}</p>
+        <template v-for="abschnitt in text.abschnitte" :key="abschnitt.titel">
+          <h2>{{ abschnitt.titel }}</h2>
+          <p>{{ abschnitt.text }}</p>
+        </template>
       </template>
     </div>
 
@@ -29,7 +32,9 @@
         <p>{{ text.willkommenText }}</p>
         <div class="laccico-haendlerseite-knoepfe">
           <UiButton v-if="linkForm" :tag="NuxtLink" :to="linkForm">{{ text.zuForm }}</UiButton>
-          <UiButton v-if="linkFarben" :tag="NuxtLink" :to="linkFarben" variant="secondary">{{ text.zuFarben }}</UiButton>
+          <UiButton v-if="linkFarben" :tag="NuxtLink" :to="linkFarben" variant="secondary">{{
+            text.zuFarben
+          }}</UiButton>
         </div>
       </template>
       <template v-else-if="isAuthorized">
@@ -38,7 +43,13 @@
       </template>
       <template v-else>
         <div class="laccico-haendlerseite-reiter" role="tablist">
-          <button type="button" role="tab" :aria-selected="ansicht === 'login'" :class="{ aktiv: ansicht === 'login' }" @click="ansicht = 'login'">
+          <button
+            type="button"
+            role="tab"
+            :aria-selected="ansicht === 'login'"
+            :class="{ aktiv: ansicht === 'login' }"
+            @click="ansicht = 'login'"
+          >
             {{ text.anmelden }}
           </button>
           <button
@@ -60,7 +71,7 @@
       </template>
     </aside>
 
-    <section class="laccico-haendlerseite-faq">
+    <section v-if="!kurz" class="laccico-haendlerseite-faq">
       <h2>{{ text.faqTitel }}</h2>
       <!-- Versandfrage mit Anker: Ziel des Menüpunkts „Versandkosten“ für Händler, dort gleich aufgeklappt (N 24.11.2026) -->
       <details
@@ -96,9 +107,16 @@ const { buildCategoryMenuLink } = useLocalization();
 const NuxtLink = resolveComponent('NuxtLink');
 
 const text = computed(
-  () => LACCICO_HAENDLER_SEITE[(locale.value as keyof typeof LACCICO_HAENDLER_SEITE) in LACCICO_HAENDLER_SEITE ? (locale.value as keyof typeof LACCICO_HAENDLER_SEITE) : 'de'],
+  () =>
+    LACCICO_HAENDLER_SEITE[
+      (locale.value as keyof typeof LACCICO_HAENDLER_SEITE) in LACCICO_HAENDLER_SEITE
+        ? (locale.value as keyof typeof LACCICO_HAENDLER_SEITE)
+        : 'de'
+    ],
 );
 const ansicht = ref<'login' | 'register'>('login');
+/** Nicht angemeldet: kurze Fassung (Titel, erster Absatz, Anmeldefeld darunter) */
+const kurz = computed(() => !isAuthorized.value);
 
 const linkZu = (id: number) => {
   const baum = (kategorien.value ?? []) as CategoryTreeItem[];
@@ -127,6 +145,12 @@ useHead(() => ({
   max-width: 1264px;
   margin: 1.5rem auto 4rem;
   padding: 0 1rem;
+}
+.laccico-haendlerseite.ist-kurz {
+  grid-template-columns: minmax(0, 40rem);
+}
+.laccico-haendlerseite.ist-kurz .laccico-haendlerseite-zugang {
+  max-width: 26rem;
 }
 .laccico-haendlerseite-info h1 {
   font-size: 1.6rem;
