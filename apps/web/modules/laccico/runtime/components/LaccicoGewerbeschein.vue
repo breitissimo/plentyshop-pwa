@@ -19,7 +19,10 @@
         <SfLoaderCircular v-if="sendet" size="sm" />
         <span v-else>{{ text.upSenden }}</span>
       </UiButton>
-      <p class="laccico-gewerbeschein-klein">{{ text.upHinweis }}</p>
+      <p class="laccico-gewerbeschein-klein">
+        {{ text.upHinweis }}
+        <NuxtLink :to="localePath(paths.privacyPolicy)" class="underline">{{ text.upHinweisLink }}</NuxtLink>.
+      </p>
     </template>
   </div>
 </template>
@@ -31,6 +34,7 @@ import { laccicoGewerbescheinPasst, laccicoGewerbescheinSenden } from '../utils/
 import { LACCICO_HAENDLER_SEITE } from '../utils/laccicoHaendlerSeiteTexte';
 
 const { locale } = useI18n();
+const localePath = useLocalizedPath();
 const { user } = useCustomer();
 const { send } = useNotification();
 
