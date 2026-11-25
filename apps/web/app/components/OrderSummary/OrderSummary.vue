@@ -8,6 +8,13 @@
     </div>
 
     <div class="px-4 pb-4 mt-3 @md:px-6 @md:pb-6 @md:mt-0">
+      <p
+        v-if="laccicoNaechsteStufe"
+        class="mb-4 rounded-md bg-neutral-100 px-3 py-2 typography-text-sm font-medium"
+        data-testid="laccico-naechste-stufe"
+      >
+        {{ laccicoNaechsteStufe }}
+      </p>
       <div v-if="orderPropertiesWithVatAdditionalCosts.length > 0" class="mb-4">
         <div
           v-for="property in orderPropertiesWithVatAdditionalCosts"
@@ -27,7 +34,9 @@
         <div class="flex flex-col gap-1 grow pr-2">
           <!-- LACCICO: Rabatt auf Warenwert wie Ceres (Warenwert, Rabatt, danach Zwischensumme) -->
           <p v-if="laccicoRabatt" data-testid="laccico-warenwert-label">{{ laccicoText.warenwert }}</p>
-          <p v-if="laccicoRabatt" data-testid="laccico-rabatt-label">{{ laccicoText.rabatt }} ({{ laccicoRabatt.prozent }} %)</p>
+          <p v-if="laccicoRabatt" data-testid="laccico-rabatt-label">
+            {{ laccicoText.rabatt }} ({{ laccicoRabatt.prozent }} %)
+          </p>
           <p data-testid="subtotal-label">
             {{ t('common.labels.itemsSubtotal') }} <span v-if="showNetPrices">({{ t('common.labels.netPrice') }})</span>
           </p>
@@ -42,8 +51,12 @@
           </p>
         </div>
         <div v-if="showNetPrices" class="flex flex-col gap-1 text-right">
-          <p v-if="laccicoRabatt" class="font-medium" data-testid="laccico-warenwert">{{ format(laccicoRabatt.vorherNetto) }}</p>
-          <p v-if="laccicoRabatt" class="font-medium" data-testid="laccico-rabatt">−{{ format(laccicoRabatt.rabattNetto) }}</p>
+          <p v-if="laccicoRabatt" class="font-medium" data-testid="laccico-warenwert">
+            {{ format(laccicoRabatt.vorherNetto) }}
+          </p>
+          <p v-if="laccicoRabatt" class="font-medium" data-testid="laccico-rabatt">
+            −{{ format(laccicoRabatt.rabattNetto) }}
+          </p>
           <p data-testid="subtotal" class="font-medium">{{ format(cartGetters.getItemSumNet(props.cart)) }}</p>
           <p data-testid="shipping" class="font-medium">
             {{ getShippingAmount(cartGetters.getShippingAmountNet(props.cart)) }}
@@ -56,8 +69,12 @@
           </p>
         </div>
         <div v-else class="flex flex-col gap-1 text-right">
-          <p v-if="laccicoRabatt" class="font-medium" data-testid="laccico-warenwert">{{ format(laccicoRabatt.vorher) }}</p>
-          <p v-if="laccicoRabatt" class="font-medium" data-testid="laccico-rabatt">−{{ format(laccicoRabatt.rabatt) }}</p>
+          <p v-if="laccicoRabatt" class="font-medium" data-testid="laccico-warenwert">
+            {{ format(laccicoRabatt.vorher) }}
+          </p>
+          <p v-if="laccicoRabatt" class="font-medium" data-testid="laccico-rabatt">
+            −{{ format(laccicoRabatt.rabatt) }}
+          </p>
           <p data-testid="subtotal" class="font-medium">{{ format(totals.subTotal) }}</p>
           <p data-testid="shipping" class="font-medium">
             {{ getShippingAmount(cartGetters.getShippingPrice(props.cart)) }}
@@ -118,10 +135,20 @@ const LACCICO_TEXTE = {
   fr: { warenwert: 'Valeur des articles', rabatt: 'Remise sur la valeur des articles' },
 } as const;
 const laccicoText = computed(
-  () => LACCICO_TEXTE[(locale.value as keyof typeof LACCICO_TEXTE) in LACCICO_TEXTE ? (locale.value as keyof typeof LACCICO_TEXTE) : 'de'],
+  () =>
+    LACCICO_TEXTE[
+      (locale.value as keyof typeof LACCICO_TEXTE) in LACCICO_TEXTE
+        ? (locale.value as keyof typeof LACCICO_TEXTE)
+        : 'de'
+    ],
 );
 const laccicoRabatt = computed(() => {
-  const warenkorb = props.cart as unknown as { basketRebate?: number; basketRebateType?: string; itemSum?: number; itemSumNet?: number };
+  const warenkorb = props.cart as unknown as {
+    basketRebate?: number;
+    basketRebateType?: string;
+    itemSum?: number;
+    itemSumNet?: number;
+  };
   const prozent = Number(warenkorb?.basketRebate ?? 0);
   if (!prozent || prozent >= 100 || String(warenkorb?.basketRebateType ?? '0') !== '0') {
     return null;
@@ -135,6 +162,33 @@ const laccicoRabatt = computed(() => {
     vorherNetto,
     rabattNetto: vorherNetto - Number(warenkorb.itemSumNet ?? 0),
   };
+});
+
+// LACCICO (N 25.11.2026): Hinweis „Noch X € bis Y % Rabatt“ zur nächsten Stufe der Warenwert-Staffel
+// (LACCICO_WARENWERT_STAFFEL, netto). Nur Endkunden mit Bruttopreisen, nicht Händler; über der höchsten Stufe nichts.
+const LACCICO_STUFE_TEXTE = {
+  de: (betrag: string, prozent: number) => `Noch ${betrag} bis ${prozent} % Rabatt auf den Warenwert`,
+  en: (betrag: string, prozent: number) => `Add ${betrag} more to get ${prozent} % off the value of goods`,
+  fr: (betrag: string, prozent: number) =>
+    `Encore ${betrag} pour obtenir ${prozent} % de remise sur la valeur des articles`,
+} as const;
+const { istHaendler } = useLaccicoHaendler();
+const laccicoNaechsteStufe = computed(() => {
+  const warenkorb = props.cart as unknown as { itemSum?: number; itemSumNet?: number };
+  const netto = laccicoRabatt.value?.vorherNetto ?? Number(warenkorb?.itemSumNet ?? 0);
+  const brutto = laccicoRabatt.value?.vorher ?? Number(warenkorb?.itemSum ?? 0);
+  if (showNetPrices.value || istHaendler.value || netto <= 0) {
+    return null;
+  }
+  const stufe = [...LACCICO_WARENWERT_STAFFEL]
+    .sort((a, b) => a.abNetto - b.abNetto)
+    .find((s) => s.abNetto > netto + 0.005);
+  if (!stufe) {
+    return null;
+  }
+  const fehltBrutto = Math.ceil((stufe.abNetto - netto) * (brutto / netto) * 100) / 100;
+  const sprache = (locale.value as keyof typeof LACCICO_STUFE_TEXTE) in LACCICO_STUFE_TEXTE ? locale.value : 'de';
+  return LACCICO_STUFE_TEXTE[sprache as keyof typeof LACCICO_STUFE_TEXTE](format(fehltBrutto) ?? '', stufe.prozent);
 });
 
 const totals = computed(() => {

@@ -164,8 +164,9 @@
               </template>
             </UiButton>
           </template>
+          <!-- LACCICO: Händler ohne Wunschliste; dort liegt die Konto-Kopie ihrer Bestellliste (N 25.11.) -->
           <UiButton
-            v-if="isActionVisible('wishlist')"
+            v-if="isActionVisible('wishlist') && !istHaendler"
             class="group relative hover:!bg-header-400 active:bg-header-400 mr-1 -ml-0.5 rounded-md"
             :tag="NuxtLink"
             :to="localePath(paths.wishlist)"
@@ -193,32 +194,35 @@
           </UiButton>
           <!-- LACCICO: Warenkorbvorschau beim Überfahren (N 20.11.2026) -->
           <!-- Händler (Klasse 7) bestellen über die Bestellliste: kein Warenkorb-Symbol (Zettel N 23.11.) -->
-          <LaccicoWarenkorbVorschau v-if="isActionVisible('cart') && !istHaendler" :style="{ order: getActionOrder('cart') }">
-          <UiButton
-            class="group relative hover:!bg-header-400 active:!bg-header-400 mr-1 -ml-0.5 rounded-md"
-            :tag="NuxtLink"
-            :style="{ color: iconColor }"
-            :to="localePath('cart')"
-            :aria-label="t('cart.numberInCart', { count: cartItemsCount })"
-            variant="tertiary"
-            square
+          <LaccicoWarenkorbVorschau
+            v-if="isActionVisible('cart') && !istHaendler"
+            :style="{ order: getActionOrder('cart') }"
           >
-            <template #prefix>
-              <SfIconShoppingCart />
-              <SfBadge
-                :content="cartItemsCount"
-                :style="{
-                  backgroundColor: iconColor,
-                  outlineColor: headerBackgroundColor,
-                  color: headerBackgroundColor,
-                }"
-                class="outline group-hover:outline-primary-800 group-active:outline-primary-700 flex justify-center items-center text-xs min-w-[16px] min-h-[16px]"
-                data-testid="cart-badge"
-                placement="top-right"
-                :max="99"
-              />
-            </template>
-          </UiButton>
+            <UiButton
+              class="group relative hover:!bg-header-400 active:!bg-header-400 mr-1 -ml-0.5 rounded-md"
+              :tag="NuxtLink"
+              :style="{ color: iconColor }"
+              :to="localePath('cart')"
+              :aria-label="t('cart.numberInCart', { count: cartItemsCount })"
+              variant="tertiary"
+              square
+            >
+              <template #prefix>
+                <SfIconShoppingCart />
+                <SfBadge
+                  :content="cartItemsCount"
+                  :style="{
+                    backgroundColor: iconColor,
+                    outlineColor: headerBackgroundColor,
+                    color: headerBackgroundColor,
+                  }"
+                  class="outline group-hover:outline-primary-800 group-active:outline-primary-700 flex justify-center items-center text-xs min-w-[16px] min-h-[16px]"
+                  data-testid="cart-badge"
+                  placement="top-right"
+                  :max="99"
+                />
+              </template>
+            </UiButton>
           </LaccicoWarenkorbVorschau>
           <div
             v-if="isAuthorized && isActionVisible('account')"

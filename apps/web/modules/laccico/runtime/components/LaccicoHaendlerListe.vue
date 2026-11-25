@@ -28,7 +28,9 @@
       @touchend="wischEnde"
     >
       <!-- Skizze N 23.11.: Reiter links über der Leiste mit der Paarzahl, Leiste mit Titel links und Summe rechts -->
-      <span class="laccico-haendlerliste-reiter" data-testid="laccico-haendlerliste-reiter">{{ paare }} {{ text.menge }}</span>
+      <span class="laccico-haendlerliste-reiter" data-testid="laccico-haendlerliste-reiter"
+        >{{ paare }} {{ text.menge }}</span
+      >
       <span class="laccico-haendlerliste-titel">
         {{ text.titel }}
         <span class="laccico-haendlerliste-pfeil" aria-hidden="true">{{ offen ? '▾' : '▴' }}</span>
@@ -77,7 +79,11 @@
                   @change="mengeAendern(z.variationId, $event)"
                 />
                 <!-- Bestand je Zeile: sofort lieferbar / mit Nachlieferung (Zettel N 23.11.2026) -->
-                <div v-if="aufteilung(z)" class="laccico-haendlerliste-bestand" data-testid="laccico-haendlerliste-bestand">
+                <div
+                  v-if="aufteilung(z)"
+                  class="laccico-haendlerliste-bestand"
+                  data-testid="laccico-haendlerliste-bestand"
+                >
                   <template v-if="aufteilung(z)!.spaeter === 0">{{ text.vorraetig }}</template>
                   <template v-else>
                     {{ aufteilung(z)!.sofort }} {{ text.sofort }} · {{ aufteilung(z)!.spaeter }} {{ text.spaeter }}
@@ -87,7 +93,12 @@
               <td class="rechts">{{ preisText(z) }}</td>
               <td class="rechts">{{ zeilenSumme(z) }}</td>
               <td class="rechts">
-                <button type="button" class="laccico-haendlerliste-weg" :aria-label="text.entfernen" @click="entfernen(z.variationId)">
+                <button
+                  type="button"
+                  class="laccico-haendlerliste-weg"
+                  :aria-label="text.entfernen"
+                  @click="entfernen(z.variationId)"
+                >
                   ×
                 </button>
               </td>
@@ -130,7 +141,8 @@
         </div>
         <p class="laccico-haendlerliste-datenschutz">
           {{ text.datenschutz }}
-          <NuxtLink :to="localePath('privacy-policy')">{{ text.datenschutzLink }}</NuxtLink>.
+          <NuxtLink :to="localePath('privacy-policy')">{{ text.datenschutzLink }}</NuxtLink
+          >.
         </p>
       </template>
     </div>
@@ -150,7 +162,8 @@ import { useLaccicoHaendlerTexte } from '../utils/laccicoHaendlerTexte';
  * Absenden über das Kontaktformular des Shops an info@ (Turnstile wie Kontaktseite).
  */
 const { istHaendler } = useLaccicoHaendler();
-const { zeilen, zuletzt, laden, mengeSetzen, entfernen, leeren, summe, paare } = useLaccicoHaendlerListe();
+const { zeilen, zuletzt, laden, kontoAbgleich, mengeSetzen, entfernen, leeren, summe, paare } =
+  useLaccicoHaendlerListe();
 const text = useLaccicoHaendlerTexte();
 const { format } = usePriceFormatter();
 const { locale } = useI18n();
@@ -216,6 +229,16 @@ watch(zuletzt, () => {
 
 onMounted(() => {
   laden();
+  // Liste aus dem Händlerkonto ergänzen (anderes Gerät), sobald die Anmeldung bekannt ist (N 25.11.2026)
+  watch(
+    istHaendler,
+    (haendler) => {
+      if (haendler) {
+        void kontoAbgleich();
+      }
+    },
+    { immediate: true },
+  );
   abstandMessen();
   setTimeout(abstandMessen, 1500);
   window.addEventListener('resize', abstandMessen);
@@ -247,7 +270,9 @@ const bestandLaden = async () => {
     return;
   }
   try {
-    const antwort = await $fetch<Record<string, number | null>>('/laccico-bestand', { query: { ids: fehlend.join(',') } });
+    const antwort = await $fetch<Record<string, number | null>>('/laccico-bestand', {
+      query: { ids: fehlend.join(',') },
+    });
     bestand.value = { ...bestand.value, ...antwort };
   } catch {
     // ohne Bestand bleibt die Zeile wie bisher
@@ -255,15 +280,12 @@ const bestandLaden = async () => {
 };
 
 // beim Öffnen und bei neuen Zeilen nachladen (kurz gebündelt)
-watch(
-  [offen, () => zeilen.value.length],
-  () => {
-    clearTimeout(bestandZeit);
-    if (offen.value) {
-      bestandZeit = setTimeout(bestandLaden, 300);
-    }
-  },
-);
+watch([offen, () => zeilen.value.length], () => {
+  clearTimeout(bestandZeit);
+  if (offen.value) {
+    bestandZeit = setTimeout(bestandLaden, 300);
+  }
+});
 
 /** Aufteilung der Menge: was sofort geht, was mit der Nachlieferung kommt */
 const aufteilung = (z: LaccicoListenZeile) => {
@@ -280,7 +302,9 @@ const aufteilungText = (z: LaccicoListenZeile) => {
   if (!a) {
     return '';
   }
-  return a.spaeter === 0 ? text.value.vorraetig : `${a.sofort} ${text.value.sofort} · ${a.spaeter} ${text.value.spaeter}`;
+  return a.spaeter === 0
+    ? text.value.vorraetig
+    : `${a.sofort} ${text.value.sofort} · ${a.spaeter} ${text.value.spaeter}`;
 };
 
 const mengeAendern = (variationId: number, ereignis: Event) => {
@@ -343,7 +367,10 @@ const absenden = async () => {
 
 /** Text für HTML unschädlich machen (Namen, Anmerkung kommen vom Kunden) */
 const html = (wert: string | number | null | undefined) =>
-  String(wert ?? '').replace(/[&<>"']/g, (z) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[z] ?? z);
+  String(wert ?? '').replace(
+    /[&<>"']/g,
+    (z) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[z] ?? z,
+  );
 
 /** Druckansicht: Kopf mit Datum und Kunde, Tabelle, Summe, Anmerkung, Lieferhinweis (N 23.11.2026) */
 const druckSeite = () => {
@@ -362,7 +389,7 @@ const druckSeite = () => {
     )
     .join('');
   const anmerkung = notiz.value.trim()
-    ? `<h2>${html(t.notiz.split(" (")[0])}</h2><p class="notiz">${html(notiz.value.trim())}</p>`
+    ? `<h2>${html(t.notiz.split(' (')[0])}</h2><p class="notiz">${html(notiz.value.trim())}</p>`
     : '';
   return `<!doctype html><html><head><meta charset="utf-8"><title>${html(t.betreff)} ${html(datum)}</title>
 <style>
@@ -499,7 +526,9 @@ const drucken = () => {
   margin: 0 auto;
   padding: 0 1rem;
   overflow: hidden;
-  transition: max-height 0.3s ease, padding 0.3s ease;
+  transition:
+    max-height 0.3s ease,
+    padding 0.3s ease;
 }
 .laccico-haendlerliste.ist-offen .laccico-haendlerliste-innen {
   max-height: 70vh;

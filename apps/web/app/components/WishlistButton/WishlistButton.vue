@@ -1,5 +1,7 @@
 <template>
+  <!-- LACCICO: für Händler ausgeblendet, ihre Wunschliste ist die Konto-Kopie der Bestellliste (N 25.11.) -->
   <UiButton
+    v-if="!istHaendler"
     :variant="variant"
     size="sm"
     :aria-label="
@@ -31,6 +33,7 @@ import { productGetters } from '@plentymarkets/shop-api';
 const { product, quantity = 1, discard = false, variant = 'tertiary' } = defineProps<WishlistButtonProps>();
 const { isWishlistItem, interactWithWishlist, loading: wishlistLoading } = useWishlist();
 const actionLoading = ref(false);
+const { istHaendler } = useLaccicoHaendler();
 
 const productName = computed(() => productGetters.getName(product));
 const variationId = computed(() => productGetters.getVariationId(product));

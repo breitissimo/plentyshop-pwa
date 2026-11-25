@@ -38,6 +38,8 @@
           </client-only>
         </OrderSummary>
       </div>
+      <!-- LACCICO (N 25.11.2026): „Passend dazu“ und „Zuletzt angesehen“ unter dem Warenkorb -->
+      <LaccicoEmpfehlungen class="col-span-12" :artikel="laccicoWarenkorbArtikel" />
     </div>
     <div v-else class="flex items-center justify-center flex-col pt-24 pb-32" data-testid="cart-page-content">
       <h2 class="mt-8 typography-headline-3 font-bold">{{ t('cart.empty') }}</h2>
@@ -49,7 +51,9 @@
 <script setup lang="ts">
 import { SfLoaderCircular } from '@storefront-ui/vue';
 import { cartGetters } from '@plentymarkets/shop-api';
+import type { Product } from '@plentymarkets/shop-api';
 import type { Locale } from '#i18n';
+import LaccicoEmpfehlungen from '~~/modules/laccico/runtime/components/LaccicoEmpfehlungen.vue';
 
 defineI18nRoute({
   locales: process.env.LANGUAGELIST?.split(',') as Locale[],
@@ -65,6 +69,9 @@ const NuxtLink = resolveComponent('NuxtLink');
 const localePath = useLocalizedPath();
 const { isAuthorized } = useCustomer();
 const { data: cart, cartIsEmpty, loading } = useCart();
+const laccicoWarenkorbArtikel = computed(
+  () => (cart.value?.items ?? []).map((posten) => posten.variation).filter(Boolean) as Product[],
+);
 const goToCheckout = () => (isAuthorized.value ? localePath(paths.checkout) : localePath(paths.guestLogin));
 
 const icon = 'page';

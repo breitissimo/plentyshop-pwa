@@ -69,11 +69,38 @@ export const useLaccicoHaendler = () => {
   return { istHaendler };
 };
 
-/** Zustand der Händler-Bestellliste (im Browser gespeichert). */
+/** Menge für Artikel, die nur im Konto stehen (anderes Gerät): kleinste Händlerstaffel (N 25.11.2026) */
+const KONTO_STANDARDMENGE = 25;
+
+/**
+ * Konto-Abgleich (N 25.11.2026): Die Artikel der Liste stehen zusätzlich auf der Plenty-Wunschliste des
+ * Händlerkontos (für Händler sonst ausgeblendet), damit die Liste auf jedem Gerät da ist. Die Shop-API gibt
+ * die Menge der Wunschliste nicht zurück (getestet 25.11.2026); Mengen bleiben deshalb im Browser, Artikel,
+ * die nur im Konto stehen, erscheinen mit KONTO_STANDARDMENGE. Fehler beim Abgleich stören die Liste nicht.
+ */
+const kontoHinzu = async (variationId: number, menge: number) => {
+  try {
+    await useSdk().plentysystems.doAddWishlistItem({ variationId, quantity: menge });
+  } catch {
+    // Konto nicht erreichbar: Liste bleibt im Browser
+  }
+};
+
+const kontoWeg = async (variationId: number) => {
+  try {
+    await useSdk().plentysystems.deleteWishlistItem({ variationId });
+  } catch {
+    // Konto nicht erreichbar: Liste bleibt im Browser
+  }
+};
+
+/** Zustand der Händler-Bestellliste (im Browser gespeichert, Artikel zusätzlich im Händlerkonto). */
 export const useLaccicoHaendlerListe = () => {
   const zeilen = useState<LaccicoListenZeile[]>('laccico-haendlerliste', () => []);
   const geladen = useState('laccico-haendlerliste-geladen', () => false);
+  const abgeglichen = useState('laccico-haendlerliste-konto', () => false);
   const zuletzt = useState<number | null>('laccico-haendlerliste-zuletzt', () => null);
+  const { istHaendler } = useLaccicoHaendler();
 
   const speichern = () => {
     if (!import.meta.client) {
@@ -112,8 +139,39 @@ export const useLaccicoHaendlerListe = () => {
       }
     } else {
       zeilen.value.push({ ...neu });
+      if (istHaendler.value) {
+        void kontoHinzu(neu.variationId, neu.menge);
+      }
     }
     zuletzt.value = neu.variationId;
+    speichern();
+  };
+
+  /** Einmal je Sitzung: Konto und Browser zusammenführen (fehlende Artikel in beide Richtungen ergänzen). */
+  const kontoAbgleich = async () => {
+    if (!import.meta.client || abgeglichen.value || !istHaendler.value) {
+      return;
+    }
+    abgeglichen.value = true;
+    laden();
+    let imKonto: Product[];
+    try {
+      imKonto = (await useSdk().plentysystems.getWishlist())?.data ?? [];
+    } catch {
+      return;
+    }
+    const kontoIds = new Set(imKonto.map((p) => Number(productGetters.getVariationId(p))));
+    const browserIds = new Set(zeilen.value.map((z) => z.variationId));
+    for (const produkt of imKonto) {
+      if (!browserIds.has(Number(productGetters.getVariationId(produkt)))) {
+        zeilen.value.push(laccicoZeileAusProdukt(produkt, KONTO_STANDARDMENGE));
+      }
+    }
+    for (const zeile of zeilen.value) {
+      if (!kontoIds.has(zeile.variationId)) {
+        void kontoHinzu(zeile.variationId, zeile.menge);
+      }
+    }
     speichern();
   };
 
@@ -128,10 +186,18 @@ export const useLaccicoHaendlerListe = () => {
 
   const entfernen = (variationId: number) => {
     zeilen.value = zeilen.value.filter((z) => z.variationId !== variationId);
+    if (istHaendler.value) {
+      void kontoWeg(variationId);
+    }
     speichern();
   };
 
   const leeren = () => {
+    if (istHaendler.value) {
+      for (const zeile of zeilen.value) {
+        void kontoWeg(zeile.variationId);
+      }
+    }
     zeilen.value = [];
     speichern();
   };
@@ -139,5 +205,5 @@ export const useLaccicoHaendlerListe = () => {
   const summe = computed(() => zeilen.value.reduce((s, z) => s + (laccicoListenPreis(z) ?? 0) * z.menge, 0));
   const paare = computed(() => zeilen.value.reduce((s, z) => s + z.menge, 0));
 
-  return { zeilen, zuletzt, laden, hinzufuegen, mengeSetzen, entfernen, leeren, summe, paare };
+  return { zeilen, zuletzt, laden, kontoAbgleich, hinzufuegen, mengeSetzen, entfernen, leeren, summe, paare };
 };

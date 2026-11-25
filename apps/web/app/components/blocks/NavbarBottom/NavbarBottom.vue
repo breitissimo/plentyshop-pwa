@@ -107,13 +107,16 @@ const configurableActionItems = computed<Record<'wishlist' | 'cart' | 'account',
 const orderedActionItems = computed<NavbarItem[]>(() => {
   const allowedActions: ActionType[] = ['wishlist', 'cart', 'account'];
 
-  return props.actionOrder
-    .filter((action) => allowedActions.includes(action))
-    .filter((action) => props.actionVisibility[action] !== false)
-    // Händler (Klasse 7): kein Warenkorb, sie bestellen über die Bestellliste (Zettel N 23.11.)
-    .filter((action) => !(istHaendler.value && action === 'cart'))
-    .map((action) => configurableActionItems.value[action as 'wishlist' | 'cart' | 'account'])
-    .filter((item): item is NavbarItem => Boolean(item));
+  return (
+    props.actionOrder
+      .filter((action) => allowedActions.includes(action))
+      .filter((action) => props.actionVisibility[action] !== false)
+      // Händler (Klasse 7): kein Warenkorb, sie bestellen über die Bestellliste (Zettel N 23.11.)
+      // und keine Wunschliste: dort liegt die Konto-Kopie der Bestellliste (N 25.11.)
+      .filter((action) => !(istHaendler.value && (action === 'cart' || action === 'wishlist')))
+      .map((action) => configurableActionItems.value[action as 'wishlist' | 'cart' | 'account'])
+      .filter((item): item is NavbarItem => Boolean(item))
+  );
 });
 
 const items = computed<NavbarItem[]>(() => [...fixedItems.value, ...orderedActionItems.value]);
