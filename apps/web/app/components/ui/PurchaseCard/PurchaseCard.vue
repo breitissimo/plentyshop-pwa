@@ -42,7 +42,14 @@
             </template>
             <template v-if="key === 'price' && configuration?.fields.price">
               <div class="flex space-x-2">
-                <Price :crossed-price="crossedPrice" :price="priceWithProperties" />
+                <!-- LACCICO: Preis je Paar für die gewählte Menge, Händlerstaffel bzw. Mengenrabatt mit Streichpreis (Zettel N 25.11. (5)) -->
+                <Price :crossed-price="laccicoPreis.durchgestrichen" :price="laccicoPreis.preis" />
+                <span
+                  v-if="laccicoPreis.prozent > 0"
+                  class="self-center text-sm font-semibold text-secondary-500"
+                  data-testid="laccico-preis-prozent"
+                  >−{{ laccicoPreis.prozent }} %</span
+                >
                 <div
                   v-if="(productBundleGetters?.getBundleDiscount(product) ?? 0) > 0 && showBundleComponents"
                   class="m-auto"
@@ -216,7 +223,7 @@
                     @validation-callback="paypalHandleAddToCart"
                   />
                   <PayPalPayLaterBanner
-                    :amount="priceWithProperties * quantitySelectorValue"
+                    :amount="laccicoPreis.preis * quantitySelectorValue"
                     location="itemPage"
                     placement="product"
                   />
@@ -254,6 +261,11 @@ import {
   useLaccicoHaendlerListe,
 } from '~~/modules/laccico/runtime/utils/laccicoHaendlerListe';
 import { useLaccicoHaendlerTexte } from '~~/modules/laccico/runtime/utils/laccicoHaendlerTexte';
+import {
+  laccicoEndkundenPreis,
+  laccicoKartenPreis,
+  laccicoProzent,
+} from '~~/modules/laccico/runtime/utils/laccicoKarte';
 import LaccicoVersandkostenLink from '~~/modules/laccico/runtime/components/LaccicoVersandkostenLink.vue';
 import { productGetters, reviewGetters, productBundleGetters } from '@plentymarkets/shop-api';
 import { SfCounter, SfRating, SfIconShoppingCart, SfLoaderCircular, SfTooltip } from '@storefront-ui/vue';
@@ -349,7 +361,6 @@ const haendlerText = useLaccicoHaendlerTexte();
 const quantitySelectorValue = ref(productGetters.getMinimumOrderQuantity(props?.product));
 const { isWishlistItem } = useWishlist();
 const { openQuickCheckout } = useQuickCheckout();
-const { crossedPrice } = useProductPrice(props?.product);
 const { reviewArea } = useProductReviews(Number(productGetters.getId(props?.product)));
 const { getBooleanSetting: getNotifyMeSetting } = useSiteSettings('showNotifyMe');
 const showNotifyMe = computed(() => getNotifyMeSetting());
@@ -396,6 +407,24 @@ const priceWithProperties = computed(
       productGetters.getPrice(props?.product) ||
       0) + getPropertiesPrice(props?.product),
 );
+
+/**
+ * LACCICO (Zettel N 25.11. (5)): Der Preis folgt der Menge, für alle Kundenklassen.
+ * Händler: Staffelpreis aus Plenty (ab 25/50/100 Paar), durchgestrichen der Preis für 1 Paar.
+ * Alle anderen: Mengenrabatt auf den Warenwert wie auf der Kachel (`laccicoEndkundenPreis`), der im Warenkorb abgezogen wird.
+ */
+const laccicoPreis = computed(() => {
+  const menge = Math.max(1, Number(quantitySelectorValue.value) || 1);
+  const aufpreis = getPropertiesPrice(props?.product);
+  if (istHaendler.value) {
+    const einzel = productGetters.getGraduatedPriceByQuantity(props?.product, 1)?.unitPrice.value || priceWithProperties.value;
+    const preis = priceWithProperties.value;
+    const durchgestrichen = preis < einzel + aufpreis ? einzel + aufpreis : 0;
+    return { preis, durchgestrichen, prozent: laccicoProzent(preis, durchgestrichen) };
+  }
+  const basis = laccicoKartenPreis(props?.product);
+  return laccicoEndkundenPreis({ ...basis, preis: basis.preis + aufpreis }, menge);
+});
 
 const basePriceSingleValue = computed(
   () =>

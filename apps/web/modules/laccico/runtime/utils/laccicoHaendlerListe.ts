@@ -10,6 +10,8 @@ import type { LaccicoKundeMitKlasse, LaccicoListenStaffel, LaccicoListenZeile, L
  */
 
 export const LACCICO_HAENDLER_KLASSE = 7;
+/** Kundenklasse 3 „Standard-Firmenkunden“: Firmenregistrierungen landen hier (Shop 6 B2B-Einstellung), also Händler-Anwärter. */
+export const LACCICO_FIRMEN_KLASSE = 3;
 const SPEICHER_SCHLUESSEL = 'laccico-haendlerliste-v1';
 
 /** Preis je Paar für eine Menge: höchste Staffel, deren Mindestmenge erreicht ist. */

@@ -8,8 +8,13 @@
       <br />
       {{ text.haendlerFuss }}
     </template>
+    <!-- Mengenrabatt als Liste, ohne „auch gemischt …“ (Zettel N 25.11. (5)) -->
     <template v-else-if="!istHaendler">
-      <b>{{ text.rabattTitel }}</b> {{ text.rabatt }}
+      <b>{{ text.rabattTitel }}</b>
+      <ul class="list-disc pl-5" data-testid="laccico-rabatt-liste">
+        <li v-for="stufe in text.stufen" :key="stufe">{{ stufe }}</li>
+      </ul>
+      {{ text.rabattFuss }}
     </template>
   </div>
 </template>
@@ -35,8 +40,8 @@ const TEXTE = {
     paar: 'Paar',
     haendlerFuss: 'Je Farbe und Länge, unter 25 Paar gilt der normale Preis.',
     rabattTitel: 'Mengenrabatt:',
-    rabatt:
-      'ab 8 € Warenwert 5 %, ab 12 € 8 %, ab 16 € 12 %, ab 25 € 20 % – auch gemischt aus allen Farben und Längen. Der Rabatt wird im Warenkorb abgezogen.',
+    stufen: ['ab 8 € Warenwert 5 %', 'ab 12 € 8 %', 'ab 16 € 12 %', 'ab 25 € 20 %'],
+    rabattFuss: 'Der Rabatt wird im Warenkorb abgezogen.',
   },
   en: {
     haendlerTitel: 'Trade prices per pair (net):',
@@ -44,8 +49,8 @@ const TEXTE = {
     paar: 'pairs',
     haendlerFuss: 'Per colour and length; below 25 pairs the regular price applies.',
     rabattTitel: 'Volume discount:',
-    rabatt:
-      'from €8 order value 5 %, from €12 8 %, from €16 12 %, from €25 20 % – also mixed across all colours and lengths. The discount is deducted in the basket.',
+    stufen: ['from €8 order value 5 %', 'from €12 8 %', 'from €16 12 %', 'from €25 20 %'],
+    rabattFuss: 'The discount is deducted in the basket.',
   },
   fr: {
     haendlerTitel: 'Prix revendeurs par paire (HT) :',
@@ -53,8 +58,8 @@ const TEXTE = {
     paar: 'paires',
     haendlerFuss: 'Par couleur et longueur ; en dessous de 25 paires, le prix normal s’applique.',
     rabattTitel: 'Remise sur quantité :',
-    rabatt:
-      'dès 8 € d’achat 5 %, dès 12 € 8 %, dès 16 € 12 %, dès 25 € 20 % – même en mélangeant couleurs et longueurs. La remise est déduite dans le panier.',
+    stufen: ['dès 8 € d’achat 5 %', 'dès 12 € 8 %', 'dès 16 € 12 %', 'dès 25 € 20 %'],
+    rabattFuss: 'La remise est déduite dans le panier.',
   },
 };
 

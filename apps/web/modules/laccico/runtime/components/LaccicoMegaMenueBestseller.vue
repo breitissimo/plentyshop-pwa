@@ -5,37 +5,27 @@
     <div v-if="weitere.length" class="laccico-bestseller-weitere">
       <NuxtLink v-for="k in weitere" :key="k.id" :to="localePath(linkFuer(k))">{{ categoryTreeGetters.getName(k) }}</NuxtLink>
     </div>
-    <div v-for="zeile in zeilen" :key="zeile.kategorie" class="laccico-bestseller-zeile">
-      <div class="laccico-bestseller-kopf">
-        <NuxtLink :to="localePath(linkFuer(zeile.knoten))" class="laccico-bestseller-linie">
-          {{ zeile.titel }}<span v-if="zeile.kuerzel" class="laccico-bestseller-kuerzel">{{ zeile.kuerzel }}</span>
-        </NuxtLink>
-        <span v-if="zeile.unter.length" class="laccico-bestseller-unter">
-          <NuxtLink v-for="u in zeile.unter" :key="u.id" :to="localePath(linkFuer(u))">{{ categoryTreeGetters.getName(u) }}</NuxtLink>
+    <!-- Ein Bild je Serie in einer Zeile wie Farbwelten (Zettel N 25.11.): Fenster kürzer, Name und Kürzel darunter -->
+    <div class="flex flex-wrap justify-center gap-x-4 gap-y-6 pt-2" data-testid="laccico-megamenue-serien">
+      <NuxtLink
+        v-for="zeile in zeilen"
+        :key="zeile.kategorie"
+        :to="localePath(linkFuer(zeile.knoten))"
+        class="w-36 block group/kachel focus-visible:outline focus-visible:rounded-md"
+        data-testid="laccico-megamenue-serie"
+      >
+        <span class="aspect-[4/3] overflow-hidden flex items-center justify-center bg-white">
+          <img
+            v-if="zeile.bild"
+            :src="zeile.bild"
+            :alt="zeile.titel + ' ' + zeile.kuerzel"
+            loading="lazy"
+            class="w-full h-full object-contain p-1 transition-transform duration-300 group-hover/kachel:scale-105"
+          />
         </span>
-      </div>
-      <div class="laccico-bestseller-reihe">
-        <NuxtLink
-          v-for="artikel in zeile.artikel"
-          :key="artikel.id"
-          :to="localePath(artikel.pfad)"
-          class="laccico-bestseller-kachel group/kachel"
-          :title="artikel.titel"
-          :data-testid="artikel.tipp ? 'laccico-bestseller-tipp' : 'laccico-bestseller-artikel'"
-        >
-          <span class="laccico-bestseller-bild">
-            <img
-              :src="artikel.bild"
-              :alt="artikel.titel"
-              loading="lazy"
-              class="transition-transform duration-300 group-hover/kachel:scale-105"
-            />
-          </span>
-          <!-- Farbname nur beim Überfahren (title) und für Vorleseprogramme, dafür größere Bilder (Zettel N 23.11.) -->
-          <span class="sr-only">{{ artikel.titel }}</span>
-        </NuxtLink>
-      </div>
-      <NuxtLink :to="localePath(linkFuer(zeile.knoten))" class="laccico-bestseller-alle">{{ text.alle(zeile.kuerzel || zeile.titel) }}</NuxtLink>
+        <span class="mt-2 block text-center font-medium typography-text-sm">{{ zeile.titel }}</span>
+        <span v-if="zeile.kuerzel" class="block text-center typography-text-xs text-neutral-500">{{ zeile.kuerzel }}</span>
+      </NuxtLink>
     </div>
   </div>
 </template>
@@ -52,14 +42,7 @@ const localePath = useLocalizedPath();
 const { locale } = useI18n();
 const menue = menueDatei as LaccicoBestsellerDatei;
 
-/** Knopf je Zeile mit Linienname, z. B. „Alle R2-CS ansehen“ (Zettel N 23.11.) */
-const TEXTE: Record<LaccicoSprache, { alle: (linie: string) => string }> = {
-  de: { alle: (linie) => `Alle ${linie} ansehen` },
-  en: { alle: (linie) => `View all ${linie}` },
-  fr: { alle: (linie) => `Voir tous les ${linie}` },
-};
 const sprache = computed<LaccicoSprache>(() => (['de', 'en', 'fr'].includes(locale.value) ? locale.value : 'de') as LaccicoSprache);
-const text = computed(() => TEXTE[sprache.value]);
 
 /** Oberkategorie der Kategorie id im Teilbaum (undefined, wenn sie direkt im Teilbaum liegt oder fehlt). */
 function elternVon(knoten: CategoryTreeItem[], id: number): CategoryTreeItem | undefined {
@@ -98,13 +81,14 @@ const zeilen = computed(() =>
     const artikel = z.artikel
       .filter((a) => a.bild && a.pfad[sprache.value])
       .map((a) => ({ id: a.id, tipp: a.tipp, bild: a.bild, titel: a.titel[sprache.value] ?? '', pfad: a.pfad[sprache.value] ?? '' }));
-    const unter = (knoten.children ?? []).filter((u) => categoryTreeGetters.getName(u));
     // Linien-Kategorien (R2-CS, R2-SL, F6-CS, F6-XR) liegen eine Ebene tiefer: Name der Oberkategorie, darunter das Kürzel (N 22.11.)
     const eltern = elternVon(props.knoten.children ?? [], z.kategorie);
     const mitEltern = !!eltern && !(props.knoten.children ?? []).some((k) => k.id === eltern.id);
     const titel = mitEltern ? categoryTreeGetters.getName(eltern) : categoryTreeGetters.getName(knoten);
     const kuerzel = mitEltern ? categoryTreeGetters.getName(knoten) : '';
-    return [{ kategorie: z.kategorie, knoten, titel, kuerzel, unter, artikel }];
+    // Serienbild: Bestseller Nr. 1 der Linie (ohne Bestandstipp)
+    const bild = (artikel.find((a) => !a.tipp) ?? artikel[0])?.bild ?? '';
+    return [{ kategorie: z.kategorie, knoten, titel, kuerzel, bild }];
   }),
 );
 

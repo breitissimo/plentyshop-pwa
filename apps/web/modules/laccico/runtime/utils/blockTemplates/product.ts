@@ -58,7 +58,7 @@ export default function createLaccicoProduct(): Block[] {
       name: 'MultiGrid',
       type: 'structure',
       meta: meta(),
-      configuration: { columnWidths: [5, 7], sticky: [0], layout: { marginTop: '0', marginBottom: '0' } },
+      configuration: { columnWidths: [6, 6], sticky: [0], layout: { marginTop: '0', marginBottom: '0' } },
       layout: { gap: 'XL', narrowContainer: true },
       content: [
         {
@@ -118,13 +118,23 @@ export default function createLaccicoProduct(): Block[] {
           },
         },
         // Preis-Hinweis (Mengenrabatt/Händlerstaffel) steht seit 20.11. direkt neben dem Preis (PurchaseCard.vue)
-        // Wie Ceres: Details, Style Guide, Bewertungen, Produktsicherheit rechts neben der klebenden Bildbox (N 19.11.)
+      ],
+    },
+    // Zettel N 25.11. (2): Bild und Kaufbereich 50:50 wie Warenkorb/Kasse; Details, Style Guide, Bewertungen,
+    // Technische Daten und Produktsicherheit unter dem Warenkorb-Knopf über die ganze Seitenbreite (vorher rechte Spalte)
+    {
+      name: 'MultiGrid',
+      type: 'structure',
+      meta: meta(),
+      configuration: { columnWidths: [12], layout: { marginTop: '0', marginBottom: '0' } },
+      layout: { gap: 'XL', narrowContainer: true },
+      content: [
         {
           name: 'ItemText',
           type: 'content',
           meta: meta(),
-          parent_slot: 1,
-          slot_index: 2,
+          parent_slot: 0,
+          slot_index: 0,
           content: {
             text: { title: t.details },
             layout: { displayAsCollapsable: true, initiallyCollapsed: false, ...ohneAbstand },
@@ -134,8 +144,8 @@ export default function createLaccicoProduct(): Block[] {
           name: 'TechnicalData',
           type: 'content',
           meta: meta(),
-          parent_slot: 1,
-          slot_index: 3,
+          parent_slot: 0,
+          slot_index: 1,
           content: {
             text: { title: t.stil },
             layout: { displayAsCollapsable: true, initiallyCollapsed: true, ...ohneAbstand },
@@ -145,8 +155,8 @@ export default function createLaccicoProduct(): Block[] {
           name: 'CustomerReview',
           type: 'content',
           meta: meta(),
-          parent_slot: 1,
-          slot_index: 4,
+          parent_slot: 0,
+          slot_index: 2,
           content: {
             text: { title: t.bewertungen, hinweis: t.echtheit },
             layout: { collapsible: true, initiallyCollapsed: true },
@@ -157,8 +167,8 @@ export default function createLaccicoProduct(): Block[] {
           name: 'ItemData',
           type: 'content',
           meta: meta(),
-          parent_slot: 1,
-          slot_index: 5,
+          parent_slot: 0,
+          slot_index: 3,
           content: {
             text: { title: t.technik },
             fields: {
@@ -199,8 +209,8 @@ export default function createLaccicoProduct(): Block[] {
           name: 'LaccicoProduktsicherheit',
           type: 'content',
           meta: meta(),
-          parent_slot: 1,
-          slot_index: 6,
+          parent_slot: 0,
+          slot_index: 4,
           content: { text: { title: t.sicherheit } },
         },
       ],

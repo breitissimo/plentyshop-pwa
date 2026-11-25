@@ -37,6 +37,16 @@
           }}</UiButton>
         </div>
       </template>
+      <!-- Endkundenkonto (nicht Klasse 3/7): Hinweis statt Anwärter-Seite (Zettel N 25.11. (7)) -->
+      <template v-else-if="isAuthorized && !istAnwaerter">
+        <p class="laccico-haendlerseite-gruss" data-testid="laccico-haendlerseite-endkunde">{{ text.endkunde }}</p>
+        <p>{{ text.endkundeText }}</p>
+        <div class="laccico-haendlerseite-knoepfe">
+          <UiButton data-testid="laccico-haendlerseite-endkunde-knopf" @click="abmeldenUndRegistrieren">{{
+            text.endkundeKnopf
+          }}</UiButton>
+        </div>
+      </template>
       <template v-else-if="isAuthorized">
         <p class="laccico-haendlerseite-gruss" data-testid="laccico-haendlerseite-wartet">{{ text.wartet }}</p>
         <p>{{ text.wartetText }}</p>
@@ -88,7 +98,11 @@
 import type { CategoryTreeItem } from '@plentymarkets/shop-api';
 import LaccicoGewerbeschein from './LaccicoGewerbeschein.vue';
 import { LACCICO_HAENDLER_SEITE } from '../utils/laccicoHaendlerSeiteTexte';
-import { LACCICO_HAENDLER_VERSAND_ANKER, useLaccicoHaendler } from '../utils/laccicoHaendlerListe';
+import {
+  LACCICO_FIRMEN_KLASSE,
+  LACCICO_HAENDLER_VERSAND_ANKER,
+  useLaccicoHaendler,
+} from '../utils/laccicoHaendlerListe';
 
 const ID_FORM = 727;
 const ID_FARBEN = 731;
@@ -97,7 +111,7 @@ const VERSAND_FRAGE = 4;
 const route = useRoute();
 
 const { locale } = useI18n();
-const { isAuthorized } = useCustomer();
+const { isAuthorized, user, logout } = useCustomer();
 const { istHaendler } = useLaccicoHaendler();
 const { data: kategorien } = useCategoryTree();
 const localePath = useLocalizedPath();
@@ -129,6 +143,15 @@ const linkFarben = computed(() => linkZu(ID_FARBEN));
  * Das kurze Registrierfeld hier hatte keine Firmenfelder (Firma, USt-IdNr.); nach der Registrierung zurück hierher.
  */
 const zurFirmenRegistrierung = () => navigateTo({ path: localePath('/register'), query: { firma: '1', redirect: '/haendler' } });
+/** Händler-Anwärter = Kundenklasse 3 (Firmenregistrierung); alle anderen angemeldeten Nicht-Händler sind Endkunden. */
+const istAnwaerter = computed(
+  () => (user.value as { classId?: number } | null)?.classId === LACCICO_FIRMEN_KLASSE,
+);
+/** Endkunde: abmelden und zur Firmen-Registrierung (mit angemeldetem Konto leitet /register sonst weiter). */
+const abmeldenUndRegistrieren = async () => {
+  await logout();
+  await zurFirmenRegistrierung();
+};
 
 /** Nach Anmeldung/Registrierung auf dieser Seite bleiben und neu laden, damit Kundenklasse und Preise gelten */
 const nachAnmeldung = () => {

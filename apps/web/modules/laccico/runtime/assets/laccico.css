@@ -846,3 +846,15 @@ div:has(> [data-testid='laccico-megamenue-bestseller']) { max-height: calc(100vh
 .laccico-rechtsseite { max-width: 1536px; margin: 0 auto; padding: 0 16px 40px; } /* wie die Infoseiten (max-w-screen-3xl, p-4) */
 .laccico-rechtsseite-balken { background: #d6d3cd; padding: 8px 16px; text-align: center; margin: 0 0 28px; }
 .laccico-rechtsseite-balken h1 { font-size: 1.35rem; line-height: 1.25; font-weight: 600; color: #121212; margin: 0; }
+
+/* Karussell-Pfeile mit 50 % Deckkraft, damit sie das Bild weniger verdecken; beim Überfahren voll (Zettel N 25.11. (4)):
+   Startseiten-Slider und Artikellisten (Swiper), Artikelbilder (Galerie) */
+.swiper-button-prev, .swiper-button-next,
+[data-testid="gallery"] button[aria-label="Previous"], [data-testid="gallery"] button[aria-label="Next"] { opacity: 0.5 !important; transition: opacity 0.2s; }
+.swiper-button-prev:hover, .swiper-button-next:hover,
+[data-testid="gallery"] button[aria-label="Previous"]:hover:not(:disabled), [data-testid="gallery"] button[aria-label="Next"]:hover:not(:disabled) { opacity: 1 !important; }
+[data-testid="gallery"] button[aria-label="Previous"]:disabled, [data-testid="gallery"] button[aria-label="Next"]:disabled,
+.swiper-button-prev.swiper-button-disabled, .swiper-button-next.swiper-button-disabled { opacity: 0.2 !important; }
+/* dasselbe für die Pfeile über den Artikelkacheln in Listen (Ähnliche Artikel, Zuletzt angesehen usw.) */
+[data-testid="product-slider"] > button { opacity: 0.5; transition: opacity 0.2s; }
+[data-testid="product-slider"] > button:hover:not(:disabled) { opacity: 1; }

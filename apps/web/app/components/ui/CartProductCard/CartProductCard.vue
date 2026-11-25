@@ -1,7 +1,13 @@
 <template>
   <div class="relative flex border-neutral-200 border-b min-w-[320px] p-4 last:mb-0" data-testid="cart-product-card">
     <div class="relative overflow-hidden rounded-md w-[100px] @sm:w-[176px]">
-      <UiLink :tag="NuxtLink" :to="path" class="flex items-center justify-center" data-testid="cart-product-card-link">
+      <UiLink
+        :tag="NuxtLink"
+        :to="path"
+        :external="ausKasse"
+        class="flex items-center justify-center"
+        data-testid="cart-product-card-link"
+      >
         <NuxtImg
           v-if="cartItem.variation?.images?.all?.length"
           ref="img"
@@ -26,6 +32,7 @@
       <UiLink
         :tag="NuxtLink"
         :to="path"
+        :external="ausKasse"
         variant="secondary"
         class="w-fit no-underline typography-text-sm @sm:typography-text-lg break-word"
       >
@@ -300,6 +307,12 @@ const basePriceSingleValue = computed(
     productGetters.getGraduatedPriceByQuantity(cartItem.variation ?? ({} as Product), cartItem.quantity)?.basePrice ??
     productGetters.getDefaultBasePrice(cartItem.variation ?? ({} as Product)),
 );
+
+/**
+ * LACCICO (Zettel N 25.11. (3)): Aus der Kasse (eigenes Layout ohne Kopf/Fuß) blieb die Artikelseite nach dem Klick leer,
+ * nur die Adresse wechselte (Vue-Fehler beim Layoutwechsel). Dort deshalb die Artikelseite ganz neu laden.
+ */
+const ausKasse = computed(() => useRoute().meta.layout === 'simplified-header-and-footer');
 
 const path = computed(() => {
   return localePath('/' + cartGetters.getProductPath(cartItem, useCallisto().isEnabled));
