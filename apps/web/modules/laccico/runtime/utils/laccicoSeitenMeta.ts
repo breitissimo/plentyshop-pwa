@@ -135,6 +135,11 @@ const META: Record<string, Record<Sprache, SeitenMeta>> = {
     en: { titel: 'Checkout', beschreibung: 'Complete your LACCICO order.' },
     fr: { titel: 'Paiement', beschreibung: 'Finalisez votre commande LACCICO.' },
   },
+  '/wishlist': {
+    de: { titel: 'Wunschliste', beschreibung: 'Ihre gemerkten Schnürsenkel bei LACCICO.' },
+    en: { titel: 'Wishlist', beschreibung: 'Your saved shoelaces at LACCICO.' },
+    fr: { titel: 'Liste de souhaits', beschreibung: 'Vos lacets enregistrés chez LACCICO.' },
+  },
   '/register': {
     de: { titel: 'Konto anlegen', beschreibung: 'Kundenkonto bei LACCICO anlegen, als Privatkunde oder als Firma.' },
     en: {

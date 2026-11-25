@@ -48,11 +48,14 @@
         </template>
       </i18n-t>
     </div>
+    <!-- LACCICO: Cross-Selling und „Zuletzt angesehen“ unter der Liste, keine Sackgasse (Zettel N 24.11. (10)) -->
+    <LaccicoEmpfehlungen :artikel="products" />
   </NarrowContainer>
 </template>
 
 <script setup lang="ts">
 import LaccicoVersandkostenLink from '~~/modules/laccico/runtime/components/LaccicoVersandkostenLink.vue';
+import LaccicoEmpfehlungen from '~~/modules/laccico/runtime/components/LaccicoEmpfehlungen.vue';
 import { productGetters } from '@plentymarkets/shop-api';
 import { SfLoaderCircular } from '@storefront-ui/vue';
 import type { WishlistPageContentProps } from '~/components/WishlistPageContent/types';
