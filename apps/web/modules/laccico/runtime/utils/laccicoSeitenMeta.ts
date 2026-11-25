@@ -51,12 +51,12 @@ const META: Record<string, Record<Sprache, SeitenMeta>> = {
     },
     en: {
       titel: 'Terms and Conditions',
-      beschreibung:
-        'Terms and conditions of LACCICO. The legal basis for buying our premium waxed shoelaces.',
+      beschreibung: 'Terms and conditions of LACCICO. The legal basis for buying our premium waxed shoelaces.',
     },
     fr: {
       titel: 'Conditions générales de vente',
-      beschreibung: 'Conditions générales de vente (CGV) de LACCICO. Base juridique de l’achat de nos lacets cirés premium.',
+      beschreibung:
+        'Conditions générales de vente (CGV) de LACCICO. Base juridique de l’achat de nos lacets cirés premium.',
     },
   },
   '/privacy-policy': {
@@ -124,6 +124,28 @@ const META: Record<string, Record<Sprache, SeitenMeta>> = {
         'Contactez LACCICO. Nous serons ravis de répondre à toutes vos questions concernant nos lacets cirés, les tailles et les couleurs. Envoyez-nous un message dès maintenant !',
     },
   },
+  // Warenkorb, Kasse, Registrierung: vorher Shop-Standard „LACCICO | LACCICO“ (Prüfung Shop 6, 25.11.2026)
+  '/cart': {
+    de: { titel: 'Warenkorb', beschreibung: 'Ihr Warenkorb bei LACCICO: gewachste Schnürsenkel prüfen und bestellen.' },
+    en: { titel: 'Shopping cart', beschreibung: 'Your LACCICO shopping cart: review and order your waxed shoelaces.' },
+    fr: { titel: 'Panier', beschreibung: 'Votre panier LACCICO : vérifiez et commandez vos lacets cirés.' },
+  },
+  '/checkout': {
+    de: { titel: 'Kasse', beschreibung: 'Bestellung bei LACCICO abschließen.' },
+    en: { titel: 'Checkout', beschreibung: 'Complete your LACCICO order.' },
+    fr: { titel: 'Paiement', beschreibung: 'Finalisez votre commande LACCICO.' },
+  },
+  '/register': {
+    de: { titel: 'Konto anlegen', beschreibung: 'Kundenkonto bei LACCICO anlegen, als Privatkunde oder als Firma.' },
+    en: {
+      titel: 'Create account',
+      beschreibung: 'Create a LACCICO customer account, as a private customer or a business.',
+    },
+    fr: {
+      titel: 'Créer un compte',
+      beschreibung: 'Créez un compte client LACCICO, en tant que particulier ou entreprise.',
+    },
+  },
 };
 
 /** Ersatz, wenn eine Seite gar keine eigene Beschreibung hat (statt „Demo shop for PlentyONE Shop“). */
@@ -156,6 +178,9 @@ const ADRESSE_ZU_SCHLUESSEL: Record<string, string> = {
   '/laccico-finest-waxed-laces/widerrufsrecht/widerrufsformular': '/cancellation-form',
   '/laccico-finest-waxed-laces/withdrawal/withdrawal-form': '/cancellation-form',
   '/laccicolacetsfinscires/droitderevocation/formerevocable': '/cancellation-form',
+  '/warenkorb': '/cart',
+  '/basket': '/cart',
+  '/panier': '/cart',
 };
 
 const grundpfad = (pfad: string): string => {
