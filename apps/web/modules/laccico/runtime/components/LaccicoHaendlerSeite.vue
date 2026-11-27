@@ -127,8 +127,15 @@ const text = computed(
     ],
 );
 const ansicht = ref<'login' | 'register'>('login');
-/** Nicht angemeldet: kurze Fassung (Titel, erster Absatz, Anmeldefeld darunter) */
-const kurz = computed(() => !isAuthorized.value);
+/** Händler-Anwärter = Kundenklasse 3 (Firmenregistrierung); alle anderen angemeldeten Nicht-Händler sind Endkunden. */
+const istAnwaerter = computed(
+  () => (user.value as { classId?: number } | null)?.classId === LACCICO_FIRMEN_KLASSE,
+);
+/**
+ * Kurze Fassung (Titel, erster Absatz) für Gäste und für angemeldete Endkunden (Zettel N 27.11.2026: Endkunden sahen
+ * links die ganze Händler-Willkommensseite mit Staffel); die volle Fassung nur für Händler und Händler-Anwärter.
+ */
+const kurz = computed(() => !isAuthorized.value || (!istHaendler.value && !istAnwaerter.value));
 
 const linkZu = (id: number) => {
   const baum = (kategorien.value ?? []) as CategoryTreeItem[];
@@ -143,10 +150,6 @@ const linkFarben = computed(() => linkZu(ID_FARBEN));
  * Das kurze Registrierfeld hier hatte keine Firmenfelder (Firma, USt-IdNr.); nach der Registrierung zurück hierher.
  */
 const zurFirmenRegistrierung = () => navigateTo({ path: localePath('/register'), query: { firma: '1', redirect: '/haendler' } });
-/** Händler-Anwärter = Kundenklasse 3 (Firmenregistrierung); alle anderen angemeldeten Nicht-Händler sind Endkunden. */
-const istAnwaerter = computed(
-  () => (user.value as { classId?: number } | null)?.classId === LACCICO_FIRMEN_KLASSE,
-);
 /** Endkunde: abmelden und zur Firmen-Registrierung (mit angemeldetem Konto leitet /register sonst weiter). */
 const abmeldenUndRegistrieren = async () => {
   await logout();

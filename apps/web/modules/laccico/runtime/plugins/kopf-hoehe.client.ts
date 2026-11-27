@@ -9,12 +9,25 @@ export default defineNuxtPlugin((nuxtApp) => {
   const beobachter = new ResizeObserver(() => messen());
   let beobachtet: Element[] = [];
 
+  /** Startseite in DE/EN/FR: `/`, `/en`, `/fr` (mit oder ohne Schrägstrich am Ende) */
+  function istStartseite() {
+    return /^\/((en|fr)\/?)?$/.test(window.location.pathname);
+  }
+
   function messen() {
     const kopf = document.querySelector('.header-blocks');
     const krumen = document.querySelector("div:has(> nav[data-testid='breadcrumbs'])");
     if (kopf) {
       wurzel.style.setProperty('--laccico-kopf-hoehe', `${Math.round(kopf.getBoundingClientRect().height)}px`);
+      // Höhe der oberen Leiste (Logo, Suche, Knöpfe): auf der Startseite scrollt sie weg, das Hauptmenü bleibt (Zettel N 27.11.2026)
+      let teil: Element = kopf;
+      while (teil.children.length === 1 && teil.firstElementChild) {
+        teil = teil.firstElementChild;
+      }
+      const oben = teil.children.length > 1 ? teil.children[0] : null;
+      wurzel.style.setProperty('--laccico-topbar-hoehe', `${oben ? Math.round(oben.getBoundingClientRect().height) : 0}px`);
     }
+    wurzel.classList.toggle('laccico-startseite', istStartseite());
     wurzel.style.setProperty('--laccico-krumen-hoehe', `${krumen ? Math.round(krumen.getBoundingClientRect().height) : 0}px`);
     const neu = [kopf, krumen].filter((e): e is Element => !!e);
     if (neu.some((e, i) => e !== beobachtet[i]) || neu.length !== beobachtet.length) {

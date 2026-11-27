@@ -5,7 +5,8 @@
     :back-label-mobile="t('common.actions.back')"
     :heading="t('cart.myCart')"
   >
-    <div v-if="!cartIsEmpty" class="@md:grid @md:grid-cols-12 @md:gap-x-6" data-testid="cart-page-content">
+    <template v-if="!cartIsEmpty">
+    <div class="@md:grid @md:grid-cols-12 @md:gap-x-6" data-testid="cart-page-content">
       <!-- LACCICO (N 24.11.2026): Warenkorb 50:50 wie die Kasse -->
       <div class="col-span-6 mb-2 @md:mb-0">
         <div v-for="(cartItem, index) in cart?.items" :key="cartItem.id">
@@ -38,9 +39,11 @@
           </client-only>
         </OrderSummary>
       </div>
-      <!-- LACCICO (N 25.11.2026): „Passend dazu“ und „Zuletzt angesehen“ unter dem Warenkorb -->
-      <LaccicoEmpfehlungen class="col-span-12" :artikel="laccicoWarenkorbArtikel" />
     </div>
+    <!-- LACCICO (N 25.11.2026): „Passend dazu“ und „Zuletzt angesehen“ unter dem Warenkorb; außerhalb des Rasters,
+         sonst läuft die mitlaufende Bestellübersicht beim Scrollen über die Empfehlungen (Zettel N 27.11.2026) -->
+    <LaccicoEmpfehlungen :artikel="laccicoWarenkorbArtikel" />
+    </template>
     <div v-else class="flex items-center justify-center flex-col pt-24 pb-32" data-testid="cart-page-content">
       <h2 class="mt-8 typography-headline-3 font-bold">{{ t('cart.empty') }}</h2>
       <ModuleComponentRendering area="cart.empty" class="mt-6" />

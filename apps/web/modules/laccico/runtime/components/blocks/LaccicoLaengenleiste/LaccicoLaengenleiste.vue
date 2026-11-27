@@ -35,9 +35,9 @@ watch(laengen, (liste) => {
   }
 }, { immediate: true });
 const TEXTE = {
-  de: { titel: 'Länge:', alle: 'Alle Längen', hinweis: 'Wählen Sie hier eine Länge für alle Artikel dieser Seite: Sie ist dann bei jedem Artikel schon eingestellt, und Sie müssen nur noch in den Warenkorb legen.' },
-  en: { titel: 'Length:', alle: 'All lengths', hinweis: 'Pick a length here for all articles on this page: it is then preselected on every article, and you only need to add it to the cart.' },
-  fr: { titel: 'Longueur :', alle: 'Toutes les longueurs', hinweis: 'Choisissez ici une longueur pour tous les articles de cette page : elle est alors présélectionnée sur chaque article, il ne reste qu’à l’ajouter au panier.' },
+  de: { titel: 'Länge:', alle: 'Alle Längen', hinweis: 'Wählen Sie hier eine Länge für alle Artikel dieser Seite:\nSie ist dann bei jedem Artikel schon eingestellt,\nund Sie müssen nur noch in den Warenkorb legen.' },
+  en: { titel: 'Length:', alle: 'All lengths', hinweis: 'Pick a length here for all articles on this page:\nit is then preselected on every article,\nand you only need to add it to the cart.' },
+  fr: { titel: 'Longueur :', alle: 'Toutes les longueurs', hinweis: 'Choisissez ici une longueur pour tous les articles de cette page :\nelle est alors présélectionnée sur chaque article,\nil ne reste qu’à l’ajouter au panier.' },
 } as const;
 const text = computed(() => TEXTE[(locale.value as keyof typeof TEXTE) in TEXTE ? (locale.value as keyof typeof TEXTE) : 'de']);
 </script>

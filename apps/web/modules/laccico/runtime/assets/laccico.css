@@ -355,6 +355,13 @@ main [data-testid='details-list'] details > summary.laccico-faq-aktiv {
   z-index: 40;
   background: #ffffff;
 }
+/* Startseite (Zettel N 27.11.2026): obere Leiste scrollt weg, das Hauptmenü bleibt oben stehen (ab Desktop; am Handy
+   gibt es nur eine Leiste). Höhe misst das Plugin kopf-hoehe.client.ts. */
+@media (min-width: 1040px) {
+  html.laccico-startseite .header-blocks {
+    top: calc(-1 * var(--laccico-topbar-hoehe, 0px));
+  }
+}
 @media (min-width: 1040px) {
   div:has(> nav[data-testid='breadcrumbs']) {
     position: sticky;
@@ -589,7 +596,15 @@ footer [data-testid='text-card']:is([style*='background-color:#'],[style*='backg
 .laccico-hintergrund .color-secondary { color: #d6d3cd; }
 .laccico-hintergrund h2 { font-size: 2.4rem !important; line-height: 1.2 !important; }
 .laccico-hintergrund h3 { font-size: 1.8rem; line-height: 1.25; }
-.laccico-hintergrund-kasten { padding: 1rem 1.25rem; }
+.laccico-hintergrund-kasten { padding: 1rem 1.25rem; background-color: var(--laccico-kasten-farbe); }
+/* Zettel N 27.11.2026: Textkasten über dem Hintergrundbild als schmale, hohe Box links, damit das Bild sichtbar bleibt;
+   am Handy volle Breite, aber durchsichtiger, damit man den Schuh dahinter sieht */
+@media (min-width: 768px) {
+  .laccico-hintergrund-kasten { max-width: 26rem; padding: 1.5rem 1.5rem; }
+}
+@media (max-width: 767px) {
+  .laccico-hintergrund-kasten { background-color: color-mix(in srgb, var(--laccico-kasten-farbe) 62%, transparent); }
+}
 .laccico-hintergrund-kasten, .laccico-hintergrund-kasten * { color: #fff !important; }
 
 /* Raster im Raster: kein zusaetzlicher Seitenrand, Kacheln und Text fluchten mit Titelleiste und Artikellisten (N 21.11.2026) */
@@ -646,8 +661,9 @@ footer [data-testid='text-card']:is([style*='background-color:#'],[style*='backg
 .laccico-hinweis-i { display: inline-flex; align-items: center; justify-content: center; width: 1.1rem; height: 1.1rem; border: 1px solid #6b6b6b; border-radius: 50%; font-size: 0.7rem; font-style: normal; line-height: 1; color: #4c595d; }
 .laccico-hinweis::after {
   content: attr(data-hinweis);
+  white-space: pre-line; /* Umbruch nach Doppelpunkt und Komma (Zettel N 27.11.2026) */
   position: absolute; left: 0; top: calc(100% + 6px); z-index: 70;
-  width: 18rem; max-width: 80vw; padding: 0.6rem 0.75rem;
+  width: max-content; max-width: min(30rem, 80vw); padding: 0.6rem 0.75rem;
   background: #4c595d; color: #fff; font-size: 0.85rem; font-weight: 400; line-height: 1.4; text-align: left;
   border-radius: 4px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   opacity: 0; visibility: hidden; pointer-events: none;
@@ -859,3 +875,15 @@ div:has(> [data-testid='laccico-megamenue-bestseller']) { max-height: calc(100vh
 /* dasselbe für die Pfeile über den Artikelkacheln in Listen (Ähnliche Artikel, Zuletzt angesehen usw.) */
 [data-testid="product-slider"] > button { opacity: 0.25; transition: opacity 0.2s; }
 [data-testid="product-slider"] > button:hover:not(:disabled) { opacity: 1; }
+
+/* Kopf (Zettel N 27.11.2026): Kundenkonto-Knopf mit Vornamen steht links und rechts je 5 px weniger über (16 → 11 px) */
+.laccico-konto-knopf {
+  padding-left: 11px !important;
+  padding-right: 11px !important;
+}
+
+/* Meldungen (z. B. „Sie wurden erfolgreich eingeloggt“) erscheinen unter dem Kopf statt über den Knöpfen (Zettel N 27.11.2026) */
+[data-testid='notifications'] {
+  top: calc(var(--laccico-kopf-hoehe, 169px) + 8px) !important;
+  right: 1rem !important;
+}

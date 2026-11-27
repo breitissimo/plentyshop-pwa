@@ -264,7 +264,6 @@ import { useLaccicoHaendlerTexte } from '~~/modules/laccico/runtime/utils/laccic
 import {
   laccicoEndkundenPreis,
   laccicoKartenPreis,
-  laccicoProzent,
 } from '~~/modules/laccico/runtime/utils/laccicoKarte';
 import LaccicoVersandkostenLink from '~~/modules/laccico/runtime/components/LaccicoVersandkostenLink.vue';
 import { productGetters, reviewGetters, productBundleGetters } from '@plentymarkets/shop-api';
@@ -420,7 +419,8 @@ const laccicoPreis = computed(() => {
     const einzel = productGetters.getGraduatedPriceByQuantity(props?.product, 1)?.unitPrice.value || priceWithProperties.value;
     const preis = priceWithProperties.value;
     const durchgestrichen = preis < einzel + aufpreis ? einzel + aufpreis : 0;
-    return { preis, durchgestrichen, prozent: laccicoProzent(preis, durchgestrichen) };
+    // ohne „−x %“ für Händler (N 27.11.2026: Staffelpreis allein reicht)
+    return { preis, durchgestrichen, prozent: 0 };
   }
   const basis = laccicoKartenPreis(props?.product);
   return laccicoEndkundenPreis({ ...basis, preis: basis.preis + aufpreis }, menge);

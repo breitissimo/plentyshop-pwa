@@ -24,5 +24,6 @@ const stil = computed(() => ({
   backgroundImage: props.content.bild ? `url(${props.content.bild})` : undefined,
   minHeight: props.content.hoehe ? `${props.content.hoehe}px` : undefined,
 }));
-const kastenStil = computed(() => ({ backgroundColor: props.content.kastenFarbe, color: '#fff' }));
+// Farbe als CSS-Variable: am Handy wird der Kasten durchsichtiger (Zettel N 27.11.2026, laccico.css)
+const kastenStil = computed(() => ({ '--laccico-kasten-farbe': props.content.kastenFarbe, color: '#fff' }));
 </script>

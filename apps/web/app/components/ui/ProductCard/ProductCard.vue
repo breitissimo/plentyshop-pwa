@@ -303,7 +303,7 @@ const laccicoPreis = computed(() => {
   }
   const staffel = laccicoStaffelAus(productGetters.getGraduatedList(product.value) as LaccicoShopStaffel[]);
   const staffelPreis = laccicoListenPreis({ staffel, menge: kartenWahl.value.menge });
-  return staffelPreis ? { preis: staffelPreis, durchgestrichen: 0, prozent: 0 } : basis;
+  return staffelPreis ? { preis: staffelPreis, durchgestrichen: 0, prozent: 0 } : { ...basis, prozent: 0 };
 });
 
 const cover = computed(() => productGetters.getCoverImage(product.value));
