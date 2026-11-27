@@ -4,7 +4,6 @@
   <div class="laccico-haendlerseite" :class="{ 'ist-kurz': kurz }" data-testid="laccico-haendlerseite">
     <div class="laccico-haendlerseite-info">
       <h1>{{ text.titel }}</h1>
-      <p class="laccico-haendlerseite-unterzeile">{{ text.unterzeile }}</p>
       <p>{{ text.einleitung }}</p>
 
       <template v-if="!kurz">

@@ -9,7 +9,6 @@ export const LACCICO_HAENDLER_SEITE = {
     metaBeschreibung:
       'Gewachste Schnürsenkel zu Händlerpreisen für Schuhmacher und Wiederverkäufer: Staffel ab 25 Paar, Lieferung in Bündeln, ab Lager oder mit Nachlieferung.',
     titel: 'Schnürsenkel für Händler und Werkstätten',
-    unterzeile: 'Staffelpreise ab 25 Paar je Farbe und Länge, bestellt über Ihre Bestellliste.',
     einleitung:
       'Wiederverkäufer wie Schuhmacher und Schuhhändler bestellen bei uns zu Händlerpreisen. Sie registrieren sich als Firma mit Ihrer USt-IdNr. und laden danach hier Ihren Gewerbenachweis hoch, wir prüfen beides und schalten Ihr Händlerkonto frei. Danach sehen Sie angemeldet Ihre Händlerpreise am Artikel und setzen die Senkel auf Ihre Bestellliste.',
     staffelTitel: 'So staffeln sich die Preise',
@@ -85,7 +84,6 @@ export const LACCICO_HAENDLER_SEITE = {
     metaBeschreibung:
       'Waxed shoelaces at trade prices for cobblers and resellers: tiers from 25 pairs, delivered in bundles, from stock or with the next delivery.',
     titel: 'Shoelaces for retailers and workshops',
-    unterzeile: 'Tiered prices from 25 pairs per colour and length, ordered via your order list.',
     einleitung:
       'Resellers such as cobblers and shoe retailers order from us at trade prices. Register as a company with your VAT number and then upload your proof of business registration here; we check both and activate your trade account. Once logged in, you see your trade prices on each item and add the laces to your order list.',
     staffelTitel: 'How the prices are tiered',
@@ -161,7 +159,6 @@ export const LACCICO_HAENDLER_SEITE = {
     metaBeschreibung:
       'Lacets cirés à prix revendeur pour cordonniers et revendeurs : dégressif dès 25 paires, livraison en lots, sur stock ou avec le prochain réassort.',
     titel: 'Lacets pour revendeurs et ateliers',
-    unterzeile: 'Prix dégressifs dès 25 paires par couleur et longueur, commandés via votre liste de commande.',
     einleitung:
       'Les revendeurs comme les cordonniers et les marchands de chaussures commandent chez nous à prix revendeur. Inscrivez-vous en tant qu’entreprise avec votre numéro de TVA, puis téléchargez ici votre justificatif d’activité (extrait Kbis ou équivalent) ; nous vérifions et activons votre compte revendeur. Une fois connecté, vous voyez vos prix revendeur sur chaque article et ajoutez les lacets à votre liste de commande.',
     staffelTitel: 'Dégressivité des prix',
