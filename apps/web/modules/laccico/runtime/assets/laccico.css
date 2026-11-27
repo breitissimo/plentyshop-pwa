@@ -435,8 +435,12 @@ main :is([data-testid='item-text-block'], [data-testid='technical-data-block'], 
   .laccico-kartenkauf-wahl .laccico-kartenkauf-menge { flex-basis: 3.1rem; width: 3.1rem; }
 }
 .laccico-kartenkauf-fehler { font-size: 0.8rem; text-decoration: underline; }
-.laccico-kartenkauf-vorrat { margin: 0.4rem 0 0; padding: 0.4rem 0.5rem; font-size: 0.78rem; line-height: 1.35; background: #f3f1ec; border-left: 3px solid #4c595d; color: #1a1a1a; }
-.laccico-kartenkauf-vorrat a { display: inline-block; margin-top: 0.15rem; font-weight: 600; text-decoration: underline; }
+/* Bestandshinweis der Kachel (Zettel N 27.11.2026): liegt über dem Kachelbild, damit die Zeile nicht springt, mit × */
+[data-testid='product-card']:has(.laccico-kartenkauf-vorrat) { position: relative; }
+.laccico-kartenkauf-vorrat { position: absolute; top: 2.25rem; left: 0.5rem; right: 0.5rem; z-index: 5; padding: 0.55rem 1.6rem 0.55rem 0.6rem; font-size: 0.78rem; line-height: 1.35; background: rgba(255, 255, 255, 0.97); border-left: 3px solid #4c595d; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); color: #1a1a1a; }
+.laccico-kartenkauf-vorrat p { margin: 0; }
+.laccico-kartenkauf-vorrat a { display: inline-block; margin-top: 0.25rem; font-weight: 600; text-decoration: underline; }
+.laccico-kartenkauf-vorrat-zu { position: absolute; top: 0.1rem; right: 0.3rem; font-size: 1.25rem; line-height: 1; padding: 0.15rem 0.25rem; color: #4c595d; background: none; border: 0; cursor: pointer; }
 @media (max-width: 1039px) {
   .laccico-kategoriebaum { display: none; } /* Handy und Tablet-Hochformat (N 21.11.2026): Baum erreicht man über das Menü */
   /* FAQ-Spalte (mit dem Baum) unter den Inhalt: erst Einleitung und Artikel, dann Fragen (N 21.11.2026) */

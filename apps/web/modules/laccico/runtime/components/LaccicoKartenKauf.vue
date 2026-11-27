@@ -26,11 +26,12 @@
         <span v-else>{{ istHaendler ? haendlerText.aufListe : text.kaufen }}</span>
       </UiButton>
     </div>
-    <!-- Zettel N 27.11.2026: Hinweis bleibt an der Kachel stehen, bis Länge oder Menge geändert wird -->
-    <p v-if="vorratHinweis" class="laccico-kartenkauf-vorrat" data-testid="laccico-karte-vorrat">
-      {{ vorratHinweis }}
+    <!-- Zettel N 27.11.2026: Hinweis liegt über dem Kachelbild (Zeile springt nicht), mit × wegklickbar, sonst bis Länge oder Menge geändert wird -->
+    <div v-if="vorratHinweis" class="laccico-kartenkauf-vorrat" role="status" data-testid="laccico-karte-vorrat">
+      <button type="button" class="laccico-kartenkauf-vorrat-zu" :aria-label="text.schliessen" @click="vorratHinweis = ''">×</button>
+      <p>{{ vorratHinweis }}</p>
       <NuxtLink :to="localePath('/haendler')">{{ text.zuHaendler }}</NuxtLink>
-    </p>
+    </div>
     <NuxtLink v-if="fehler" :to="weiter" class="laccico-kartenkauf-fehler">{{ text.optionen }}</NuxtLink>
   </div>
 </template>
@@ -66,9 +67,9 @@ const { hinzufuegen: aufHaendlerListe } = useLaccicoHaendlerListe();
 const haendlerText = useLaccicoHaendlerTexte();
 
 const TEXTE = {
-  de: { laenge: 'Länge', waehlen: 'Länge', ausverkauft: 'nicht lieferbar', menge: 'Menge', kaufen: 'In den Warenkorb', optionen: 'Optionen anzeigen', danke: 'In den Warenkorb gelegt', nurVorrat: 'Nur {n} Paar vorrätig. Firmenkunden bestellen größere Mengen über die Händler-Bestellliste, der Rest wird nachgeliefert.', zuHaendler: 'Zur Händlerseite' },
-  en: { laenge: 'Length', waehlen: 'Length', ausverkauft: 'unavailable', menge: 'Quantity', kaufen: 'Add to cart', optionen: 'Show options', danke: 'Added to cart', nurVorrat: 'Only {n} pairs in stock. Business customers order larger quantities via the trade order list; the rest is delivered later.', zuHaendler: 'To the retailer page' },
-  fr: { laenge: 'Longueur', waehlen: 'Longueur', ausverkauft: 'indisponible', menge: 'Quantité', kaufen: 'Ajouter au panier', optionen: 'Voir les options', danke: 'Ajouté au panier', nurVorrat: 'Seulement {n} paires en stock. Les professionnels commandent de plus grandes quantités via la liste de commande revendeurs ; le reste est livré ultérieurement.', zuHaendler: 'Page revendeurs' },
+  de: { laenge: 'Länge', waehlen: 'Länge', ausverkauft: 'nicht lieferbar', menge: 'Menge', kaufen: 'In den Warenkorb', optionen: 'Optionen anzeigen', danke: 'In den Warenkorb gelegt', nurVorrat: 'Nur {n} Paar vorrätig. Firmenkunden bestellen größere Mengen über die Händler-Bestellliste, der Rest wird nachgeliefert.', zuHaendler: 'Zur Händlerseite', schliessen: 'Hinweis schließen' },
+  en: { laenge: 'Length', waehlen: 'Length', ausverkauft: 'unavailable', menge: 'Quantity', kaufen: 'Add to cart', optionen: 'Show options', danke: 'Added to cart', nurVorrat: 'Only {n} pairs in stock. Business customers order larger quantities via the trade order list; the rest is delivered later.', zuHaendler: 'To the retailer page', schliessen: 'Close notice' },
+  fr: { laenge: 'Longueur', waehlen: 'Longueur', ausverkauft: 'indisponible', menge: 'Quantité', kaufen: 'Ajouter au panier', optionen: 'Voir les options', danke: 'Ajouté au panier', nurVorrat: 'Seulement {n} paires en stock. Les professionnels commandent de plus grandes quantités via la liste de commande revendeurs ; le reste est livré ultérieurement.', zuHaendler: 'Page revendeurs', schliessen: 'Fermer' },
 } as const;
 const text = computed(() => TEXTE[(locale.value as keyof typeof TEXTE) in TEXTE ? (locale.value as keyof typeof TEXTE) : 'de']);
 
