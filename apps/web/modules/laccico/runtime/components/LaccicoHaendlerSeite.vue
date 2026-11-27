@@ -45,6 +45,14 @@
           <UiButton data-testid="laccico-haendlerseite-endkunde-knopf" @click="abmeldenUndRegistrieren">{{
             text.endkundeKnopf
           }}</UiButton>
+          <!-- Zettel N 27.11.2026: daneben Jetzt shoppen, Mein Konto, Abmelden -->
+          <UiButton :tag="NuxtLink" :to="linkForm || localePath('/')" variant="secondary" data-testid="laccico-haendlerseite-shoppen">{{
+            text.shoppen
+          }}</UiButton>
+          <UiButton :tag="NuxtLink" :to="localePath(paths.account)" variant="secondary" data-testid="laccico-haendlerseite-konto">{{
+            text.meinKonto
+          }}</UiButton>
+          <UiButton variant="tertiary" data-testid="laccico-haendlerseite-abmelden" @click="abmelden">{{ text.abmelden }}</UiButton>
         </div>
       </template>
       <template v-else-if="isAuthorized">
@@ -150,6 +158,11 @@ const linkFarben = computed(() => linkZu(ID_FARBEN));
  * Das kurze Registrierfeld hier hatte keine Firmenfelder (Firma, USt-IdNr.); nach der Registrierung zurück hierher.
  */
 const zurFirmenRegistrierung = () => navigateTo({ path: localePath('/register'), query: { firma: '1', redirect: '/haendler' } });
+/** Abmelden und auf dieser Seite bleiben (zeigt dann Anmelden/Registrieren) */
+const abmelden = async () => {
+  await logout();
+  window.location.href = localePath('/haendler');
+};
 /** Endkunde: abmelden und zur Firmen-Registrierung (mit angemeldetem Konto leitet /register sonst weiter). */
 const abmeldenUndRegistrieren = async () => {
   await logout();
