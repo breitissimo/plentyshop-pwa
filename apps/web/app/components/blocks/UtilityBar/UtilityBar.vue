@@ -231,9 +231,9 @@
           >
             <UiButton
               variant="tertiary"
-              class="relative hover:bg-header-400 active:bg-header-400 rounded-md"
+              class="relative hover:!bg-header-400 active:!bg-header-400 rounded-md laccico-konto-knopf"
               :style="{ color: iconColor, order: getActionOrder('account') }"
-              :class="{ 'bg-primary-700': isAccountDropdownOpen }"
+              :class="{ '!bg-header-400': isAccountDropdownOpen }"
               data-testid="account-dropdown-button"
               @click="accountDropdownToggle()"
             >

@@ -26,6 +26,11 @@
         <span v-else>{{ istHaendler ? haendlerText.aufListe : text.kaufen }}</span>
       </UiButton>
     </div>
+    <!-- Zettel N 27.11.2026: Hinweis bleibt an der Kachel stehen, bis Länge oder Menge geändert wird -->
+    <p v-if="vorratHinweis" class="laccico-kartenkauf-vorrat" data-testid="laccico-karte-vorrat">
+      {{ vorratHinweis }}
+      <NuxtLink :to="localePath('/haendler')">{{ text.zuHaendler }}</NuxtLink>
+    </p>
     <NuxtLink v-if="fehler" :to="weiter" class="laccico-kartenkauf-fehler">{{ text.optionen }}</NuxtLink>
   </div>
 </template>
@@ -61,9 +66,9 @@ const { hinzufuegen: aufHaendlerListe } = useLaccicoHaendlerListe();
 const haendlerText = useLaccicoHaendlerTexte();
 
 const TEXTE = {
-  de: { laenge: 'Länge', waehlen: 'Länge', ausverkauft: 'nicht lieferbar', menge: 'Menge', kaufen: 'In den Warenkorb', optionen: 'Optionen anzeigen', danke: 'In den Warenkorb gelegt', nurVorrat: 'Davon sind nur {n} Paar vorrätig. Firmenkunden können größere Mengen über die Händler-Bestellliste bestellen, der Rest wird nachgeliefert.', zuHaendler: 'Für Händler' },
-  en: { laenge: 'Length', waehlen: 'Length', ausverkauft: 'unavailable', menge: 'Quantity', kaufen: 'Add to cart', optionen: 'Show options', danke: 'Added to cart', nurVorrat: 'Only {n} pairs are in stock. Business customers can order larger quantities via the trade order list; the rest will be delivered later.', zuHaendler: 'For retailers' },
-  fr: { laenge: 'Longueur', waehlen: 'Longueur', ausverkauft: 'indisponible', menge: 'Quantité', kaufen: 'Ajouter au panier', optionen: 'Voir les options', danke: 'Ajouté au panier', nurVorrat: 'Seulement {n} paires en stock. Les clients professionnels peuvent commander de plus grandes quantités via la liste de commande revendeurs ; le reste sera livré ultérieurement.', zuHaendler: 'Revendeurs' },
+  de: { laenge: 'Länge', waehlen: 'Länge', ausverkauft: 'nicht lieferbar', menge: 'Menge', kaufen: 'In den Warenkorb', optionen: 'Optionen anzeigen', danke: 'In den Warenkorb gelegt', nurVorrat: 'Nur {n} Paar vorrätig. Firmenkunden bestellen größere Mengen über die Händler-Bestellliste, der Rest wird nachgeliefert.', zuHaendler: 'Zur Händlerseite' },
+  en: { laenge: 'Length', waehlen: 'Length', ausverkauft: 'unavailable', menge: 'Quantity', kaufen: 'Add to cart', optionen: 'Show options', danke: 'Added to cart', nurVorrat: 'Only {n} pairs in stock. Business customers order larger quantities via the trade order list; the rest is delivered later.', zuHaendler: 'To the retailer page' },
+  fr: { laenge: 'Longueur', waehlen: 'Longueur', ausverkauft: 'indisponible', menge: 'Quantité', kaufen: 'Ajouter au panier', optionen: 'Voir les options', danke: 'Ajouté au panier', nurVorrat: 'Seulement {n} paires en stock. Les professionnels commandent de plus grandes quantités via la liste de commande revendeurs ; le reste est livré ultérieurement.', zuHaendler: 'Page revendeurs' },
 } as const;
 const text = computed(() => TEXTE[(locale.value as keyof typeof TEXTE) in TEXTE ? (locale.value as keyof typeof TEXTE) : 'de']);
 
@@ -77,6 +82,11 @@ const fehler = ref(false);
 const auswahl = ref('');
 const menge = ref(1);
 const sendet = ref(false);
+/** Hinweis bei zu wenig Bestand, steht an der Kachel bis Länge oder Menge geändert wird */
+const vorratHinweis = ref('');
+watch([auswahl, menge], () => {
+  vorratHinweis.value = '';
+});
 
 const laden = async () => {
   if (geladen.value || laedt.value) return;
@@ -177,11 +187,7 @@ const hinweisZuWenigBestand = async (anzahl: number) => {
     if (typeof vorrat !== 'number' || vorrat >= anzahl) {
       return;
     }
-    send({
-      message: text.value.nurVorrat.replace('{n}', String(vorrat)),
-      type: 'secondary',
-      action: { text: text.value.zuHaendler, onClick: () => navigateTo(localePath('/haendler')) },
-    });
+    vorratHinweis.value = text.value.nurVorrat.replace('{n}', String(vorrat));
   } catch {
     // ohne Bestand kein Zusatzhinweis, Plentys eigene Meldung steht schon da
   }

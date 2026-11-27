@@ -435,6 +435,8 @@ main :is([data-testid='item-text-block'], [data-testid='technical-data-block'], 
   .laccico-kartenkauf-wahl .laccico-kartenkauf-menge { flex-basis: 3.1rem; width: 3.1rem; }
 }
 .laccico-kartenkauf-fehler { font-size: 0.8rem; text-decoration: underline; }
+.laccico-kartenkauf-vorrat { margin: 0.4rem 0 0; padding: 0.4rem 0.5rem; font-size: 0.78rem; line-height: 1.35; background: #f3f1ec; border-left: 3px solid #4c595d; color: #1a1a1a; }
+.laccico-kartenkauf-vorrat a { display: inline-block; margin-top: 0.15rem; font-weight: 600; text-decoration: underline; }
 @media (max-width: 1039px) {
   .laccico-kategoriebaum { display: none; } /* Handy und Tablet-Hochformat (N 21.11.2026): Baum erreicht man über das Menü */
   /* FAQ-Spalte (mit dem Baum) unter den Inhalt: erst Einleitung und Artikel, dann Fragen (N 21.11.2026) */
