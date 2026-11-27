@@ -563,8 +563,9 @@ div:has(> [data-testid='laccico-preis-hinweis']) > :first-child { flex-shrink: 0
 }
 .laccico-bildpfeil-links { left: 0.4rem; }
 .laccico-bildpfeil-rechts { right: 0.4rem; }
-[data-testid='product-card']:hover .laccico-bildpfeil { opacity: 1; }
-@media (hover: none) { .laccico-bildpfeil { opacity: 0.9; } }
+[data-testid='product-card']:hover .laccico-bildpfeil { opacity: 0.25; } /* Kachelpfeile 25 % Deckkraft (N 27.11.) */
+.laccico-bildpfeil:hover { opacity: 1 !important; }
+@media (hover: none) { .laccico-bildpfeil { opacity: 0.25; } }
 /* Über den Pfeilen kein Hover-Bild: sonst zeigt der erste Klick dasselbe (zweite) Bild und es sieht aus, als passiere nichts */
 a:has(.laccico-bildpfeil:hover) [data-testid='hover-image-slot'] { opacity: 0 !important; }
 a:has(.laccico-bildpfeil:hover) [data-testid='image-slot'] { opacity: 1 !important; }
