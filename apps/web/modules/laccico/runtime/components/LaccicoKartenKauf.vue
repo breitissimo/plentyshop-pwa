@@ -27,10 +27,13 @@
       </UiButton>
     </div>
     <!-- Zettel N 27.11.2026: Hinweis liegt über dem Kachelbild (Zeile springt nicht), mit × wegklickbar, sonst bis Länge oder Menge geändert wird -->
-    <div v-if="vorratHinweis" class="laccico-kartenkauf-vorrat" role="status" data-testid="laccico-karte-vorrat">
-      <button type="button" class="laccico-kartenkauf-vorrat-zu" :aria-label="text.schliessen" @click="vorratHinweis = ''">×</button>
-      <p>{{ vorratHinweis }}</p>
-      <NuxtLink :to="localePath('/haendler')">{{ text.zuHaendler }}</NuxtLink>
+    <div v-if="vorrat !== null" class="laccico-kartenkauf-vorrat" role="status" data-testid="laccico-karte-vorrat">
+      <button type="button" class="laccico-kartenkauf-vorrat-zu" :aria-label="vorratText.schliessen" @click="vorrat = null">×</button>
+      <p>{{ vorrat > 0 ? vorratText.nurVorrat.replace('{n}', String(vorrat)) : vorratText.keinVorrat }}</p>
+      <UiButton v-if="vorrat > 0" size="sm" class="laccico-vorrat-kaufen" data-testid="laccico-karte-vorrat-kaufen" @click="vorratInWarenkorb">
+        {{ vorratText.vorratKaufen.replace('{n}', String(vorrat)) }}
+      </UiButton>
+      <NuxtLink :to="localePath('/haendler')">{{ vorratText.zuHaendler }}</NuxtLink>
     </div>
     <NuxtLink v-if="fehler" :to="weiter" class="laccico-kartenkauf-fehler">{{ text.optionen }}</NuxtLink>
   </div>
@@ -50,6 +53,7 @@ import {
 } from '../utils/laccicoHaendlerListe';
 import { useLaccicoHaendlerTexte } from '../utils/laccicoHaendlerTexte';
 import { laccicoKartenPreis } from '../utils/laccicoKarte';
+import { laccicoVorratPruefen, laccicoVorratTexte } from '../utils/laccicoVorrat';
 import type { LaccicoLaengenOption } from '../utils/laccicoLaenge';
 import type { LaccicoKartenWahl, LaccicoListenStaffel, LaccicoShopStaffel } from '../utils/types';
 
@@ -67,10 +71,11 @@ const { hinzufuegen: aufHaendlerListe } = useLaccicoHaendlerListe();
 const haendlerText = useLaccicoHaendlerTexte();
 
 const TEXTE = {
-  de: { laenge: 'Länge', waehlen: 'Länge', ausverkauft: 'nicht lieferbar', menge: 'Menge', kaufen: 'In den Warenkorb', optionen: 'Optionen anzeigen', danke: 'In den Warenkorb gelegt', nurVorrat: 'Nur {n} Paar vorrätig. Firmenkunden bestellen größere Mengen über die Händler-Bestellliste, der Rest wird nachgeliefert.', zuHaendler: 'Zur Händlerseite', schliessen: 'Hinweis schließen' },
-  en: { laenge: 'Length', waehlen: 'Length', ausverkauft: 'unavailable', menge: 'Quantity', kaufen: 'Add to cart', optionen: 'Show options', danke: 'Added to cart', nurVorrat: 'Only {n} pairs in stock. Business customers order larger quantities via the trade order list; the rest is delivered later.', zuHaendler: 'To the retailer page', schliessen: 'Close notice' },
-  fr: { laenge: 'Longueur', waehlen: 'Longueur', ausverkauft: 'indisponible', menge: 'Quantité', kaufen: 'Ajouter au panier', optionen: 'Voir les options', danke: 'Ajouté au panier', nurVorrat: 'Seulement {n} paires en stock. Les professionnels commandent de plus grandes quantités via la liste de commande revendeurs ; le reste est livré ultérieurement.', zuHaendler: 'Page revendeurs', schliessen: 'Fermer' },
+  de: { laenge: 'Länge', waehlen: 'Länge', ausverkauft: 'nicht lieferbar', menge: 'Menge', kaufen: 'In den Warenkorb', optionen: 'Optionen anzeigen', danke: 'In den Warenkorb gelegt' },
+  en: { laenge: 'Length', waehlen: 'Length', ausverkauft: 'unavailable', menge: 'Quantity', kaufen: 'Add to cart', optionen: 'Show options', danke: 'Added to cart' },
+  fr: { laenge: 'Longueur', waehlen: 'Longueur', ausverkauft: 'indisponible', menge: 'Quantité', kaufen: 'Ajouter au panier', optionen: 'Voir les options', danke: 'Ajouté au panier' },
 } as const;
+const vorratText = computed(() => laccicoVorratTexte(locale.value));
 const text = computed(() => TEXTE[(locale.value as keyof typeof TEXTE) in TEXTE ? (locale.value as keyof typeof TEXTE) : 'de']);
 
 /** Wählbare Mengen auf der Kachel (N 22.11.2026: Auswahl statt Tastatureingabe; Zettel N 27.11.2026: jede Menge 1–100) */
@@ -83,10 +88,10 @@ const fehler = ref(false);
 const auswahl = ref('');
 const menge = ref(1);
 const sendet = ref(false);
-/** Hinweis bei zu wenig Bestand, steht an der Kachel bis Länge oder Menge geändert wird */
-const vorratHinweis = ref('');
+/** Vorrat bei zu wenig Bestand (Hinweis über dem Kachelbild), null = kein Hinweis; weg bei ×, neuer Länge oder Menge */
+const vorrat = ref<number | null>(null);
 watch([auswahl, menge], () => {
-  vorratHinweis.value = '';
+  vorrat.value = null;
 });
 
 const laden = async () => {
@@ -177,20 +182,20 @@ const aufListe = async () => {
   send({ message: haendlerText.value.aufListeOk, type: 'positive' });
 };
 
-/**
- * Zettel N 27.11.2026: Reicht der Bestand für die gewählte Menge nicht (Plenty lehnt ab und meldet den Bestand selbst),
- * zusätzlich auf die Händler-Bestellliste hinweisen, über die Firmenkunden auch mehr als den Vorrat bestellen können.
- */
-const hinweisZuWenigBestand = async (anzahl: number) => {
+/** Die vorrätige Menge direkt in den Warenkorb (N 27.11.2026) */
+const vorratInWarenkorb = async () => {
+  if (!auswahl.value || !vorrat.value) {
+    return;
+  }
+  const anzahl = vorrat.value;
+  sendet.value = true;
   try {
-    const antwort = await $fetch<Record<string, number | null>>('/laccico-bestand', { query: { ids: auswahl.value } });
-    const vorrat = antwort?.[auswahl.value];
-    if (typeof vorrat !== 'number' || vorrat >= anzahl) {
-      return;
+    if (await addToCart({ productId: Number(auswahl.value), quantity: anzahl })) {
+      vorrat.value = null;
+      send({ message: text.value.danke, type: 'positive' });
     }
-    vorratHinweis.value = text.value.nurVorrat.replace('{n}', String(vorrat));
-  } catch {
-    // ohne Bestand kein Zusatzhinweis, Plentys eigene Meldung steht schon da
+  } finally {
+    sendet.value = false;
   }
 };
 
@@ -207,7 +212,7 @@ const inWarenkorb = async () => {
     if (ok) {
       send({ message: text.value.danke, type: 'positive' });
     } else if (anzahl > 1) {
-      await hinweisZuWenigBestand(anzahl);
+      vorrat.value = await laccicoVorratPruefen(auswahl.value, anzahl);
     }
   } finally {
     sendet.value = false;

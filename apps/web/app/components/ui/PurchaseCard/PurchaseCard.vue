@@ -205,6 +205,17 @@
                     </UiButton>
                   </SfTooltip>
                 </div>
+                <!-- LACCICO (Zettel N 27.11.2026): Hinweis bei zu wenig Bestand wie auf der Kachel, liegt über dem Text darunter, mit × -->
+                <div v-if="vorrat !== null" class="relative">
+                  <div class="laccico-kartenkauf-vorrat laccico-vorrat-artikel" role="status" data-testid="laccico-artikel-vorrat">
+                    <button type="button" class="laccico-kartenkauf-vorrat-zu" :aria-label="vorratText.schliessen" @click="vorrat = null">×</button>
+                    <p>{{ vorrat > 0 ? vorratText.nurVorrat.replace('{n}', String(vorrat)) : vorratText.keinVorrat }}</p>
+                    <UiButton v-if="vorrat > 0" size="sm" class="laccico-vorrat-kaufen" :disabled="loading" data-testid="laccico-artikel-vorrat-kaufen" @click="vorratInWarenkorb">
+                      {{ vorratText.vorratKaufen.replace('{n}', String(vorrat)) }}
+                    </UiButton>
+                    <NuxtLink :to="localePath('/haendler')">{{ vorratText.zuHaendler }}</NuxtLink>
+                  </div>
+                </div>
 
                 <div class="mt-4 typography-text-xs flex gap-1">
                   <span>{{ t('common.labels.asterisk') }}</span>
@@ -265,6 +276,7 @@ import {
   laccicoEndkundenPreis,
   laccicoKartenPreis,
 } from '~~/modules/laccico/runtime/utils/laccicoKarte';
+import { laccicoVorratPruefen, laccicoVorratTexte } from '~~/modules/laccico/runtime/utils/laccicoVorrat';
 import LaccicoVersandkostenLink from '~~/modules/laccico/runtime/components/LaccicoVersandkostenLink.vue';
 import { productGetters, reviewGetters, productBundleGetters } from '@plentymarkets/shop-api';
 import { SfCounter, SfRating, SfIconShoppingCart, SfLoaderCircular, SfTooltip } from '@storefront-ui/vue';
@@ -358,6 +370,29 @@ const { istHaendler } = useLaccicoHaendler();
 const { hinzufuegen: aufHaendlerListe } = useLaccicoHaendlerListe();
 const haendlerText = useLaccicoHaendlerTexte();
 const quantitySelectorValue = ref(productGetters.getMinimumOrderQuantity(props?.product));
+/** LACCICO: Hinweis bei zu wenig Bestand (Zettel N 27.11.2026), weg bei × oder neuer Menge/Variante */
+const vorrat = ref<number | null>(null);
+const { locale } = useI18n();
+const vorratText = computed(() => laccicoVorratTexte(locale.value));
+watch([quantitySelectorValue, () => productGetters.getVariationId(props.product)], () => {
+  vorrat.value = null;
+});
+/** Die vorrätige Menge direkt in den Warenkorb (N 27.11.2026), mit denselben Bestellmerkmalen wie der normale Knopf */
+const vorratInWarenkorb = async () => {
+  if (!vorrat.value) {
+    return;
+  }
+  const anzahl = vorrat.value;
+  const ok = await addToCart({
+    productId: Number(productGetters.getId(props?.product)),
+    quantity: anzahl,
+    basketItemOrderParams: getPropertiesForCart(),
+  });
+  if (ok) {
+    vorrat.value = null;
+    send({ message: t('cart.itemAdded'), type: 'positive' });
+  }
+};
 const { isWishlistItem } = useWishlist();
 const { openQuickCheckout } = useQuickCheckout();
 const { reviewArea } = useProductReviews(Number(productGetters.getId(props?.product)));
@@ -473,6 +508,10 @@ const handleAddToCart = async (quickCheckout = true) => {
     quantity: Number(quantitySelectorValue.value),
     basketItemOrderParams: getPropertiesForCart(),
   });
+
+  if (!addedToCart && Number(quantitySelectorValue.value) > 1) {
+    vorrat.value = await laccicoVorratPruefen(productGetters.getVariationId(props.product), Number(quantitySelectorValue.value));
+  }
 
   if (addedToCart) {
     quickCheckout

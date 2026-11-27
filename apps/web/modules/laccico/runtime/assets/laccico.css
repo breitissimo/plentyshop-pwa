@@ -893,3 +893,7 @@ div:has(> [data-testid='laccico-megamenue-bestseller']) { max-height: calc(100vh
   top: calc(var(--laccico-kopf-hoehe, 169px) + 8px) !important;
   right: 1rem !important;
 }
+
+/* Bestandshinweis in der Artikelansicht (Zettel N 27.11.2026): direkt unter Menge/Knopf, liegt über dem Text darunter */
+.laccico-kartenkauf-vorrat.laccico-vorrat-artikel { top: 0.5rem; left: 0; right: auto; width: min(100%, 30rem); font-size: 0.85rem; }
+.laccico-kartenkauf-vorrat .laccico-vorrat-kaufen { display: flex; width: 100%; margin-top: 0.4rem; white-space: normal; line-height: 1.25; text-align: center; }
